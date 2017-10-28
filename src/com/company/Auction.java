@@ -1,29 +1,35 @@
 package com.company;
 
 public class Auction {
+    
 
-
-    static int auctionID;
+    private int auctionID = 0;
+    static int count = 0;
     String title;
     double price;
     int categoryID;
     String description;
 
-    public Auction(String title, double price, int categoryID, String description) {
+
+    public Auction(int auctionID, String title, double price, int categoryID, String description) {
+        this.auctionID = auctionID;
         this.title = title;
         this.price = price;
         this.categoryID = categoryID;
         this.description = description;
+
+        auctionID = count++;
     }
 
 
-    public static int getAuctionID() {
+    public int getAuctionID() {
         return auctionID;
     }
 
-    public static void setAuctionID(int auctionID) {
-        Auction.auctionID = auctionID;
+    public void setAuctionID(int auctionID) {
+        this.auctionID = auctionID;
     }
+
 
     public String getTitle() {
         return title;
