@@ -17,10 +17,8 @@ public class UserStorage {
 
 
 
-    public void createFile(String filename) {
-        BufferedWriter bw = null;
+    private void createFile(String filename) {
         FileWriter fw = null;
-
 
         try {
             fw = new FileWriter(filename);
@@ -38,22 +36,16 @@ public class UserStorage {
     }
 
 
-
-
     public void writeUser(User newUser) {
         BufferedWriter bw = null;
         FileWriter fw = null;
-
 
         try {
             fw = new FileWriter(filename, true);
             bw = new BufferedWriter(fw);
             bw.write(newUser.getLogin() + " " + newUser.getPassword() + "\n");
-            System.out.println("User added to file " + newUser.getLogin() + " " + newUser.getPassword() + "\n");
-            //return true;
         } catch (IOException e) {
             e.printStackTrace();
-            //return false;
         } finally {
             try {
                 if (bw !=null)
@@ -69,7 +61,7 @@ public class UserStorage {
 
     }
 
-    public boolean checkIfUserExist(User user) throws IOException {
+    private String[] findUser(User user) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filename));
         try {
             String line = br.readLine();
@@ -79,7 +71,7 @@ public class UserStorage {
                 userToArray = line.split(" ");
 
                 if (userToArray[0].equals(user.getLogin())){
-                    return true;
+                    return userToArray;
                 }
                 line = br.readLine();
             }
@@ -88,8 +80,28 @@ public class UserStorage {
         } finally {
             br.close();
         }
-        return false;
+        return null;
+    }
 
+    public boolean checkIfUserExist(User user) throws IOException {
+
+            String[] userToArray = findUser(user);
+            if (userToArray[0].equals(user.getLogin())){
+                    return true;
+                }
+
+        return false;
+    }
+
+    public boolean isLoginAndPasswordCorrect(User user) throws IOException {
+
+
+        String[] userToArray = findUser(user);
+        if (userToArray[0].equals(user.getLogin()) && userToArray[1].equals(user.getPassword())){
+            return true;
+        }
+
+        return false;
     }
 
     /*    UserStorage databaseController = new UserStorage();
