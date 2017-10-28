@@ -12,19 +12,23 @@ public class User {
         this.login = login;
         this.password = password;
 
+
+        if (login == null) {
+            throw new LoginNullException("Login can't be empty");
+        }
+
+        if (password == null) {
+            throw new LoginNullException("Login can't be empty");
+        }
+
         if (login.length() < 5) {
             throw new CredentialsToShortException("Login is too short");
-        } else System.out.println("Login successful");
+        }
 
 
         if (password.length() < 5) {
             throw new CredentialsToShortException("Password is too short");
-        } else System.out.println("Password set successfully");
-
-
-        if (login == null) {
-            throw new LoginNullException("Login can't be empty");
-        } else System.out.println("Login set successfully");
+        }
 
     }
 
