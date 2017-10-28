@@ -4,22 +4,11 @@ import java.io.*;
 
 public class UserStorage {
 
+    public UserStorage(String filename) {
+        this.filename = filename;
+    }
 
-
-/*    UserStorage databaseController = new UserStorage();
-    User user = new User("Donald", "Trump1234");
-    User user2 = new User("Donald", "Tusk1234");
-    User user3 = new User("Misio", "1234");
-
-        databaseController.createFile();
-
-        databaseController.writeUser(user);
-        databaseController.writeUser(user2);
-        databaseController.writeUser(user3);
-
-        System.out.println(databaseController.checkIfUserExist(user3));*/
-
-    private static final String FILENAME = "/Users/romanmarczewski/Development/auctionPlatform2/userRegistry.txt";
+    private String filename;
 
 
     public void createFile() {
@@ -28,7 +17,7 @@ public class UserStorage {
 
 
         try {
-            fw = new FileWriter(FILENAME);
+            fw = new FileWriter(filename);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -51,7 +40,7 @@ public class UserStorage {
 
 
         try {
-            fw = new FileWriter(FILENAME, true);
+            fw = new FileWriter(filename, true);
             bw = new BufferedWriter(fw);
             bw.write(newUser.getLogin() + " " + newUser.getPassword() + "\n");
             System.out.println("User added to file " + newUser.getLogin() + " " + newUser.getPassword() + "\n");
@@ -75,7 +64,7 @@ public class UserStorage {
     }
 
     public boolean checkIfUserExist(User user) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(FILENAME));
+        BufferedReader br = new BufferedReader(new FileReader(filename));
         try {
             String line = br.readLine();
             String[] userToArray;
@@ -96,4 +85,17 @@ public class UserStorage {
         return false;
 
     }
+
+    /*    UserStorage databaseController = new UserStorage();
+    User user = new User("Donald", "Trump1234");
+    User user2 = new User("Donald", "Tusk1234");
+    User user3 = new User("Misio", "1234");
+
+        databaseController.createFile();
+
+        databaseController.writeUser(user);
+        databaseController.writeUser(user2);
+        databaseController.writeUser(user3);
+
+        System.out.println(databaseController.checkIfUserExist(user3));*/
 }

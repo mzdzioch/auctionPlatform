@@ -1,30 +1,36 @@
 package com.company;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRegistry {
 
-    public void addUser(User user) throws LoginExistException{
+    UserStorage userStorage;
 
-        if(findByUser(user))
+    public UserRegistry(String filename) {
+        this.userStorage = new UserStorage(filename);
+    }
+
+    public void addUser(User user) throws LoginExistException, IOException {
+
+        if(existUser(user))
             throw new LoginExistException("");
         else
             addToFile(user);
 
     }
 
-    public boolean existUser(User user){
+    public boolean existUser(User user) throws IOException {
 
-        return true;
+        return userStorage.checkIfUserExist(user);
+
     }
 
-    private boolean findByUser(User user){
-
-        return true;
-    }
 
     private void addToFile(User user){
+
+        userStorage.writeUser(user);
 
     }
 }
