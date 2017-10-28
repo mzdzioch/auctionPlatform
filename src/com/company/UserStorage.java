@@ -89,7 +89,6 @@ public class UserStorage {
             br.close();
         }
         return false;
-
     }
 
     /*    UserStorage databaseController = new UserStorage();

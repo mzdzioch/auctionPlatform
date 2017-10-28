@@ -28,6 +28,8 @@ public class UserRegistry {
     }
 
 
+
+
     private void addToFile(User user){
 
         userStorage.writeUser(user);
