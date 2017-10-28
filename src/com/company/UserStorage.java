@@ -86,10 +86,11 @@ public class UserStorage {
     public boolean checkIfUserExist(User user) throws IOException {
 
             String[] userToArray = findUser(user);
+            if (userToArray != null) {
             if (userToArray[0].equals(user.getLogin())){
                     return true;
                 }
-
+        }
         return false;
     }
 
