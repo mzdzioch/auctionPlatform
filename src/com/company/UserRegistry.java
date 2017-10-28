@@ -27,6 +27,10 @@ public class UserRegistry {
 
     }
 
+    public boolean isLoginAndPasswordCorrect(User user) throws IOException {
+        return userStorage.isLoginAndPasswordCorrect(user);
+    }
+
 
 
 
