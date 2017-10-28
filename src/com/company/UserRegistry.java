@@ -31,9 +31,6 @@ public class UserRegistry {
         return userStorage.isLoginAndPasswordCorrect(user);
     }
 
-
-
-
     private void addToFile(User user){
 
         userStorage.writeUser(user);
