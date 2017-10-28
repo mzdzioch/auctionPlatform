@@ -3,15 +3,21 @@ package com.company;
 import java.io.*;
 
 public class UserStorage {
-
-    public UserStorage(String filename) {
-        this.filename = filename;
-    }
-
     private String filename;
 
 
-    public void createFile() {
+    public UserStorage(String filename) {
+        this.filename = filename;
+        File file = new File(filename);
+        if (!file.exists()) {
+            createFile(filename);
+        }
+    }
+
+
+
+
+    public void createFile(String filename) {
         BufferedWriter bw = null;
         FileWriter fw = null;
 
