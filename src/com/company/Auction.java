@@ -10,8 +10,16 @@ public class Auction {
     String description;
     String login;
 
-
     public Auction(int auctionID, String title, double price, int categoryID, String description, String login) {
+        this.auctionID = auctionID;
+        this.title = title;
+        this.price = price;
+        this.categoryID = categoryID;
+        this.description = description;
+        this.login = login;
+    }
+
+    public Auction(String title, double price, int categoryID, String description, String login) {
         AuctionsCounter auctionsCounter = new AuctionsCounter();
         this.auctionID = auctionsCounter.readCurrentID();
         this.title = title;
