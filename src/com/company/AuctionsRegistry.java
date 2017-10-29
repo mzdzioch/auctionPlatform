@@ -28,7 +28,6 @@ public class AuctionsRegistry {
         }
         try {
             int auctionID;
-//            int counter;
             String title;
             double price;
             int categoryID;
@@ -41,7 +40,6 @@ public class AuctionsRegistry {
             while (line != null) {
                 auctionToArray = line.split("\\|");
                 auctionID = Integer.parseInt(auctionToArray[0]);
-//            int counter;
                 title = auctionToArray[1];
                 price = Double.parseDouble(auctionToArray[2]);
                 categoryID = Integer.parseInt(auctionToArray[3]);
@@ -93,13 +91,13 @@ public class AuctionsRegistry {
             fw = new FileWriter(fileAuctionsName, true);
             bw = new BufferedWriter(fw);
             bw.write(Integer.toString(auction.getAuctionID()) + "|"
-//                    + auction.getCounter() + "|"
                     + auction.getTitle() + "|"
                     + auction.getPrice() + "|"
                     + auction.getCategoryID() + "|"
                     + auction.getDescription() + "|"
                     + auction.getLogin()
                     + "\n");
+            listOfAuctions.put(auction.getAuctionID(), auction);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
