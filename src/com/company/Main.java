@@ -31,6 +31,8 @@ public class Main {
         Scanner input = new Scanner(System.in);
         UserRegistry userRegistry = new UserRegistry("users.txt");
 
+        CategoryBuilder categoryBuilder = new CategoryBuilder();
+
         while(state != State.EXIT) {
             switch(state) {
                 case START:
@@ -52,7 +54,7 @@ public class Main {
     }
 
     private static State printLoggedInScreen(Scanner input, UserRegistry userRegistry) {
-        System.out.println("[3] display auctions tree");
+        System.out.println("[3] display auctions category tree");
         System.out.println("[4] display your auctions");
         System.out.println("[5] create auction");
         System.out.println("[6] make a bid");
@@ -97,6 +99,7 @@ public class Main {
 
     private static void CreateAuction() {
         System.out.println("- - - - - - - - - - - ");
+        displayAuctionsCategoryTree();
         System.out.println("Create new auction");
         System.out.println("- - - - - - - - - - - ");
     }
@@ -109,7 +112,9 @@ public class Main {
 
     private static void displayAuctionsCategoryTree() {
         System.out.println("- - - - - - - - - - - ");
-        System.out.println("Display auctions tree");
+        System.out.println("Display auctions category tree");
+        CategoryView categoryView = new CategoryView();
+        categoryView.display();
         System.out.println("- - - - - - - - - - - ");
     }
 
