@@ -118,4 +118,12 @@ public class AuctionsRegistry {
     public Map<Integer, Auction> getListOfAuctions() {
         return listOfAuctions;
     }
+
+    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
+
+        Auction addedAuction = new Auction(title, price, categoryID, description, login);
+        writeAuction(addedAuction);
+        listOfAuctions.put(addedAuction.getAuctionID(), addedAuction);
+        return true;
+    }
 }
