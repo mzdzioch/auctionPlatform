@@ -12,12 +12,13 @@ public class Auction {
     String login;
 
 
-    public Auction(int auctionID, String title, double price, int categoryID, String description) {
+    public Auction(int auctionID, String title, double price, int categoryID, String description, String login) {
         this.auctionID = auctionID;
         this.title = title;
         this.price = price;
         this.categoryID = categoryID;
         this.description = description;
+        this.login = login;
 
         auctionID = count++;
     }
@@ -58,5 +59,13 @@ public class Auction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
