@@ -1,14 +1,15 @@
 package com.company;
 
 public class Auction {
-    
 
-    private int auctionID = 0;
+
+    private final int auctionID;
     static int count = 0;
     String title;
     double price;
     int categoryID;
     String description;
+    String login;
 
 
     public Auction(int auctionID, String title, double price, int categoryID, String description) {
@@ -24,10 +25,6 @@ public class Auction {
 
     public int getAuctionID() {
         return auctionID;
-    }
-
-    public void setAuctionID(int auctionID) {
-        this.auctionID = auctionID;
     }
 
 
