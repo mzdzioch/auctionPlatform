@@ -61,6 +61,8 @@ public class FileOperation {
         BufferedWriter bw = null;
         FileWriter fw = null;
 
+        createFile(filename);
+
         try {
             fw = new FileWriter(filename, true);
             bw = new BufferedWriter(fw);
