@@ -76,4 +76,10 @@ public class Auction {
     public void setLogin(String login) {
         this.login = login;
     }
+    @Override
+    public String toString() {
+        return "Auction:   " +
+                "id: " + auctionID + " \\| " + "title: " + title + " \\| " + "price: " + price + " \\| " + "categoryID: " + categoryID
+                + " \\| " + "description: " + description + " \\| ";
+    }
 }

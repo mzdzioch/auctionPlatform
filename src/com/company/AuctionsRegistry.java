@@ -127,7 +127,7 @@ public class AuctionsRegistry {
         return true;
     }
 
-    public void printUserAuctions(User user){
+    public void printUserAuctions(User user) {
         readAuctionsRegistryToMemory(fileAuctionsName);
         for (Auction auction : listOfAuctions.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
@@ -135,4 +135,19 @@ public class AuctionsRegistry {
             }
         }
     }
+
+    public boolean removeAuction(int auctionID) {
+        readAuctionsRegistryToMemory(fileAuctionsName);
+        for (Auction auction : listOfAuctions.values()) {
+            if (auction.getAuctionID() == auctionID) {
+                listOfAuctions.remove(auction);
+                //auction must be also removed from file here
+                System.out.println("Auction " + auctionID + "removed");
+            }
+            return true;
+        }
+        System.out.println("Incorrect auctionID");
+        return false;
+    }
+
 }
