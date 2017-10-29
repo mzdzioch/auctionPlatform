@@ -39,7 +39,7 @@ public class AuctionsRegistry {
             String[] auctionToArray;
 
             while (line != null) {
-                auctionToArray = line.split("|");
+                auctionToArray = line.split("\\|");
                 auctionID = Integer.parseInt(auctionToArray[0]);
 //            int counter;
                 title = auctionToArray[1];
@@ -66,6 +66,8 @@ public class AuctionsRegistry {
     private void createAuctionsFile(String fileName) {
 
         FileWriter fw = null;
+
+        System.out.println("Trying to create file " + fileName);
 
         try {
             fw = new FileWriter(fileName);

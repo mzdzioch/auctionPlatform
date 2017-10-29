@@ -15,6 +15,19 @@ public class Main {
         int categoryNumber = 10;
 
 
+        Auction auction0 = new Auction("Title", 20.00, 5, "Description", "romek");
+        Auction auction1 = new Auction("Title1", 20.00, 5, "Description1", "romek");
+
+        System.out.println("auction 0 - id " + auction0.getAuctionID());
+        System.out.println("auction 1 - id " + auction1.getAuctionID());
+
+
+        AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
+        auctionsRegistry.writeAuction(auction0);
+        auctionsRegistry.writeAuction(auction1);
+
+
+
         Scanner input = new Scanner(System.in);
         UserRegistry userRegistry = new UserRegistry("users.txt");
 
@@ -108,10 +121,14 @@ public class Main {
 
         try {
             User user = new User(login, password);
-            if (userRegistry.addUser(user)) {
-                System.out.println("User has been created!");
-            } else {
-                System.out.println("I couldn't create user.");
+            try {
+                if (userRegistry.addUser(user)) {
+                    System.out.println("User has been created!");
+                } else {
+                    System.out.println("I couldn't create user.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } catch (CredentialsToShortException e) {
             e.printStackTrace();

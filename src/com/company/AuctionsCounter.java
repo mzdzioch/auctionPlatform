@@ -9,6 +9,8 @@ public class AuctionsCounter {
         if (fileOperation.FileExists(AUCTIONS_COUNTER_FILE) ) {
             return fileOperation.readNumberFromFile(AUCTIONS_COUNTER_FILE);
         } else {
+            fileOperation.createNewFile(AUCTIONS_COUNTER_FILE);
+            writeCurrentID(0);
             return 0;
         }
     }
