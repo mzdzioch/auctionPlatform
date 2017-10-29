@@ -5,7 +5,6 @@ public class Category {
     private String name;
 
     public Category() {
-
     }
 
     public Category(int id, String name) {
@@ -19,5 +18,12 @@ public class Category {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Category: " +
+                "id: " + id + " " +
+                 name;
     }
 }

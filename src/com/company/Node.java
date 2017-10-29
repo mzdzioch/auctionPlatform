@@ -5,11 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Node<T> implements Iterable<T>{
+public class Node<T>{
 
     private List<Node<T>> children = new ArrayList<>();
     private Node<T> parent = null;
     private T item = null;
+
+    public Node() {
+    }
 
     public Node(T item) {
         this.item = item;
@@ -70,22 +73,7 @@ public class Node<T> implements Iterable<T>{
         //this.children.addAll(children);
     }
 
-    public void displayCategory(){
-        for (Node<T> child : children) {
-            System.out.println("-" + child.getClass().getName());
-            //child.forEach(t -> System.out.println(t.));
 
-            System.out.println("--" + child.getParent().getClass().getName());
-        }
-    }
 
-    @Override
-    public Iterator<T> iterator() {
-        return null;
-    }
 
-    @Override
-    public void forEach(Consumer<? super T> action) {
-
-    }
 }
