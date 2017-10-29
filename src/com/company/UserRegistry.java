@@ -1,8 +1,6 @@
 package com.company;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserRegistry {
 
@@ -12,12 +10,13 @@ public class UserRegistry {
         this.userStorage = new UserStorage(filename);
     }
 
-    public void addUser(User user) throws LoginExistException, IOException {
+    public boolean addUser(User user) throws IOException {
 
         if(existUser(user))
-            throw new LoginExistException("");
+            return false;
         else
             addToFile(user);
+            return true;
 
     }
 
