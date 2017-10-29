@@ -22,8 +22,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category: " +
-                "id: " + id + " " +
-                 name;
+        return "id: " + id + " " + name;
     }
 }

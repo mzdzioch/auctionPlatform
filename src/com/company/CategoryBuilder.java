@@ -5,7 +5,7 @@ import java.util.*;
 public class CategoryBuilder {
 
     private Node<Category> rootCategory;
-    private Map<Integer, Node<Category>> categoryMap;
+    private Map<Integer, Node<Category>> categoryMap = new HashMap<>();
 
     public CategoryBuilder() {
         this.rootCategory = createCategory();
@@ -56,14 +56,13 @@ public class CategoryBuilder {
     }
 
     public void addRootCategory(int id, String name) {
+
         if(rootCategory.isRoot())
             rootCategory.addChild(new Category(id, name));
         else {
-            System.out.println("Jestesmy ");
             rootCategory = new Node<Category>(null, new Category());
             rootCategory.addChild(new Category(id, name));
         }
-
     }
 
     public void addSubCategory(int parentId, int id, String name) {
@@ -72,22 +71,29 @@ public class CategoryBuilder {
     }
 
     private Node<Category> findParentById(Integer parentId){
-        categoryMap = mapOfCategory();
+        categoryMap = copyCategoryToMap();
 
         return categoryMap.get(parentId);
     }
 
-    private Map<Integer, Node<Category>> mapOfCategory() {
+    private Map<Integer, Node<Category>> copyCategoryToMap() {
 
         List<Node<Category>> nodeList = rootCategory.getChildren();
 
-        if(!nodeList.isEmpty()) {
-            for (Node<Category> categoryNode : nodeList) {
-                categoryMap.put(categoryNode.getItem().getId(), categoryNode);
-            }
-        }
+        writeToMap(nodeList);
 
         return categoryMap;
+    }
+
+    private void writeToMap(List<Node<Category>> lists) {
+
+        if(!lists.isEmpty()) {
+            for (Node<Category> categoryNode : lists) {
+                categoryMap.put(categoryNode.getItem().getId(), categoryNode);
+
+                writeToMap(categoryNode.getChildren());
+            }
+        }
     }
 
 

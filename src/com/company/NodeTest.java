@@ -2,16 +2,29 @@ package com.company;
 
 public class NodeTest{
     public static void main(String[] args) {
+
         CategoryView ct = new CategoryView();
-
-        ct.display();
-
-
         CategoryBuilder categoryBuilder = new CategoryBuilder();
 
-        categoryBuilder.addRootCategory(4, "Erotic");
+        Node<Category> root = categoryBuilder.getBuilder();
+
+        //ct.display(root.getChildren());
+
+        //categoryBuilder.addRootCategory(4, "Erotic");
+
+        root.addChild(new Category(4, "Erotic"));
+
+
+        ct.display(root.getChildren());
+
         System.out.println("---------------");
-        ct.display();
+
+        categoryBuilder.addRootCategory(5, "Ferniture");
+
+        Node<Category> newRoot = categoryBuilder.getBuilder();
+
+        ct.display(newRoot.getChildren());
+
     }
 
 
