@@ -22,7 +22,7 @@ public class Auction {
 
         auctionID = count++;
     }
-
+//
 
     public int getAuctionID() {
         return auctionID;
