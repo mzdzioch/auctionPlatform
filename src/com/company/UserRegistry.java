@@ -10,14 +10,12 @@ public class UserRegistry {
         this.userStorage = new UserStorage(filename);
     }
 
-    public boolean addUser(User user) throws IOException {
+    public void addUser(User user) throws IOException, LoginExistException {
 
         if(existUser(user))
-            return false;
+            throw new LoginExistException("Login exists.");
         else
             addToFile(user);
-            return true;
-
     }
 
     public boolean existUser(User user) throws IOException {

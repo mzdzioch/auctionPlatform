@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Main {
     public enum State {START, DURING_LOGIN, LOGGED_IN, DURING_REGISTRATION, EXIT}
     private static int  categoryNumber = 10;
+    private static User currentUser = null;
 
     public static void main(String[] args) {
         Node<Category> rootCategory = new Node<Category>(null, new Category());
@@ -25,7 +26,7 @@ public class Main {
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
         auctionsRegistry.writeAuction(auction0);
         auctionsRegistry.writeAuction(auction1);
-        System.out.println(auctionsRegistry.getListOfAuctions().get(14).categoryID);
+        //System.out.println(auctionsRegistry.getListOfAuctions().get(14).categoryID);
 
 
         Scanner input = new Scanner(System.in);
@@ -100,6 +101,7 @@ public class Main {
     private static void CreateAuction() {
         System.out.println("- - - - - - - - - - - ");
         displayAuctionsCategoryTree();
+        System.out.println("Auction will be created by " + currentUser.getLogin());
         System.out.println("Create new auction");
         System.out.println("- - - - - - - - - - - ");
     }
@@ -119,69 +121,52 @@ public class Main {
     }
 
     private static State printRegistrationScreen(Scanner input, UserRegistry userRegistry) {
-        System.out.println("create you login: ");
-        String login = input.next();
-        System.out.println("create your password: ");
-        String password = input.next();
-
         try {
-            User user = new User(login, password);
-            try {
-                if (userRegistry.addUser(user)) {
-                    System.out.println("User has been created!");
-                } else {
-                    System.out.println("I couldn't create user.");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (CredentialsToShortException e) {
-            e.printStackTrace();
-        } catch (LoginNullException e) {
-            e.printStackTrace();
-            //  } catch (LoginExistException e) {
-            e.printStackTrace();
-            //  } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return State.START;
+            System.out.println("create you login: ");
+            String login = input.next();
+            System.out.println("create your password: ");
+            String password = input.next();
 
+            User user = new User(login, password);
+
+            userRegistry.addUser(user);
+
+            System.out.println("User has been created!");
+            currentUser = user;
+            return State.LOGGED_IN;
+
+
+        } catch (IOException | CredentialsToShortException | LoginNullException | LoginExistException e) {
+            //e.printStackTrace();
+            System.out.println("No way...");
+            return State.START;
+        }
     }
 
     private static State printLoginScreen(Scanner input, UserRegistry userRegistry) {
-        System.out.println("enter you login: ");
-        String login = input.next();
-        System.out.println("enter your password: ");
-        String password = input.next();
-        User user = null;
         try {
+            System.out.println("enter you login: ");
+            String login = input.next();
+            System.out.println("enter your password: ");
+            String password = input.next();
+            User user = null;
             user = new User(login, password);
-        } catch (CredentialsToShortException e) {
-            e.printStackTrace();
-        } catch (LoginNullException e) {
-            e.printStackTrace();
-        }
-        try {
             if (userRegistry.existUser(user) == true) {
-                System.out.println("Welcome " + user.getLogin());
-                return State.LOGGED_IN;
+                if (userRegistry.isLoginAndPasswordCorrect(user)) {
+                    System.out.println("Welcome " + user.getLogin());
+                    currentUser = user;
+                    return State.LOGGED_IN;
+                }
             } else {
-                LoginExistException exception = new LoginExistException("login not found in database");
-                System.out.println(exception.getMessage());
-//                            System.out.println("type [2] if you want to create new account\n" +
-//                                    "type [0] if you want to exit\n");
-//                            firstLoginOption = input.nextInt();
-                return State.START;
+                    System.out.println("upsss... something went wrong");
+                    return State.START;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (CredentialsToShortException | LoginNullException | IOException e) {
+            //e.printStackTrace();
+            return State.START;
         }
         return State.START;
-
-/*        System.out.println("type [2] if you want to create new account\n" +
-                "type [0] if you want to exit\n");
-        firstLoginOption = input.nextInt();*/
-
     }
 
     private static State printStartScreen(Scanner input, UserRegistry userRegistry) {
