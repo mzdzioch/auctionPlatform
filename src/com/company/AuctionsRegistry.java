@@ -126,4 +126,13 @@ public class AuctionsRegistry {
         listOfAuctions.put(addedAuction.getAuctionID(), addedAuction);
         return true;
     }
+
+    public void printUserAuctions(User user){
+        readAuctionsRegistryToMemory(fileAuctionsName);
+        for (Auction auction : listOfAuctions.values()) {
+            if (auction.getLogin().equals(user.getLogin())) {
+                System.out.println(auction);
+            }
+        }
+    }
 }
