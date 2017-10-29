@@ -4,18 +4,18 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuctionRegistry {
+public class AuctionsRegistry {
 
     private Map<Integer, Auction> listOfAuctions = new HashMap<Integer, Auction>();
-    private String fileName;
+    private String fileAuctionsName;
 
-    public AuctionRegistry(String fileName) {
-        this.fileName = fileName;
-        File file = new File(fileName);
+    public AuctionsRegistry(String fileAuctionsName) {
+        this.fileAuctionsName = fileAuctionsName;
+        File file = new File(fileAuctionsName);
         if (!file.exists()) {
-            createAuctionsFile(fileName);
+            createAuctionsFile(fileAuctionsName);
         } else {
-            readAuctionsRegistryToMemory(fileName);
+            readAuctionsRegistryToMemory(fileAuctionsName);
         }
     }
 
@@ -45,7 +45,6 @@ public class AuctionRegistry {
                 title = auctionToArray[1];
                 price = Double.parseDouble(auctionToArray[2]);
                 categoryID = Integer.parseInt(auctionToArray[3]);
-                ;
                 description = auctionToArray[4];
                 login = auctionToArray[5];
                 Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
@@ -64,12 +63,12 @@ public class AuctionRegistry {
         }
     }
 
-    private void createAuctionsFile(String filename) {
+    private void createAuctionsFile(String fileName) {
 
         FileWriter fw = null;
 
         try {
-            fw = new FileWriter(filename);
+            fw = new FileWriter(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -89,9 +88,9 @@ public class AuctionRegistry {
         FileWriter fw = null;
 
         try {
-            fw = new FileWriter(fileName, true);
+            fw = new FileWriter(fileAuctionsName, true);
             bw = new BufferedWriter(fw);
-            bw.write(auction.getAuctionID() + "|"
+            bw.write(Integer.toString(auction.getAuctionID()) + "|"
 //                    + auction.getCounter() + "|"
                     + auction.getTitle() + "|"
                     + auction.getPrice() + "|"
@@ -114,5 +113,9 @@ public class AuctionRegistry {
             }
         }
 
+    }
+
+    public Map<Integer, Auction> getListOfAuctions() {
+        return listOfAuctions;
     }
 }
