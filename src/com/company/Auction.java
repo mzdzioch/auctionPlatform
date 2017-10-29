@@ -4,7 +4,6 @@ public class Auction {
 
 
     private final int auctionID;
-    static int count = 0;
     String title;
     double price;
     int categoryID;
@@ -13,14 +12,15 @@ public class Auction {
 
 
     public Auction(int auctionID, String title, double price, int categoryID, String description, String login) {
-        this.auctionID = auctionID;
+        AuctionsCounter auctionsCounter = new AuctionsCounter();
+        this.auctionID = auctionsCounter.readCurrentID();
         this.title = title;
         this.price = price;
         this.categoryID = categoryID;
         this.description = description;
         this.login = login;
 
-        auctionID = count++;
+        auctionsCounter.writeCurrentID(this.auctionID + 1);
     }
 //
 
