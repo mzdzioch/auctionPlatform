@@ -15,19 +15,28 @@ public class CategoryView {
         displayCategory(lists);
     }
 
+    int index = 0;
+
     public void display() {
+        index = 0;
         displayCategory(nodeList);
     }
 
     private void displayCategory(List<Node<Category>> lists) {
 
+        if(lists.isEmpty())
+            index--;
+
         if (!lists.isEmpty()) {
 
             for (Node<Category> categoryNode : lists) {
-
+                index++;
+                printTab(index);
                 System.out.println(categoryNode.getItem().toString());
                 displayCategory(categoryNode.getChildren());
             }
+
+            index--;
         }
     }
 
@@ -55,10 +64,19 @@ public class CategoryView {
 
         if (!lists.isEmpty()) {
             for (Node<Category> categoryNode : lists) {
-
                 categoryMap.put(categoryNode.getItem().getId(), categoryNode);
                 writeToMap(categoryNode.getChildren());
             }
         }
+    }
+
+    private void printTab(int number) {
+        String tab = "";
+        char x = '└';
+        for(int i = 1; i < number; i++){
+            tab += "|--";
+        }
+        tab += x + "--";
+        System.out.print(tab);
     }
 }

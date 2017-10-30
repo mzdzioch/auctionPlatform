@@ -13,17 +13,14 @@ public class NodeTest{
         //categoryBuilder.addRootCategory(4, "Erotic");
 
         root.addChild(new Category(4, "Erotic"));
+        categoryBuilder.addSubCategory("Motors","Bus");
+        categoryBuilder.addSubCategory("Electronics", "Video");
 
 
-        ct.display(root.getChildren());
+        //ct.display(root.getChildren());
 
-        System.out.println("---------------");
+        ct.display();
 
-        categoryBuilder.addRootCategory(5, "Ferniture");
-
-        Node<Category> newRoot = categoryBuilder.getBuilder();
-
-        ct.display(newRoot.getChildren());
 
     }
 

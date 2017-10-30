@@ -14,50 +14,35 @@ public class CategoryBuilder {
     private Node<Category> createCategory() {
 
         rootCategory = new Node<Category>(null, new Category());
-        Node<Category> electronicCategory = new Node<Category>(new Category(1, "Electronics"));
-        Node<Category> motorsCategory = new Node<Category>(new Category(2, "Motors"));
-        Node<Category> clothesCategory = new Node<Category>(new Category(3, "Clothes"));
+        rootCategory.addChild(new Category(1, "Electronics"));
+        rootCategory.addChild(new Category(2, "Motors"));
+        rootCategory.addChild(new Category(3, "Clothes"));
 
-        rootCategory.addChild(electronicCategory);
-        rootCategory.addChild(motorsCategory);
-        rootCategory.addChild(clothesCategory);
-
-        Node<Category> laptopsCategory = new Node<Category>(new Category(12, "Laptops"));
-        Node<Category> pcCategory = new Node<Category>(new Category(13, "PC"));
-        Node<Category> serversCategory = new Node<Category>(new Category(14, "Servers"));
-
-        electronicCategory.addChild(laptopsCategory);
-        electronicCategory.addChild(pcCategory);
-        electronicCategory.addChild(serversCategory);
-
-        Node<Category> partsCategory = new Node<Category>(new Category(21, "Parts"));
-        Node<Category> carsCategory = new Node<Category>(new Category(22, "Cars"));
-        Node<Category> vehiclesCategory = new Node<Category>(new Category(23, "Vehicles"));
-        Node<Category> trucksCategory = new Node<Category>(new Category(24, "Trucks"));
-
-        motorsCategory.addChild(partsCategory);
-        motorsCategory.addChild(carsCategory);
-        motorsCategory.addChild(vehiclesCategory);
-        motorsCategory.addChild(trucksCategory);
-
-        Node<Category> womenClothingCategory = new Node<Category>(new Category(31, "Women Clothing"));
-        Node<Category> menClothingCategory = new Node<Category>(new Category(32, "Men Clothing"));
-        Node<Category> shoesCategory = new Node<Category>(new Category(33, "Shoes"));
-
-        clothesCategory.addChild(womenClothingCategory);
-        clothesCategory.addChild(menClothingCategory);
-        clothesCategory.addChild(shoesCategory);
+        List<Node<Category>> rootList = rootCategory.getChildren();
+        //adding subcategories for Electronic category
+        rootList.get(0).addChild(new Category(11, "Laptops"));
+        rootList.get(0).addChild(new Category(12, "PC"));
+        rootList.get(0).addChild(new Category(13, "Clothes"));
+        //adding subcategories for Motors category
+        rootList.get(1).addChild(new Category(21, "Parts"));
+        rootList.get(1).addChild(new Category(22, "Cars"));
+        rootList.get(1).addChild(new Category(23, "Vehicles"));
+        rootList.get(1).addChild(new Category(24, "Trucks"));
+        //adding subcategories for Clothes category
+        rootList.get(2).addChild(new Category(31, "Women Clothing"));
+        rootList.get(2).addChild(new Category(32, "Men Clothing"));
+        rootList.get(2).addChild(new Category(33, "Shoes"));
 
         return rootCategory;
     }
 
-    public Node<Category> getBuilder(){
+    public Node<Category> getBuilder() {
         return rootCategory;
     }
 
     public void addRootCategory(int id, String name) {
 
-        if(rootCategory.isRoot())
+        if (rootCategory.isRoot())
             rootCategory.addChild(new Category(id, name));
         else {
             rootCategory = new Node<Category>(null, new Category());
@@ -70,10 +55,37 @@ public class CategoryBuilder {
         parent.addChild(new Node<Category>(new Category(id, name)));
     }
 
-    private Node<Category> findParentById(Integer parentId){
+    public boolean addSubCategory(String parentCategory, String name) {
+        categoryMap = copyCategoryToMap();
+
+        if (findParentByName(parentCategory)) {
+            for (Node<Category> categoryNode : categoryMap.values()) {
+                if (categoryNode.getItem().getName().equals(parentCategory)) {
+                    categoryNode.addChild(new Node<Category>(new Category(nextCategoryId(categoryNode), name)));
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Node<Category> findParentById(Integer parentId) {
         categoryMap = copyCategoryToMap();
 
         return categoryMap.get(parentId);
+    }
+
+    private boolean findParentByName(String parentName) {
+
+        categoryMap = copyCategoryToMap();
+
+        for (Node<Category> categoryNode : categoryMap.values()) {
+            if (categoryNode.getItem().getName().equals(parentName))
+                return true;
+        }
+
+        return false;
     }
 
     private Map<Integer, Node<Category>> copyCategoryToMap() {
@@ -87,7 +99,7 @@ public class CategoryBuilder {
 
     private void writeToMap(List<Node<Category>> lists) {
 
-        if(!lists.isEmpty()) {
+        if (!lists.isEmpty()) {
             for (Node<Category> categoryNode : lists) {
                 categoryMap.put(categoryNode.getItem().getId(), categoryNode);
 
@@ -96,6 +108,13 @@ public class CategoryBuilder {
         }
     }
 
+    private int nextCategoryId(Node<Category> parentNode) {
+        return parentNode.getChildren().get(returnLastChildOfParent(parentNode)).getItem().getId() + 1;
+    }
+
+    private int returnLastChildOfParent(Node<Category> parentNode) {
+        return parentNode.getChildren().size()-1;
+    }
 
 
 }
