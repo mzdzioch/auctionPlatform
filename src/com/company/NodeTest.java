@@ -15,11 +15,13 @@ public class NodeTest{
         root.addChild(new Category(4, "Erotic"));
         categoryBuilder.addSubCategory("Motors","Bus");
         categoryBuilder.addSubCategory("Electronics", "Video");
+        categoryBuilder.addSubCategory("Electronics", "USB");
 
 
-        //ct.display(root.getChildren());
 
-        ct.display();
+        ct.display(root.getChildren());
+
+        //ct.display();
 
 
     }

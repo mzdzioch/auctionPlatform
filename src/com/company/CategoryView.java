@@ -6,19 +6,20 @@ import java.util.Map;
 
 public class CategoryView {
 
-    private Node<Category> node = (new CategoryBuilder()).getBuilder();
-    private List<Node<Category>> nodeList = node.getChildren();
+    private Node<Category> node;
+    private List<Node<Category>> nodeList;
     private Map<Integer, Node<Category>> categoryMap = new HashMap<>();
+    private int index = 0;
 
 
     public void display(List<Node<Category>> lists) {
         displayCategory(lists);
     }
 
-    int index = 0;
 
     public void display() {
         index = 0;
+        nodeList = getBuilder().getChildren();
         displayCategory(nodeList);
     }
 
@@ -54,7 +55,7 @@ public class CategoryView {
 
     private Map<Integer, Node<Category>> copyCategoryToMap() {
 
-        List<Node<Category>> nodeList = node.getChildren();
+        List<Node<Category>> nodeList = getBuilder().getChildren();
         writeToMap(nodeList);
 
         return categoryMap;
@@ -78,5 +79,9 @@ public class CategoryView {
         }
         tab += x + "--";
         System.out.print(tab);
+    }
+
+    private Node<Category> getBuilder(){
+        return (new CategoryBuilder()).getBuilder();
     }
 }
