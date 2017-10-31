@@ -1,16 +1,14 @@
 package com.company;
 
-import org.junit.Before;
-import org.junit.Rule;
+import com.company.model.Category;
+import com.company.model.Node;
+import com.company.service.CategoryBuilder;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 
 public class CategoryBuilderTest {

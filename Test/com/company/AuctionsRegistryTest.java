@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.model.Auction;
+import com.company.repository.AuctionsRegistry;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,8 +28,8 @@ public class AuctionsRegistryTest {
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry(fileAuctionsName);
         auctionsRegistry.writeAuction(auction0);
         auctionsRegistry.writeAuction(auction1);
-        assertTrue(auctionsRegistry.getListOfAuctions().get(0).categoryID == 10);
-        assertTrue(auctionsRegistry.getListOfAuctions().get(1).categoryID == 10);
+        assertTrue(auctionsRegistry.getListOfAuctions().get(0).getCategoryID() == 10);
+        assertTrue(auctionsRegistry.getListOfAuctions().get(1).getCategoryID() == 10);
     }
 
 

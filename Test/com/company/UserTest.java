@@ -1,8 +1,8 @@
 package test;
 
-import com.company.CredentialsToShortException;
-import com.company.LoginNullException;
-import com.company.User;
+import com.company.exceptions.CredentialsToShortException;
+import com.company.exceptions.LoginNullException;
+import com.company.model.User;
 import org.junit.Test;
 
 

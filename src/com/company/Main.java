@@ -1,5 +1,17 @@
 package com.company;
 
+import com.company.exceptions.CredentialsToShortException;
+import com.company.exceptions.LoginExistException;
+import com.company.exceptions.LoginNullException;
+import com.company.model.Auction;
+import com.company.model.Category;
+import com.company.model.Node;
+import com.company.model.User;
+import com.company.repository.AuctionsRegistry;
+import com.company.service.CategoryBuilder;
+import com.company.service.CategoryView;
+import com.company.service.UserRegistry;
+
 import java.io.IOException;
 import java.util.Scanner;
 

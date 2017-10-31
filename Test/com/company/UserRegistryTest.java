@@ -1,15 +1,12 @@
 package com.company;
 
-import org.junit.Before;
-import org.junit.Rule;
+import com.company.exceptions.LoginExistException;
+import com.company.model.User;
+import com.company.service.UserRegistry;
 import org.junit.Test;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import static org.junit.Assert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 public class UserRegistryTest {
 

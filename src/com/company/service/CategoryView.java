@@ -1,4 +1,8 @@
-package com.company;
+package com.company.service;
+
+import com.company.model.Category;
+import com.company.model.Node;
+import com.company.service.CategoryBuilder;
 
 import java.util.HashMap;
 import java.util.List;

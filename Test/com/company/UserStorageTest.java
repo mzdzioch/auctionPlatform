@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.model.User;
+import com.company.repository.UserStorage;
 import org.junit.Before;
 import org.junit.Test;
 

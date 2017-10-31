@@ -1,4 +1,6 @@
-package com.company;
+package com.company.repository;
+
+import com.company.repository.FileOperation;
 
 public class AuctionsCounter {
     private static final String AUCTIONS_COUNTER_FILE = "acntr.txt";

@@ -1,4 +1,7 @@
-package com.company;
+package com.company.model;
+
+import com.company.exceptions.CredentialsToShortException;
+import com.company.exceptions.LoginNullException;
 
 public class User {
 

@@ -1,4 +1,7 @@
-package com.company;
+package com.company.repository;
+
+import com.company.model.Auction;
+import com.company.model.User;
 
 import java.io.*;
 import java.util.HashMap;

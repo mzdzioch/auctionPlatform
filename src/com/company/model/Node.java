@@ -1,9 +1,7 @@
-package com.company;
+package com.company.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Node<T>{
 

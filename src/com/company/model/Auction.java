@@ -1,4 +1,6 @@
-package com.company;
+package com.company.model;
+
+import com.company.repository.AuctionsCounter;
 
 public class Auction {
 

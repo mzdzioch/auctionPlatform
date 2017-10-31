@@ -1,4 +1,8 @@
-package com.company;
+package com.company.service;
+
+import com.company.exceptions.LoginExistException;
+import com.company.model.User;
+import com.company.repository.UserStorage;
 
 import java.io.IOException;
 
