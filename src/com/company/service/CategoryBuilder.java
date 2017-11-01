@@ -8,6 +8,7 @@ import java.util.*;
 public class CategoryBuilder {
 
     private Node<Category> rootCategory;
+    private List<Integer> idList;
     private Map<Integer, Node<Category>> categoryMap = new HashMap<>();
 
     public CategoryBuilder() {
@@ -53,10 +54,10 @@ public class CategoryBuilder {
         }
     }
 
-    public void addSubCategory(int parentId, int id, String name) {
-        Node<Category> parent = findParentById(parentId);
-        parent.addChild(new Node<Category>(new Category(id, name)));
-    }
+//    public void addSubCategory(int parentId, int id, String name) {
+//        Node<Category> parent = findParentById(parentId);
+//        parent.addChild(new Node<Category>(new Category(id, name)));
+//    }
 
     public boolean addSubCategory(String parentCategory, String name) {
         categoryMap = copyCategoryToMap();
@@ -73,10 +74,35 @@ public class CategoryBuilder {
         return false;
     }
 
+    public List<Integer> getCategoryAndSubcategoriesListId(int categoryId){
+
+        if(isParentExist(categoryId)){
+            Node<Category> nodeTemp = findParentById(categoryId);
+
+            idList = new ArrayList<>();
+            idList.add(nodeTemp.getItem().getId());
+
+            for (Node<Category> categoryNode : nodeTemp.getChildren()) {
+                idList.add(categoryNode.getItem().getId());
+            }
+        }
+
+        return idList;
+    }
+
     private Node<Category> findParentById(Integer parentId) {
         categoryMap = copyCategoryToMap();
 
         return categoryMap.get(parentId);
+    }
+
+    private boolean isParentExist(Integer parentId) {
+        categoryMap = copyCategoryToMap();
+
+        if(categoryMap.get(parentId) == null)
+            return false;
+        else
+            return true;
     }
 
     private boolean findParentByName(String parentName) {

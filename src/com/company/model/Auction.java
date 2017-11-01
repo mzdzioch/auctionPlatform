@@ -23,16 +23,16 @@ public class Auction {
 
     public Auction(String title, double price, int categoryID, String description, String login) {
         AuctionsCounter auctionsCounter = new AuctionsCounter();
-        this.auctionID = auctionsCounter.readCurrentID();
+        this.auctionID = auctionsCounter.readCurrentID()+1;
         this.title = title;
         this.price = price;
         this.categoryID = categoryID;
         this.description = description;
         this.login = login;
 
-        auctionsCounter.writeCurrentID(this.auctionID + 1);
+        auctionsCounter.writeCurrentID(this.auctionID);
     }
-//
+
 
     public int getAuctionID() {
         return auctionID;
@@ -80,8 +80,12 @@ public class Auction {
     }
     @Override
     public String toString() {
-        return "Auction:   " +
-                "id: " + auctionID + " \\| " + "title: " + title + " \\| " + "price: " + price + " \\| " + "categoryID: " + categoryID
-                + " \\| " + "description: " + description + " \\| ";
+        return "id: " + auctionID + " | " + title + " | " + price + " | " + categoryID + " | " + description ;
     }
+
+//    public String toString() {
+//        return "Auction:   " +
+//                "id: " + auctionID + " \\| " + "title: " + title + " \\| " + "price: " + price + " \\| " + "categoryID: " + categoryID
+//                + " \\| " + "description: " + description + " \\| ";
+//    }
 }

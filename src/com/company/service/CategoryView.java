@@ -45,36 +45,6 @@ public class CategoryView {
         }
     }
 
-    public void addSubCategory(int parentId, int id, String name) {
-        Node<Category> parent = findParentById(parentId);
-        parent.addChild(new Node<Category>(new Category(id, name)));
-    }
-
-    private Node<Category> findParentById(Integer parentId) {
-
-        categoryMap = copyCategoryToMap();
-
-        return categoryMap.get(parentId);
-    }
-
-    private Map<Integer, Node<Category>> copyCategoryToMap() {
-
-        List<Node<Category>> nodeList = getBuilder().getChildren();
-        writeToMap(nodeList);
-
-        return categoryMap;
-    }
-
-    private void writeToMap(List<Node<Category>> lists) {
-
-        if (!lists.isEmpty()) {
-            for (Node<Category> categoryNode : lists) {
-                categoryMap.put(categoryNode.getItem().getId(), categoryNode);
-                writeToMap(categoryNode.getChildren());
-            }
-        }
-    }
-
     private void printTab(int number) {
         String tab = "";
         char x = '└';
