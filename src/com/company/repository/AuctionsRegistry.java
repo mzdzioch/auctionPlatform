@@ -29,15 +29,19 @@ public class AuctionsRegistry {
 
     public void writeAuction(Auction auction) {
         FileOperation fileOperation = new FileOperation();
-        String auctionToString = Integer.toString(auction.getAuctionID()) + "|"
+        String auctionToString = auctionToString(auction);
+        fileOperation.addLineToFile(fileAuctionsName, auctionToString);
+        idToAuctionMap.put(auction.getAuctionID(), auction);
+    }
+
+    private String auctionToString(Auction auction) {
+        return Integer.toString(auction.getAuctionID()) + "|"
                 + auction.getTitle() + "|"
                 + auction.getPrice() + "|"
                 + auction.getCategoryID() + "|"
                 + auction.getDescription() + "|"
                 + auction.getLogin()
                 + "\n";
-        fileOperation.addLineToFile(fileAuctionsName, auctionToString);
-        idToAuctionMap.put(auction.getAuctionID(), auction);
     }
 
     public Map<Integer, Auction> getAllAuctions() {
