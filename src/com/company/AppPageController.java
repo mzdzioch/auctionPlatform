@@ -4,6 +4,7 @@ import com.company.model.Auction;
 import com.company.model.Category;
 import com.company.model.Node;
 import com.company.service.CategoryBuilder;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -29,6 +31,9 @@ public class AppPageController implements Initializable{
     TableColumn<Auction, Double> priceColumn = new TableColumn<>("Price");
     TableColumn<Auction, Integer> categoryIdColumn = new TableColumn<>("CategoryID");
     TableColumn<Auction, String> ownerColumn = new TableColumn<>("Login");
+
+    @FXML
+    BorderPane mainLayout;
 
     @FXML
     Label welcomeLabel;
@@ -96,6 +101,8 @@ public class AppPageController implements Initializable{
 
         addButton.setOnAction(e -> addButtonClicked());
         deleteButton.setOnAction(e -> deleteButtonClicked());
+        quitButton.setOnAction(e -> closeApplication());
+
     }
 
 
@@ -122,6 +129,17 @@ public class AppPageController implements Initializable{
         priceInput.clear();
         categoryIdInput.clear();
     }
+
+    private void closeApplication() {
+        Boolean answer = ConfirmationBox.display("Sure?", "Sure you want to close?");
+            if (answer) {
+                System.out.println("File is saved");
+                //Stage stage = (Stage)mainLayout.getScene().getWindow();
+                //stage.close();
+                Platform.exit();
+            }
+    }
+
 
 
     public ObservableList<Auction> getAuctions() {
