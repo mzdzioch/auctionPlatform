@@ -87,7 +87,7 @@ public class AuctionsRegistry {
         String description;
         String login;
 
-        ArrayList<String> auctionsFromFile = new ArrayList<>();
+        List<String> auctionsFromFile = new ArrayList<>();
         try {
             System.out.println(fileOperation.readFile(fileAuctionsName));
             auctionsFromFile = fileOperation.readFile(fileAuctionsName);
