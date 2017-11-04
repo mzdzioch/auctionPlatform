@@ -83,9 +83,7 @@ public class AuctionsRegistry {
             System.out.println(auctionsFromFile);
 
             for (String auctionLine : auctionsFromFile) {
-
                 Auction auction = parseAuction(auctionLine);
-
                 idToAuctionMap.put(auction.getAuctionID(), auction);
             }
         } catch (IOException e) {
