@@ -1,19 +1,19 @@
 package com.company.model;
 
 public class Category {
-    private int id;
+    private int idCategory;
     private String name;
 
     public Category() {
     }
 
-    public Category(int id, String name) {
-        this.id = id;
+    public Category(int idCategory, String name) {
+        this.idCategory = idCategory;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getIdCategory() {
+        return idCategory;
     }
 
     public String getName() {
@@ -22,6 +22,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return name + "(id: " + id + ")";
+        return name + "(id: " + idCategory +")";
     }
 }

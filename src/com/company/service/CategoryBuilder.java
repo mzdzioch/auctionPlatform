@@ -54,11 +54,6 @@ public class CategoryBuilder {
         }
     }
 
-//    public void addSubCategory(int parentId, int id, String name) {
-//        Node<Category> parent = findParentById(parentId);
-//        parent.addChild(new Node<Category>(new Category(id, name)));
-//    }
-
     public boolean addSubCategory(String parentCategory, String name) {
         categoryMap = copyCategoryToMap();
 
@@ -80,10 +75,10 @@ public class CategoryBuilder {
             Node<Category> nodeTemp = findParentById(categoryId);
 
             idList = new ArrayList<>();
-            idList.add(nodeTemp.getItem().getId());
+            idList.add(nodeTemp.getItem().getIdCategory());
 
             for (Node<Category> categoryNode : nodeTemp.getChildren()) {
-                idList.add(categoryNode.getItem().getId());
+                idList.add(categoryNode.getItem().getIdCategory());
             }
         }
 
@@ -130,7 +125,7 @@ public class CategoryBuilder {
 
         if (!lists.isEmpty()) {
             for (Node<Category> categoryNode : lists) {
-                categoryMap.put(categoryNode.getItem().getId(), categoryNode);
+                categoryMap.put(categoryNode.getItem().getIdCategory(), categoryNode);
 
                 writeToMap(categoryNode.getChildren());
             }
@@ -138,7 +133,7 @@ public class CategoryBuilder {
     }
 
     private int nextCategoryId(Node<Category> parentNode) {
-        return parentNode.getChildren().get(returnLastChildOfParent(parentNode)).getItem().getId() + 1;
+        return parentNode.getChildren().get(returnLastChildOfParent(parentNode)).getItem().getIdCategory() + 1;
     }
 
     private int returnLastChildOfParent(Node<Category> parentNode) {

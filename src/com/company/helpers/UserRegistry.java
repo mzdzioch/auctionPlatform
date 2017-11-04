@@ -1,14 +1,16 @@
-package com.company.repository;
+package com.company.helpers;
 
+import com.company.exceptions.LoginExistException;
 import com.company.model.User;
 
 import java.io.*;
 
-public class UserStorage {
+public class UserRegistry {
+
     private String filename;
+    UserRegistry userRegistry;
 
-
-    public UserStorage(String filename) {
+    public UserRegistry(String filename) {
         this.filename = filename;
         File file = new File(filename);
         if (!file.exists()) {
@@ -17,7 +19,25 @@ public class UserStorage {
     }
 
 
+    public void addUser(User user) throws IOException, LoginExistException {
 
+        if (existUser(user))
+            throw new LoginExistException("Login exists.");
+        else
+            addToFile(user);
+    }
+
+    public boolean existUser(User user) throws IOException {
+
+        return checkIfUserExist(user);
+
+    }
+
+    private void addToFile(User user) {
+
+        writeUser(user);
+
+    }
 
     private void createFile(String filename) {
         FileWriter fw = null;
@@ -28,7 +48,7 @@ public class UserStorage {
             e.printStackTrace();
         } finally {
             try {
-                if (fw !=null)
+                if (fw != null)
                     fw.close();
 
             } catch (IOException ex) {
@@ -50,10 +70,10 @@ public class UserStorage {
             e.printStackTrace();
         } finally {
             try {
-                if (bw !=null)
+                if (bw != null)
                     bw.close();
 
-                if (fw !=null)
+                if (fw != null)
                     fw.close();
 
             } catch (IOException ex) {
@@ -72,7 +92,7 @@ public class UserStorage {
             while (line != null) {
                 userToArray = line.split(" ");
 
-                if (userToArray[0].equals(user.getLogin())){
+                if (userToArray[0].equals(user.getLogin())) {
                     return userToArray;
                 }
                 line = br.readLine();
@@ -87,11 +107,11 @@ public class UserStorage {
 
     public boolean checkIfUserExist(User user) throws IOException {
 
-            String[] userToArray = findUser(user);
-            if (userToArray != null) {
-            if (userToArray[0].equals(user.getLogin())){
-                    return true;
-                }
+        String[] userToArray = findUser(user);
+        if (userToArray != null) {
+            if (userToArray[0].equals(user.getLogin())) {
+                return true;
+            }
         }
         return false;
     }
@@ -100,7 +120,7 @@ public class UserStorage {
 
 
         String[] userToArray = findUser(user);
-        if (userToArray[0].equals(user.getLogin()) && userToArray[1].equals(user.getPassword())){
+        if (userToArray[0].equals(user.getLogin()) && userToArray[1].equals(user.getPassword())) {
             return true;
         }
 
@@ -108,16 +128,4 @@ public class UserStorage {
     }
 
 
-    /*    UserStorage databaseController = new UserStorage();
-    User user = new User("Donald", "Trump1234");
-    User user2 = new User("Donald", "Tusk1234");
-    User user3 = new User("Misio", "1234");
-
-        databaseController.createFile();
-
-        databaseController.writeUser(user);
-        databaseController.writeUser(user2);
-        databaseController.writeUser(user3);
-
-        System.out.println(databaseController.checkIfUserExist(user3));*/
 }

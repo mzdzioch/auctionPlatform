@@ -1,42 +1,45 @@
-package com.company.service;
+package com.company.helpers;
 
-import com.company.exceptions.LoginExistException;
-import com.company.model.User;
+public class AuctionsCounter {
+    private static final String AUCTIONS_COUNTER_FILE = "acntr.txt";
+    FileOperation fileOperation = new FileOperation();
 
-import java.io.*;
 
-public class UserRegistry {
+    public Integer readCurrentID() {
+        if (fileOperation.FileExists(AUCTIONS_COUNTER_FILE) ) {
+            return fileOperation.readNumberFromFile(AUCTIONS_COUNTER_FILE);
+        } else {
+            fileOperation.createNewFile(AUCTIONS_COUNTER_FILE);
+            writeCurrentID(0);
+            return 0;
+        }
+    }
 
+    public boolean writeCurrentID(int currentID) {
+        if ( fileOperation.FileExists(AUCTIONS_COUNTER_FILE) ) {
+            String line = Integer.toString(currentID);
+            fileOperation.writeLineToFile(AUCTIONS_COUNTER_FILE,Integer.toString(currentID));
+            return true;
+        } else return false;
+    }
+}
+
+
+/*
+package com.company;
+
+        import java.io.*;
+
+public class UserStorage {
     private String filename;
-    UserRegistry userRegistry;
 
-    public UserRegistry(String filename) {
+
+    public UserStorage(String filename) {
         this.filename = filename;
         File file = new File(filename);
         if (!file.exists()) {
             createFile(filename);
         }
-    }
-
-
-    public void addUser(User user) throws IOException, LoginExistException {
-
-        if (existUser(user))
-            throw new LoginExistException("Login exists.");
-        else
-            addToFile(user);
-    }
-
-    public boolean existUser(User user) throws IOException {
-
-        return checkIfUserExist(user);
-
-    }
-
-    private void addToFile(User user) {
-
-        writeUser(user);
-
     }
 
     private void createFile(String filename) {
@@ -48,7 +51,7 @@ public class UserRegistry {
             e.printStackTrace();
         } finally {
             try {
-                if (fw != null)
+                if (fw !=null)
                     fw.close();
 
             } catch (IOException ex) {
@@ -56,7 +59,6 @@ public class UserRegistry {
             }
         }
     }
-
 
     public void writeUser(User newUser) {
         BufferedWriter bw = null;
@@ -70,10 +72,10 @@ public class UserRegistry {
             e.printStackTrace();
         } finally {
             try {
-                if (bw != null)
+                if (bw !=null)
                     bw.close();
 
-                if (fw != null)
+                if (fw !=null)
                     fw.close();
 
             } catch (IOException ex) {
@@ -92,7 +94,7 @@ public class UserRegistry {
             while (line != null) {
                 userToArray = line.split(" ");
 
-                if (userToArray[0].equals(user.getLogin())) {
+                if (userToArray[0].equals(user.getLogin())){
                     return userToArray;
                 }
                 line = br.readLine();
@@ -109,7 +111,7 @@ public class UserRegistry {
 
         String[] userToArray = findUser(user);
         if (userToArray != null) {
-            if (userToArray[0].equals(user.getLogin())) {
+            if (userToArray[0].equals(user.getLogin())){
                 return true;
             }
         }
@@ -118,14 +120,13 @@ public class UserRegistry {
 
     public boolean isLoginAndPasswordCorrect(User user) throws IOException {
 
-
         String[] userToArray = findUser(user);
-        if (userToArray[0].equals(user.getLogin()) && userToArray[1].equals(user.getPassword())) {
+        if (userToArray[0].equals(user.getLogin()) && userToArray[1].equals(user.getPassword())){
             return true;
         }
 
         return false;
     }
 
-
 }
+*/
