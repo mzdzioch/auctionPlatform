@@ -11,8 +11,7 @@ import java.util.Map;
 public class AuctionService {
 
     public AuctionsRegistry auctionsRegistry;
-    private CategoryBuilder categoryBuilder;
-    private List<Integer> categoriesList;
+
 
     public AuctionService(AuctionsRegistry auctionsRegistry) {
         this.auctionsRegistry = auctionsRegistry;
@@ -35,21 +34,10 @@ public class AuctionService {
         return auctionsRegistry.removeAuction(auctionId);
     }
 
-    public void printAuctions(User user){
-        auctionsRegistry.printUserAuctions(user);
-    }
+//    public void printAuctions(User user){
+//        //auctionsRegistry.printUserAuctions(user);
+//    }
 
-    public void printAllAuctionsUnderCategory(int categoryId){
-        categoryBuilder = new CategoryBuilder();
-        categoriesList = new ArrayList<>();
 
-        categoriesList = categoryBuilder.getCategoryAndSubcategoriesListId(categoryId);
-
-        for (Integer subCategory : categoriesList) {
-            //System.out.println("Auctions of Category: " + subCategory);
-            auctionsRegistry.printAllAuctionsUnderCategory(subCategory);
-        }
-
-    }
 
 }

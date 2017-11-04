@@ -4,7 +4,9 @@ import com.company.model.Auction;
 import com.company.model.User;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AuctionsRegistry {
@@ -110,22 +112,31 @@ public class AuctionsRegistry {
         return true;
     }
 
-    public void printUserAuctions(User user) {
+    public List<Auction> getUserAuctions(User user) {
+        List<Auction> listUserAuctions = new ArrayList<>();
         readAuctionsRegistryToMemory();
         for (Auction auction : auctionsHashMap.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
-                System.out.println(auction.toString());
+                listUserAuctions.add(auction);
             }
         }
+
+        return listUserAuctions;
     }
 
-    public void printAllAuctionsUnderCategory(int categoryID) {
+    public List<Auction> getAllAuctionsUnderCategory(int idCategory) {
+        List<Auction> listAuctions = new ArrayList<>();
+        readAuctionsRegistryToMemory();
         for (Auction auction : auctionsHashMap.values()) {
-            if (auction.getCategoryID() == categoryID) {
-                System.out.println(auction.toString());
+            if (auction.getCategoryID() == idCategory) {
+                listAuctions.add(auction);
             }
         }
+
+        return listAuctions;
     }
+
+
 
     public boolean removeAuction(int auctionID) {
         readAuctionsRegistryToMemory();
