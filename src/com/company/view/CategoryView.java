@@ -1,14 +1,30 @@
-package com.company.service;
+package com.company.view;
 
 import com.company.model.Category;
 import com.company.model.Node;
-import com.company.service.CategoryBuilder;
+import com.company.helpers.CategoryBuilder;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CategoryView {
+
+    private int index;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int increaseIndex(int index){
+        return index++;
+    }
+
+    public int decreaseIndex(){
+        return index--;
+    }
 
     public void display() {
         int index = 0;
@@ -18,13 +34,15 @@ public class CategoryView {
 
     private void displayCategory(List<Node<Category>> lists, int index) {
 
-        if(lists.isEmpty())
+        if(lists.isEmpty()) {
             index--;
+        }
 
         if (!lists.isEmpty()) {
+            index++;
 
             for (Node<Category> categoryNode : lists) {
-                index++;
+
                 printTab(index);
                 System.out.println(categoryNode.getItem().toString());
                 displayCategory(categoryNode.getChildren(), index);

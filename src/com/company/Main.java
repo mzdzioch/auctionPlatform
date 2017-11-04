@@ -9,8 +9,8 @@ import com.company.model.Node;
 import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 import com.company.service.AuctionService;
-import com.company.service.CategoryBuilder;
-import com.company.service.CategoryView;
+import com.company.helpers.CategoryBuilder;
+import com.company.view.CategoryView;
 import com.company.service.UserRegistry;
 import com.company.view.AuctionView;
 

@@ -6,7 +6,7 @@ import com.company.exceptions.LoginNullException;
 import com.company.model.Category;
 import com.company.model.Node;
 import com.company.model.User;
-import com.company.service.CategoryBuilder;
+import com.company.helpers.CategoryBuilder;
 import com.company.service.UserRegistry;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

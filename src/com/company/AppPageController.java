@@ -3,7 +3,7 @@ package com.company;
 import com.company.model.Auction;
 import com.company.model.Category;
 import com.company.model.Node;
-import com.company.service.CategoryBuilder;
+import com.company.helpers.CategoryBuilder;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

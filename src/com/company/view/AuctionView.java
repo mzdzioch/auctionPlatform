@@ -3,7 +3,7 @@ package com.company.view;
 import com.company.model.Auction;
 import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
-import com.company.service.CategoryBuilder;
+import com.company.helpers.CategoryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

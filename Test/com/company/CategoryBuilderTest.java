@@ -2,7 +2,7 @@ package com.company;
 
 import com.company.model.Category;
 import com.company.model.Node;
-import com.company.service.CategoryBuilder;
+import com.company.helpers.CategoryBuilder;
 import org.junit.Test;
 
 import java.util.List;
