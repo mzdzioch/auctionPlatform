@@ -82,16 +82,20 @@ public class AuctionsRegistry {
             List<String> auctionsFromFile = new FileOperation().readFile(fileAuctionsName);
             System.out.println(auctionsFromFile);
 
-            for (String s : auctionsFromFile) {
-                String[] auctionToArray = s.split("\\|");
+            for (String auctionLine : auctionsFromFile) {
+
+                String[] auctionToArray = auctionLine.split("\\|");
+
                 int auctionID = Integer.parseInt(auctionToArray[0]);
                 String title = auctionToArray[1];
                 double price = Double.parseDouble(auctionToArray[2]);
                 int categoryID = Integer.parseInt(auctionToArray[3]);
                 String description = auctionToArray[4];
                 String login = auctionToArray[5];
+
                 Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
-                idToAuctionMap.put(auctionID, auction);
+
+                idToAuctionMap.put(auction.getAuctionID(), auction);
             }
         } catch (IOException e) {
             e.printStackTrace();
