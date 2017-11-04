@@ -105,21 +105,8 @@ public class AuctionsRegistry {
     }
 
     private void createAuctionsFile(String fileName) {
-        FileWriter fw = null;
         System.out.println("Trying to create file " + fileName);
-
-        try {
-            fw = new FileWriter(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fw != null)
-                    fw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+        new FileOperation().createNewFile(fileName);
     }
 
     private String auctionToString(Auction auction) {
