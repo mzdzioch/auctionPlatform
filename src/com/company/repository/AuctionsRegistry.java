@@ -89,8 +89,8 @@ public class AuctionsRegistry {
 
         List<String> auctionsFromFile = new ArrayList<>();
         try {
-            System.out.println(fileOperation.readFile(fileAuctionsName));
             auctionsFromFile = fileOperation.readFile(fileAuctionsName);
+            System.out.println(auctionsFromFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
