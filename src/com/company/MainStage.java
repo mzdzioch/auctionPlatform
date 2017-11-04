@@ -3,67 +3,155 @@ package com.company;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginExistException;
 import com.company.exceptions.LoginNullException;
-import com.company.model.Auction;
 import com.company.model.Category;
 import com.company.model.Node;
 import com.company.model.User;
-import com.company.repository.AuctionsRegistry;
 import com.company.service.CategoryBuilder;
 import com.company.service.CategoryView;
 import com.company.service.UserRegistry;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Main {
-    public enum State {START, DURING_LOGIN, LOGGED_IN, DURING_REGISTRATION, EXIT}
-    private static int  categoryNumber = 10;
+public class MainStage extends Application {
+    Scene loginScene, appScene;
     private static User currentUser = null;
+    String userLoginForMessage = "";
 
-    public static void main(String[] args) {
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // setting environment - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        int categoryNumber = 10;
+        UserRegistry userRegistry = new UserRegistry("users.txt");
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
-        State state = State.START;
-        int categoryNumber = 10;
-
-
-        Auction auction0 = new Auction("Title", 20.00, 5, "Description", "romek");
-        Auction auction1 = new Auction("Title1", 20.00, 5, "Description1", "romek");
-
-        System.out.println("auction 0 - id " + auction0.getAuctionID());
-        System.out.println("auction 1 - id " + auction1.getAuctionID());
-
-
-        AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
-        auctionsRegistry.writeAuction(auction0);
-        auctionsRegistry.writeAuction(auction1);
-        //System.out.println(auctionsRegistry.getListOfAuctions().get(14).categoryID);
-
-
-        Scanner input = new Scanner(System.in);
-        UserRegistry userRegistry = new UserRegistry("users.txt");
-
         CategoryBuilder categoryBuilder = new CategoryBuilder();
 
-        while(state != State.EXIT) {
-            switch(state) {
-                case START:
-                    state = printStartScreen(input, userRegistry);
-                    break;
-                case DURING_LOGIN:
-                    state = printLoginScreen(input, userRegistry);
-                    break;
-                case DURING_REGISTRATION:
-                    state = printRegistrationScreen(input, userRegistry);
-                    break;
-                case LOGGED_IN:
-                    state = printLoggedInScreen(input, userRegistry);
-                    break;
+
+
+        // GUI starts here - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        primaryStage.setTitle("Orgella");
+
+
+        // loginScene > - > - > - > - > - > - > - > - > - > - > - > - > - > - > - > - >
+        GridPane loginLayout = new GridPane();
+        loginLayout.setPadding(new Insets(10));
+        loginLayout.setVgap(8);
+        loginLayout.setHgap(10);
+
+        Label usernameLabel = new Label("Username");
+        GridPane.setConstraints(usernameLabel, 0,0);
+
+        TextField usernameText = new TextField();
+        GridPane.setConstraints(usernameText,1,0);
+
+        Label passwordLabel = new Label("Password");
+        GridPane.setConstraints(passwordLabel, 0,1);
+
+        TextField passwordText = new TextField();
+        GridPane.setConstraints(passwordText,1,1);
+
+        Button loginButton = new Button("Login");
+        GridPane.setConstraints(loginButton,0,3);
+        loginButton.setOnAction(e -> {
+            User user = null;
+            try {
+                user = new User(usernameText.getText(), passwordText.getText());
+                if (userRegistry.existUser(user) == true) {
+                    if (userRegistry.isLoginAndPasswordCorrect(user)) {
+                        System.out.println("Welcome " + user.getLogin());
+                        currentUser = user;
+                        userLoginForMessage = currentUser.getLogin();
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("appPage.fxml"));
+                        AppPageController controller = new AppPageController(currentUser.getLogin());
+                        loader.setController(controller);
+
+                        Scene appPageScene = new Scene(loader.load());
+                        Stage mainStage = (Stage)((javafx.scene.Node)e.getSource()).getScene().getWindow();
+                        mainStage.setScene(appPageScene);
+                        mainStage.show();
+                        //primaryStage.setScene(appScene);
+                    }
+                } else {
+                    System.out.println("upsss... something went wrong");
+                    usernameText.clear();
+                    passwordText.clear();
+                    LoginAlertBox.display("Login error", "Incorrect login or password, try again or register.");
+                }
+            } catch (CredentialsToShortException e1) {
+                e1.printStackTrace();
+            } catch (LoginNullException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
-        }
-        System.out.println("Bye");
-        input.close();
+            //primaryStage.setScene(appScene);
+        });
+
+        Button registerButton = new Button("Register");
+        GridPane.setConstraints(registerButton,1,3);
+        registerButton.setOnAction(e -> {
+            try {
+                User user = new User(usernameText.getText(), passwordText.getText());
+                userRegistry.addUser(user);
+                System.out.println("User has been created!");
+                currentUser = user;
+                userLoginForMessage = currentUser.getLogin();
+                System.out.println("Welcome " + user.getLogin());
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("appPage.fxml"));
+                AppPageController controller = new AppPageController(currentUser.getLogin());
+                loader.setController(controller);
+
+                Scene appPageScene = new Scene(loader.load());
+
+                Stage mainStage = (Stage)((javafx.scene.Node)e.getSource()).getScene().getWindow();
+                mainStage.setScene(appPageScene);
+                mainStage.show();
+
+                primaryStage.setScene(appScene);
+            } catch (IOException | CredentialsToShortException | LoginNullException | LoginExistException e1) {
+                //e.printStackTrace();
+                System.out.println("No way...");
+                usernameText.clear();
+                passwordText.clear();
+                LoginAlertBox.display("Registration error", "Incorrect login or password, try again or register.");
+            }
+
+        });
+
+        loginLayout.getChildren().addAll(usernameLabel, usernameText, passwordLabel, passwordText, loginButton, registerButton);
+        loginScene = new Scene(loginLayout, 280,150);
+
+
+        // display main window
+        primaryStage.setScene(loginScene);
+        primaryStage.show();
+        // GUI ends here - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+    }
+
+
+
+    public enum State {START, DURING_LOGIN, LOGGED_IN, DURING_REGISTRATION, EXIT}
+    private static int  categoryNumber = 10;
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     private static State printLoggedInScreen(Scanner input, UserRegistry userRegistry) {
@@ -155,7 +243,7 @@ public class Main {
         }
     }
 
-    private static State printLoginScreen(Scanner input, UserRegistry userRegistry) {
+    /*private static State printLoginScreen(Scanner input, UserRegistry userRegistry) {
         try {
             System.out.println("enter you login: ");
             String login = input.next();
@@ -179,7 +267,7 @@ public class Main {
             return State.START;
         }
         return State.START;
-    }
+    }*/
 
     private static State printStartScreen(Scanner input, UserRegistry userRegistry) {
         System.out.println("Welcome to Allegro auction portal!");
