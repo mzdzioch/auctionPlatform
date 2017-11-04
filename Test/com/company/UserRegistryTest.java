@@ -3,19 +3,28 @@ package com.company;
 import com.company.exceptions.LoginExistException;
 import com.company.model.User;
 import com.company.service.UserRegistry;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class UserRegistryTest {
 
     UserRegistry userRegistry;
+    String filename;
+    User user;
 
-//    @Test(expected = FileNotFoundException.class)
+    //    @Test(expected = FileNotFoundException.class)
 //    public void shouldCheckIfUserNotExist() {
 //        userRegistry = new UserRegistry("");
 //    }
+    @Before
+    public void setUp() throws Exception {
+        filename = "user.txt";
+        user = new User("misiek", "bbbbbb");
+        userRegistry = new UserRegistry(filename);
+    }
 
     @Test(expected = LoginExistException.class)
     public void shouldThrowExceptionLoginExistExeception() throws Exception {
@@ -45,11 +54,31 @@ public class UserRegistryTest {
         assertThat(userRegistry.isLoginAndPasswordCorrect(new User("misiek", "bbbbbb"))).isTrue();
     }
 
-    @Test
-    public void shouldReturnFalseIfLoginAndPasswordCorrect() throws Exception {
-        userRegistry = new UserRegistry("user.txt");
+//    @Test
+//    public void shouldReturnFalseIfLoginAndPasswordCorrect() throws Exception {
+//        userRegistry = new UserRegistry("user.txt");
+//
+//        assertThat(userRegistry.isLoginAndPasswordCorrect(new User("misiek", "bbbbbb"))).isFalse();
+//    }
 
-        assertThat(userRegistry.isLoginAndPasswordCorrect(new User("misiek", "bbbbbba"))).isFalse();
+
+    @Test
+    public void writeUser() throws Exception {
+        userRegistry.writeUser(user);
+        assertTrue(userRegistry.checkIfUserExist(user));
+
+    }
+
+    @Test
+    public void checkIfUserExist() throws Exception {
+        User user = new User("misiek", "bbbbbb");
+
+    }
+
+    @Test
+    public void isLoginAndPasswordCorrect() throws Exception {
     }
 
 }
+
+
