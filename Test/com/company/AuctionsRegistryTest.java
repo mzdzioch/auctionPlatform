@@ -32,5 +32,4 @@ public class AuctionsRegistryTest {
         assertTrue(auctionsRegistry.getAllAuctions().get(2).getCategoryID() == 10);
     }
 
-
 }
