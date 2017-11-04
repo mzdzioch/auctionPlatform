@@ -78,33 +78,32 @@ public class AuctionsRegistry {
     }
 
     private void readAuctionsRegistryToMemory() {
-        FileOperation fileOperation = new FileOperation();
-
-        int auctionID;
-        String title;
-        double price;
-        int categoryID;
-        String description;
-        String login;
-
-        List<String> auctionsFromFile = new ArrayList<>();
         try {
+            List<String> auctionsFromFile = new ArrayList<>();
+            FileOperation fileOperation = new FileOperation();
             auctionsFromFile = fileOperation.readFile(fileAuctionsName);
             System.out.println(auctionsFromFile);
+
+            int auctionID;
+            String title;
+            double price;
+            int categoryID;
+            String description;
+            String login;
+
+            for (String s : auctionsFromFile) {
+                String[] auctionToArray = s.split("\\|");
+                auctionID = Integer.parseInt(auctionToArray[0]);
+                title = auctionToArray[1];
+                price = Double.parseDouble(auctionToArray[2]);
+                categoryID = Integer.parseInt(auctionToArray[3]);
+                description = auctionToArray[4];
+                login = auctionToArray[5];
+                Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
+                idToAuctionMap.put(auctionID, auction);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        for (String s : auctionsFromFile) {
-            String[] auctionToArray = s.split("\\|");
-            auctionID = Integer.parseInt(auctionToArray[0]);
-            title = auctionToArray[1];
-            price = Double.parseDouble(auctionToArray[2]);
-            categoryID = Integer.parseInt(auctionToArray[3]);
-            description = auctionToArray[4];
-            login = auctionToArray[5];
-            Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
-            idToAuctionMap.put(auctionID, auction);
         }
     }
 
