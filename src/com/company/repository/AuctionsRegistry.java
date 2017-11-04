@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AuctionsRegistry {
 
-    private final Map<Integer, Auction> idToAuctionMap = new HashMap<Integer, Auction>();
+    private final Map<Integer, Auction> idToAuctionMap = new HashMap<>();
     private final String fileAuctionsName;
 
     public AuctionsRegistry(String fileAuctionsName) {
