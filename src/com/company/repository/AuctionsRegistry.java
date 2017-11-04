@@ -32,15 +32,14 @@ public class AuctionsRegistry {
     }
 
     public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-        Auction auction = new Auction(title, price, categoryID, description, login);
-        addAuction(auction);
-        idToAuctionMap.put(auction.getAuctionID(), auction);
+        addAuction(new Auction(title, price, categoryID, description, login));
         return true;
     }
 
-    public void addAuction(Auction auction) {
+    public boolean addAuction(Auction auction) {
         new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
         idToAuctionMap.put(auction.getAuctionID(), auction);
+        return true;
     }
 
     public List<Auction> getUserAuctions(User user) {
