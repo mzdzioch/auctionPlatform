@@ -54,10 +54,8 @@ public class AppPageController implements Initializable{
     @FXML
     VBox centralVBox;
 
-
     @FXML
     TreeView<String> categoryTreeView = new TreeView<>();
-
 
     @FXML
     Button addButton = new Button();
@@ -78,7 +76,6 @@ public class AppPageController implements Initializable{
 
         table = new TableView<>();
 
-
         idColumn.setMaxWidth(60);
         titleColumn.setMaxWidth(100);
         titleColumn.setMinWidth(99);
@@ -95,46 +92,42 @@ public class AppPageController implements Initializable{
         table.setItems(getAuctions());
         table.getColumns().addAll(idColumn, titleColumn, descriptionColumn, priceColumn, categoryIdColumn, ownerColumn);
 
-
         centralVBox.getChildren().add(table);
-
-
 
         addButton.setOnAction(e -> addButtonClicked());
         deleteButton.setOnAction(e -> deleteButtonClicked());
     }
 
 
-        private void deleteButtonClicked() {
-            ObservableList<Auction> auctionSelected, allAuctions;
-            allAuctions = table.getItems();
-            auctionSelected = table.getSelectionModel().getSelectedItems();
+    private void deleteButtonClicked() {
+        ObservableList<Auction> auctionSelected, allAuctions;
+        allAuctions = table.getItems();
+        auctionSelected = table.getSelectionModel().getSelectedItems();
 
-            auctionSelected.forEach(allAuctions::remove);
-        }
+        auctionSelected.forEach(allAuctions::remove);
+    }
 
 
-        private void addButtonClicked() {
-            Auction auction = new Auction(titleInput.getText(),
+    private void addButtonClicked() {
+        Auction auction = new Auction(titleInput.getText(),
                 Double.parseDouble(priceInput.getText()),
                 Integer.parseInt(categoryIdInput.getText()),
                 descriptionInput.getText(),
                 userLogin.get()
                 );
 
-            table.getItems().add(auction);
-            titleInput.clear();
-            descriptionInput.clear();
-            priceInput.clear();
-            categoryIdInput.clear();
-        }
+        table.getItems().add(auction);
+        titleInput.clear();
+        descriptionInput.clear();
+        priceInput.clear();
+        categoryIdInput.clear();
+    }
 
 
     public ObservableList<Auction> getAuctions() {
         ObservableList<Auction> auctions = FXCollections.observableArrayList();
         auctions.add(new Auction(1, "Kalkulator", 2.0, 1, "Po prostu liczydło", "romek"));
         auctions.add(new Auction(2, "Laptok", 2000.0, 1, "Zepsuty, ale działa", "Trump"));
-
         return auctions;
     }
 
