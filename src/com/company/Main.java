@@ -48,8 +48,8 @@ public class Main {
         System.out.println("auction 1 - id " + auction1.getAuctionID());
 
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
-        auctionsRegistry.writeAuction(auction0);
-        auctionsRegistry.writeAuction(auction1);
+        auctionsRegistry.addAuction(auction0);
+        auctionsRegistry.addAuction(auction1);
        // System.out.println(auctionsRegistry.getAllAuctions().get(14).categoryID);
 
 

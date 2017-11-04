@@ -26,8 +26,8 @@ public class AuctionsRegistryTest {
     public void writeAuction() throws Exception {
 
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry(fileAuctionsName);
-        auctionsRegistry.writeAuction(auction0);
-        auctionsRegistry.writeAuction(auction1);
+        auctionsRegistry.addAuction(auction0);
+        auctionsRegistry.addAuction(auction1);
         assertTrue(auctionsRegistry.getAllAuctions().get(1).getCategoryID() == 10);
         assertTrue(auctionsRegistry.getAllAuctions().get(2).getCategoryID() == 10);
     }

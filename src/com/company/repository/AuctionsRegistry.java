@@ -27,7 +27,7 @@ public class AuctionsRegistry {
         }
     }
 
-    public void writeAuction(Auction auction) {
+    public void addAuction(Auction auction) {
         new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
         idToAuctionMap.put(auction.getAuctionID(), auction);
     }
@@ -37,9 +37,9 @@ public class AuctionsRegistry {
     }
 
     public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-        Auction addedAuction = new Auction(title, price, categoryID, description, login);
-        writeAuction(addedAuction);
-        idToAuctionMap.put(addedAuction.getAuctionID(), addedAuction);
+        Auction auction = new Auction(title, price, categoryID, description, login);
+        addAuction(auction);
+        idToAuctionMap.put(auction.getAuctionID(), auction);
         return true;
     }
 
