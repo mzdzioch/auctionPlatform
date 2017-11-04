@@ -27,11 +27,6 @@ public class AuctionsRegistry {
         }
     }
 
-    public void addAuction(Auction auction) {
-        new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
-        idToAuctionMap.put(auction.getAuctionID(), auction);
-    }
-
     public Map<Integer, Auction> getAllAuctions() {
         return idToAuctionMap;
     }
@@ -41,6 +36,11 @@ public class AuctionsRegistry {
         addAuction(auction);
         idToAuctionMap.put(auction.getAuctionID(), auction);
         return true;
+    }
+
+    public void addAuction(Auction auction) {
+        new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
+        idToAuctionMap.put(auction.getAuctionID(), auction);
     }
 
     public List<Auction> getUserAuctions(User user) {
