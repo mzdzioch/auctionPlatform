@@ -4,7 +4,9 @@ import com.company.helpers.FileOperation;
 import com.company.model.Auction;
 import com.company.model.User;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,17 +58,6 @@ public class AuctionsRegistry {
             Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
             auctionsHashMap.put(auctionID, auction);
         }
-//        } catch (IOException exception) {
-//            exception.printStackTrace();
-//
-//        } finally {
-//
-//            try {
-//                br.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     private void createAuctionsFile(String fileName) {
@@ -139,7 +130,6 @@ public class AuctionsRegistry {
 
         return listAuctions;
     }
-
 
 
     public boolean removeAuction(int auctionID) {
