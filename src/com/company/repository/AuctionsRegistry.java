@@ -28,9 +28,7 @@ public class AuctionsRegistry {
     }
 
     public void writeAuction(Auction auction) {
-        FileOperation fileOperation = new FileOperation();
-        String auctionToString = auctionToString(auction);
-        fileOperation.addLineToFile(fileAuctionsName, auctionToString);
+        new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
         idToAuctionMap.put(auction.getAuctionID(), auction);
     }
 
