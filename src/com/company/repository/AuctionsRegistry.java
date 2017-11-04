@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AuctionsRegistry {
 
-    private final Map<Integer, Auction> auctionsHashMap = new HashMap<Integer, Auction>();
+    private final Map<Integer, Auction> idToAuctionMap = new HashMap<Integer, Auction>();
     private final String fileAuctionsName;
 
     public AuctionsRegistry(String fileAuctionsName) {
@@ -37,24 +37,24 @@ public class AuctionsRegistry {
                 + auction.getLogin()
                 + "\n";
         fileOperation.addLineToFile(fileAuctionsName, auctionToString);
-        auctionsHashMap.put(auction.getAuctionID(), auction);
+        idToAuctionMap.put(auction.getAuctionID(), auction);
     }
 
     public Map<Integer, Auction> getAllAuctions() {
-        return auctionsHashMap;
+        return idToAuctionMap;
     }
 
     public boolean addAuction(String title, double price, int categoryID, String description, String login) {
         Auction addedAuction = new Auction(title, price, categoryID, description, login);
         writeAuction(addedAuction);
-        auctionsHashMap.put(addedAuction.getAuctionID(), addedAuction);
+        idToAuctionMap.put(addedAuction.getAuctionID(), addedAuction);
         return true;
     }
 
     public List<Auction> getUserAuctions(User user) {
         List<Auction> listUserAuctions = new ArrayList<>();
         readAuctionsRegistryToMemory();
-        for (Auction auction : auctionsHashMap.values()) {
+        for (Auction auction : idToAuctionMap.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
                 listUserAuctions.add(auction);
             }
@@ -66,7 +66,7 @@ public class AuctionsRegistry {
     public List<Auction> getAllAuctionsUnderCategory(int idCategory) {
         List<Auction> listAuctions = new ArrayList<>();
         readAuctionsRegistryToMemory();
-        for (Auction auction : auctionsHashMap.values()) {
+        for (Auction auction : idToAuctionMap.values()) {
             if (auction.getCategoryID() == idCategory) {
                 listAuctions.add(auction);
             }
@@ -77,9 +77,9 @@ public class AuctionsRegistry {
 
     public boolean removeAuction(int auctionID) {
         readAuctionsRegistryToMemory();
-        for (Auction auction : auctionsHashMap.values()) {
+        for (Auction auction : idToAuctionMap.values()) {
             if (auction.getAuctionID() == auctionID) {
-                auctionsHashMap.remove(auction);
+                idToAuctionMap.remove(auction);
                 //auction must be also removed from file here
                 System.out.println("Auction " + auctionID + "removed");
             }
@@ -116,7 +116,7 @@ public class AuctionsRegistry {
             description = auctionToArray[4];
             login = auctionToArray[5];
             Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
-            auctionsHashMap.put(auctionID, auction);
+            idToAuctionMap.put(auctionID, auction);
         }
     }
 
