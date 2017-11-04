@@ -28,7 +28,6 @@ public class AuctionsRegistry {
     }
 
     private void readAuctionsRegistryToMemory() {
-
         FileOperation fileOperation = new FileOperation();
 
         int auctionID;
@@ -47,7 +46,6 @@ public class AuctionsRegistry {
         }
 
         for (String s : auctionsFromFile) {
-
             String[] auctionToArray = s.split("\\|");
             auctionID = Integer.parseInt(auctionToArray[0]);
             title = auctionToArray[1];
@@ -61,9 +59,7 @@ public class AuctionsRegistry {
     }
 
     private void createAuctionsFile(String fileName) {
-
         FileWriter fw = null;
-
         System.out.println("Trying to create file " + fileName);
 
         try {
@@ -74,7 +70,6 @@ public class AuctionsRegistry {
             try {
                 if (fw != null)
                     fw.close();
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -82,7 +77,6 @@ public class AuctionsRegistry {
     }
 
     public void writeAuction(Auction auction) {
-
         FileOperation fileOperation = new FileOperation();
         String auctionToString = Integer.toString(auction.getAuctionID()) + "|"
                 + auction.getTitle() + "|"
@@ -100,7 +94,6 @@ public class AuctionsRegistry {
     }
 
     public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-
         Auction addedAuction = new Auction(title, price, categoryID, description, login);
         writeAuction(addedAuction);
         auctionsHashMap.put(addedAuction.getAuctionID(), addedAuction);
@@ -131,7 +124,6 @@ public class AuctionsRegistry {
         return listAuctions;
     }
 
-
     public boolean removeAuction(int auctionID) {
         readAuctionsRegistryToMemory();
         for (Auction auction : auctionsHashMap.values()) {
@@ -145,5 +137,4 @@ public class AuctionsRegistry {
         System.out.println("Incorrect auctionID");
         return false;
     }
-
 }
