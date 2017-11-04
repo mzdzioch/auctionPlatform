@@ -1,7 +1,5 @@
 package com.company.repository;
 
-import com.company.repository.FileOperation;
-
 public class AuctionsCounter {
     private static final String AUCTIONS_COUNTER_FILE = "acntr.txt";
     FileOperation fileOperation = new FileOperation();
@@ -20,7 +18,7 @@ public class AuctionsCounter {
     public boolean writeCurrentID(int currentID) {
         if ( fileOperation.FileExists(AUCTIONS_COUNTER_FILE) ) {
             String line = Integer.toString(currentID);
-            fileOperation.writeLineToFile(AUCTIONS_COUNTER_FILE,Integer.toString(currentID));
+            fileOperation.overwriteLineToFile(AUCTIONS_COUNTER_FILE,Integer.toString(currentID));
             return true;
         } else return false;
     }

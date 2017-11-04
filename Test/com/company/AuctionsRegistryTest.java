@@ -28,8 +28,8 @@ public class AuctionsRegistryTest {
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry(fileAuctionsName);
         auctionsRegistry.writeAuction(auction0);
         auctionsRegistry.writeAuction(auction1);
-        assertTrue(auctionsRegistry.getListOfAuctions().get(0).getCategoryID() == 10);
-        assertTrue(auctionsRegistry.getListOfAuctions().get(1).getCategoryID() == 10);
+        assertTrue(auctionsRegistry.getAllAuctions().get(1).getCategoryID() == 10);
+        assertTrue(auctionsRegistry.getAllAuctions().get(2).getCategoryID() == 10);
     }
 
 

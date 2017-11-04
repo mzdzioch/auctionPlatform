@@ -24,7 +24,7 @@ public class AuctionService {
     }
 
     public Map<Integer, Auction> getListOfAuctions(){
-        return auctionsRegistry.getListOfAuctions();
+        return auctionsRegistry.getAllAuctions();
     }
 
     public boolean addAuction(String title, double price, int categoryID, String description, String login) {

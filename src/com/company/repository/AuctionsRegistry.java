@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class AuctionsRegistry {
 
-    private Map<Integer, Auction> listOfAuctions = new HashMap<Integer, Auction>();
+    private Map<Integer, Auction> auctionsHashMap = new HashMap<Integer, Auction>();
     private String fileAuctionsName;
 
     public AuctionsRegistry(String fileAuctionsName) {
@@ -18,18 +18,15 @@ public class AuctionsRegistry {
         if (!file.exists()) {
             createAuctionsFile(fileAuctionsName);
         } else {
-            readAuctionsRegistryToMemory(fileAuctionsName);
+            readAuctionsRegistryToMemory();
         }
     }
 
-    private void readAuctionsRegistryToMemory(String fileAuctionsName) {
+    private void readAuctionsRegistryToMemory() {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(fileAuctionsName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
+
             int auctionID;
             String title;
             double price;
@@ -49,11 +46,12 @@ public class AuctionsRegistry {
                 description = auctionToArray[4];
                 login = auctionToArray[5];
                 Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
-                listOfAuctions.put(auctionID, auction);
+                auctionsHashMap.put(auctionID, auction);
                 line = br.readLine();
             }
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+
         } finally {
 
             try {
@@ -87,71 +85,52 @@ public class AuctionsRegistry {
 
     public void writeAuction(Auction auction) {
 
-        BufferedWriter bw = null;
-        FileWriter fw = null;
-
-        try {
-            fw = new FileWriter(fileAuctionsName, true);
-            bw = new BufferedWriter(fw);
-            bw.write(Integer.toString(auction.getAuctionID()) + "|"
-                    + auction.getTitle() + "|"
-                    + auction.getPrice() + "|"
-                    + auction.getCategoryID() + "|"
-                    + auction.getDescription() + "|"
-                    + auction.getLogin()
-                    + "\n");
-            listOfAuctions.put(auction.getAuctionID(), auction);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bw != null)
-                    bw.close();
-
-                if (fw != null)
-                    fw.close();
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
+        FileOperation fileOperation = new FileOperation();
+        String auctionToString = Integer.toString(auction.getAuctionID()) + "|"
+                + auction.getTitle() + "|"
+                + auction.getPrice() + "|"
+                + auction.getCategoryID() + "|"
+                + auction.getDescription() + "|"
+                + auction.getLogin()
+                + "\n";
+        fileOperation.addLineToFile(fileAuctionsName, auctionToString);
+        auctionsHashMap.put(auction.getAuctionID(), auction);
     }
 
-    public Map<Integer, Auction> getListOfAuctions() {
-        return listOfAuctions;
+    public Map<Integer, Auction> getAllAuctions() {
+        return auctionsHashMap;
     }
 
     public boolean addAuction(String title, double price, int categoryID, String description, String login) {
 
         Auction addedAuction = new Auction(title, price, categoryID, description, login);
         writeAuction(addedAuction);
-        listOfAuctions.put(addedAuction.getAuctionID(), addedAuction);
+        auctionsHashMap.put(addedAuction.getAuctionID(), addedAuction);
         return true;
     }
 
     public void printUserAuctions(User user) {
-        readAuctionsRegistryToMemory(fileAuctionsName);
-        for (Auction auction : listOfAuctions.values()) {
+        readAuctionsRegistryToMemory();
+        for (Auction auction : auctionsHashMap.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
                 System.out.println(auction.toString());
             }
         }
     }
 
-    public void printAllAuctionsUnderCategory(int categoryID){
-        for (Auction auction : listOfAuctions.values()) {
-            if(auction.getCategoryID() == categoryID){
+    public void printAllAuctionsUnderCategory(int categoryID) {
+        for (Auction auction : auctionsHashMap.values()) {
+            if (auction.getCategoryID() == categoryID) {
                 System.out.println(auction.toString());
             }
         }
     }
 
     public boolean removeAuction(int auctionID) {
-        readAuctionsRegistryToMemory(fileAuctionsName);
-        for (Auction auction : listOfAuctions.values()) {
+        readAuctionsRegistryToMemory();
+        for (Auction auction : auctionsHashMap.values()) {
             if (auction.getAuctionID() == auctionID) {
-                listOfAuctions.remove(auction);
+                auctionsHashMap.remove(auction);
                 //auction must be also removed from file here
                 System.out.println("Auction " + auctionID + "removed");
             }

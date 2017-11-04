@@ -57,11 +57,40 @@ public class FileOperation {
         return null;
     }
 
-    public boolean writeLineToFile(String filename, String lineToWrite) {
+    public boolean overwriteLineToFile(String filename, String lineToWrite) {
         BufferedWriter bw = null;
         FileWriter fw = null;
 
         createFile(filename);
+
+        try {
+            fw = new FileWriter(filename, true);
+            bw = new BufferedWriter(fw);
+            bw.write(lineToWrite);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw !=null)
+                    bw.close();
+
+                if (fw !=null)
+                    fw.close();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
+
+    }
+
+    public boolean addLineToFile(String filename, String lineToWrite) {
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+
+        createNewFile(filename);
 
         try {
             fw = new FileWriter(filename, true);

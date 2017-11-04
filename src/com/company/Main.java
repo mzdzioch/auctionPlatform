@@ -49,7 +49,7 @@ public class Main {
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
         auctionsRegistry.writeAuction(auction0);
         auctionsRegistry.writeAuction(auction1);
-       // System.out.println(auctionsRegistry.getListOfAuctions().get(14).categoryID);
+       // System.out.println(auctionsRegistry.getAllAuctions().get(14).categoryID);
 
 
         Scanner input = new Scanner(System.in);
