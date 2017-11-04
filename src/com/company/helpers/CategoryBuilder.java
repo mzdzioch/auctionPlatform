@@ -1,4 +1,4 @@
-package com.company.service;
+package com.company.helpers;
 
 import com.company.model.Category;
 import com.company.model.Node;
@@ -26,7 +26,7 @@ public class CategoryBuilder {
         //adding subcategories for Electronic category
         rootList.get(0).addChild(new Category(11, "Laptops"));
         rootList.get(0).addChild(new Category(12, "PC"));
-        rootList.get(0).addChild(new Category(13, "Clothes"));
+        rootList.get(0).addChild(new Category(13, "Servers"));
         //adding subcategories for Motors category
         rootList.get(1).addChild(new Category(21, "Parts"));
         rootList.get(1).addChild(new Category(22, "Cars"));
