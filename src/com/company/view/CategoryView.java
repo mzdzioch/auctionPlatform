@@ -1,4 +1,4 @@
-package com.company.service;
+package com.company.view;
 
 import com.company.model.Category;
 import com.company.model.Node;

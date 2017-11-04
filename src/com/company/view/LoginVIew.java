@@ -1,4 +1,4 @@
-package com.company.service;
+package com.company.view;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
