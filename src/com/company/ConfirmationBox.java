@@ -24,7 +24,6 @@ public class ConfirmationBox {
         window.setMaxWidth(250);
         window.setMaxHeight(150);
 
-
         Label label = new Label();
         label.setText(message);
 
