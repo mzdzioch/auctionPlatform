@@ -12,6 +12,7 @@ import com.company.service.AuctionService;
 import com.company.service.CategoryBuilder;
 import com.company.service.CategoryView;
 import com.company.service.UserRegistry;
+import com.company.view.AuctionView;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -54,6 +55,7 @@ public class Main {
 
         Scanner input = new Scanner(System.in);
         UserRegistry userRegistry = new UserRegistry("users.txt");
+
 
         CategoryBuilder categoryBuilder = new CategoryBuilder();
         User user = null;
@@ -100,7 +102,10 @@ public class Main {
 
     private static State printDeleteAuctionScreen(Scanner input, UserRegistry userRegistry, AuctionsRegistry auctionsRegistry) {
         AuctionService auctionService = new AuctionService(auctionsRegistry);
-        auctionService.printAuctions(currentUser);
+        AuctionView auctionView = new AuctionView(auctionsRegistry);
+        auctionView.printAuctions(currentUser);
+
+
         System.out.println("Enter id number of auction you wish to delete.");
         int auctionIdToDelete = Integer.parseInt(input.next());
         auctionService.removeAuction(auctionIdToDelete);
