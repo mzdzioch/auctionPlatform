@@ -23,43 +23,44 @@ public class AuctionsRegistry {
     }
 
     private void readAuctionsRegistryToMemory() {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(fileAuctionsName));
 
-            int auctionID;
-            String title;
-            double price;
-            int categoryID;
-            String description;
-            String login;
+        FileOperation fileOperation = new FileOperation();
 
-            String line = br.readLine();
-            String[] auctionToArray;
 
-            while (line != null) {
-                auctionToArray = line.split("\\|");
-                auctionID = Integer.parseInt(auctionToArray[0]);
-                title = auctionToArray[1];
-                price = Double.parseDouble(auctionToArray[2]);
-                categoryID = Integer.parseInt(auctionToArray[3]);
-                description = auctionToArray[4];
-                login = auctionToArray[5];
-                Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
-                auctionsHashMap.put(auctionID, auction);
-                line = br.readLine();
-            }
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        int auctionID;
+        String title;
+        double price;
+        int categoryID;
+        String description;
+        String login;
 
-        } finally {
+        String line = fileOperation.readLineFromFile(fileAuctionsName);
+        String[] auctionToArray;
 
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        while (line != null) {
+            auctionToArray = line.split("\\|");
+            auctionID = Integer.parseInt(auctionToArray[0]);
+            title = auctionToArray[1];
+            price = Double.parseDouble(auctionToArray[2]);
+            categoryID = Integer.parseInt(auctionToArray[3]);
+            description = auctionToArray[4];
+            login = auctionToArray[5];
+            Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
+            auctionsHashMap.put(auctionID, auction);
+            line = fileOperation.readLineFromFile(fileAuctionsName);
+
         }
+//        } catch (IOException exception) {
+//            exception.printStackTrace();
+//
+//        } finally {
+//
+//            try {
+//                br.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private void createAuctionsFile(String fileName) {
