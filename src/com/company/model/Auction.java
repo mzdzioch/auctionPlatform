@@ -22,7 +22,7 @@ public class Auction {
     }
 
     public Auction(String title, double price, int categoryID, String description, String login) {
-        AuctionsCounter auctionsCounter = new AuctionsCounter();
+        AuctionsCounter auctionsCounter = new AuctionsCounter("acntr.txt");
         this.auctionID = auctionsCounter.readCurrentID()+1;
         this.title = title;
         this.price = price;
