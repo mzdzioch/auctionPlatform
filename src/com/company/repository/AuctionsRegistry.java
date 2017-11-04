@@ -1,5 +1,6 @@
 package com.company.repository;
 
+import com.company.helpers.FileOperation;
 import com.company.model.Auction;
 import com.company.model.User;
 
@@ -28,7 +29,6 @@ public class AuctionsRegistry {
 
         FileOperation fileOperation = new FileOperation();
 
-
         int auctionID;
         String title;
         double price;
@@ -36,11 +36,17 @@ public class AuctionsRegistry {
         String description;
         String login;
 
-        String line = fileOperation.readLineFromFile(fileAuctionsName);
-        String[] auctionToArray;
+        ArrayList<String> auctionsFromFile = new ArrayList<>();
+        try {
+            System.out.println(fileOperation.readFile(fileAuctionsName));
+            auctionsFromFile = fileOperation.readFile(fileAuctionsName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        while (line != null) {
-            auctionToArray = line.split("\\|");
+        for (String s : auctionsFromFile) {
+
+            String[] auctionToArray = s.split("\\|");
             auctionID = Integer.parseInt(auctionToArray[0]);
             title = auctionToArray[1];
             price = Double.parseDouble(auctionToArray[2]);
@@ -49,8 +55,6 @@ public class AuctionsRegistry {
             login = auctionToArray[5];
             Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
             auctionsHashMap.put(auctionID, auction);
-            line = fileOperation.readLineFromFile(fileAuctionsName);
-
         }
 //        } catch (IOException exception) {
 //            exception.printStackTrace();

@@ -46,7 +46,6 @@ public class Main {
         System.out.println("auction 0 - id " + auction0.getAuctionID());
         System.out.println("auction 1 - id " + auction1.getAuctionID());
 
-
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
         auctionsRegistry.writeAuction(auction0);
         auctionsRegistry.writeAuction(auction1);
