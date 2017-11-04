@@ -44,6 +44,15 @@ public class Main {
         UserRegistry userRegistry = new UserRegistry("users.txt");
 
         CategoryBuilder categoryBuilder = new CategoryBuilder();
+        User user = null;
+
+        try {
+            user = new User("fakeUser", "fakePassword");
+        } catch (CredentialsToShortException e) {
+            e.printStackTrace();
+        } catch (LoginNullException e) {
+            e.printStackTrace();
+        }
 
         while(state != State.EXIT) {
             switch(state) {
@@ -57,7 +66,7 @@ public class Main {
                     state = printRegistrationScreen(input, userRegistry);
                     break;
                 case LOGGED_IN:
-                    state = printLoggedInScreen(input, userRegistry);
+                    state = printLoggedInScreen(input, userRegistry, user);
                     break;
             }
         }
@@ -65,7 +74,7 @@ public class Main {
         input.close();
     }
 
-    private static State printLoggedInScreen(Scanner input, UserRegistry userRegistry) {
+    private static State printLoggedInScreen(Scanner input, UserRegistry userRegistry, User user) {
         System.out.println("[3] display auctions category tree");
         System.out.println("[4] display your auctions");
         System.out.println("[5] create auction");
@@ -79,7 +88,7 @@ public class Main {
                 displayAuctionsCategoryTree();
                 return State.LOGGED_IN;
             case 4:
-                displayUsersAuctions();// user????
+                displayUsersAuctions(user);// user????
                 return State.LOGGED_IN;
             case 5:
                 CreateAuction();
@@ -116,7 +125,7 @@ public class Main {
         System.out.println("- - - - - - - - - - - ");
     }
 
-    private static void displayUsersAuctions() {
+    private static void displayUsersAuctions(User user) {
         System.out.println("- - - - - - - - - - - ");
         System.out.println("Display all auctions of user");
         System.out.println("- - - - - - - - - - - ");
@@ -166,12 +175,6 @@ public class Main {
         User user = null;
         try {
             user = new User(login, password);
-        } catch (CredentialsToShortException e) {
-            e.printStackTrace();
-        } catch (LoginNullException e) {
-            e.printStackTrace();
-        }
-        try {
             if (userRegistry.existUser(user) == true) {
                 System.out.println("Welcome " + user.getLogin());
                 return State.LOGGED_IN;
@@ -183,6 +186,10 @@ public class Main {
 //                            firstLoginOption = input.nextInt();
                 return State.START;
             }
+        } catch (CredentialsToShortException e) {
+            e.printStackTrace();
+        } catch (LoginNullException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

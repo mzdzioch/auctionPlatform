@@ -10,24 +10,13 @@ import java.util.Map;
 
 public class CategoryView {
 
-    private Node<Category> node;
-    private List<Node<Category>> nodeList;
-    private Map<Integer, Node<Category>> categoryMap = new HashMap<>();
-    private int index = 0;
-
-
-    public void display(List<Node<Category>> lists) {
-        displayCategory(lists);
-    }
-
-
     public void display() {
-        index = 0;
-        nodeList = getBuilder().getChildren();
-        displayCategory(nodeList);
+        int index = 0;
+        List<Node<Category>> nodeList = getBuilder().getChildren();
+        displayCategory(nodeList, index);
     }
 
-    private void displayCategory(List<Node<Category>> lists) {
+    private void displayCategory(List<Node<Category>> lists, int index) {
 
         if(lists.isEmpty())
             index--;
@@ -38,7 +27,7 @@ public class CategoryView {
                 index++;
                 printTab(index);
                 System.out.println(categoryNode.getItem().toString());
-                displayCategory(categoryNode.getChildren());
+                displayCategory(categoryNode.getChildren(), index);
             }
 
             index--;
