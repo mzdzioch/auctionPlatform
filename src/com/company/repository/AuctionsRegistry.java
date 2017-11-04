@@ -32,16 +32,6 @@ public class AuctionsRegistry {
         idToAuctionMap.put(auction.getAuctionID(), auction);
     }
 
-    private String auctionToString(Auction auction) {
-        return Integer.toString(auction.getAuctionID()) + "|"
-                + auction.getTitle() + "|"
-                + auction.getPrice() + "|"
-                + auction.getCategoryID() + "|"
-                + auction.getDescription() + "|"
-                + auction.getLogin()
-                + "\n";
-    }
-
     public Map<Integer, Auction> getAllAuctions() {
         return idToAuctionMap;
     }
@@ -138,5 +128,15 @@ public class AuctionsRegistry {
                 ex.printStackTrace();
             }
         }
+    }
+
+    private String auctionToString(Auction auction) {
+        return Integer.toString(auction.getAuctionID()) + "|"
+                + auction.getTitle() + "|"
+                + auction.getPrice() + "|"
+                + auction.getCategoryID() + "|"
+                + auction.getDescription() + "|"
+                + auction.getLogin()
+                + "\n";
     }
 }
