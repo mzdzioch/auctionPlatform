@@ -43,25 +43,25 @@ public class AuctionsRegistry {
     }
 
     public List<Auction> getUserAuctions(User user) {
-        List<Auction> listUserAuctions = new ArrayList<>();
+        List<Auction> userAuctions = new ArrayList<>();
         for (Auction auction : idToAuctionMap.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
-                listUserAuctions.add(auction);
+                userAuctions.add(auction);
             }
         }
 
-        return listUserAuctions;
+        return userAuctions;
     }
 
-    public List<Auction> getAllAuctionsUnderCategory(int idCategory) {
-        List<Auction> listAuctions = new ArrayList<>();
+    public List<Auction> getAllAuctionsUnderCategory(int categoryID) {
+        List<Auction> categoryAuctions = new ArrayList<>();
         for (Auction auction : idToAuctionMap.values()) {
-            if (auction.getCategoryID() == idCategory) {
-                listAuctions.add(auction);
+            if (auction.getCategoryID() == categoryID) {
+                categoryAuctions.add(auction);
             }
         }
 
-        return listAuctions;
+        return categoryAuctions;
     }
 
     public boolean removeAuction(int auctionID) {
