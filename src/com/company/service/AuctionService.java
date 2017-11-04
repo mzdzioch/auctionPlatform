@@ -1,7 +1,5 @@
 package com.company.service;
 
-import com.company.exceptions.CredentialsToShortException;
-import com.company.exceptions.LoginNullException;
 import com.company.model.Auction;
 import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
@@ -15,6 +13,11 @@ public class AuctionService {
     public AuctionsRegistry auctionsRegistry;
     private CategoryBuilder categoryBuilder;
     private List<Integer> categoriesList;
+
+    public AuctionService(AuctionsRegistry auctionsRegistry) {
+        this.auctionsRegistry = auctionsRegistry;
+    }
+
 
     public void writeAuction(Auction auction){
         auctionsRegistry.writeAuction(auction);
