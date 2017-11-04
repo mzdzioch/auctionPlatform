@@ -1,24 +1,28 @@
 package com.company.helpers;
 
 public class AuctionsCounter {
-    private static final String AUCTIONS_COUNTER_FILE = "acntr.txt";
+    private final String auctionsCounterFile;
     FileOperation fileOperation = new FileOperation();
+
+    public AuctionsCounter(String auctionsCounterFile) {
+        this.auctionsCounterFile = auctionsCounterFile;
+    }
 
 
     public Integer readCurrentID() {
-        if (fileOperation.FileExists(AUCTIONS_COUNTER_FILE) ) {
-            return fileOperation.readNumberFromFile(AUCTIONS_COUNTER_FILE);
+        if (fileOperation.FileExists(auctionsCounterFile) ) {
+            return fileOperation.readNumberFromFile(auctionsCounterFile);
         } else {
-            fileOperation.createNewFile(AUCTIONS_COUNTER_FILE);
+            fileOperation.createNewFile(auctionsCounterFile);
             writeCurrentID(0);
             return 0;
         }
     }
 
     public boolean writeCurrentID(int currentID) {
-        if ( fileOperation.FileExists(AUCTIONS_COUNTER_FILE) ) {
+        if ( fileOperation.FileExists(auctionsCounterFile) ) {
             String line = Integer.toString(currentID);
-            fileOperation.overwriteLineToFile(AUCTIONS_COUNTER_FILE,Integer.toString(currentID));
+            fileOperation.overwriteLineToFile(auctionsCounterFile,Integer.toString(currentID));
             return true;
         } else return false;
     }
