@@ -84,22 +84,26 @@ public class AuctionsRegistry {
 
             for (String auctionLine : auctionsFromFile) {
 
-                String[] auctionToArray = auctionLine.split("\\|");
-
-                int auctionID = Integer.parseInt(auctionToArray[0]);
-                String title = auctionToArray[1];
-                double price = Double.parseDouble(auctionToArray[2]);
-                int categoryID = Integer.parseInt(auctionToArray[3]);
-                String description = auctionToArray[4];
-                String login = auctionToArray[5];
-
-                Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
+                Auction auction = parseAuction(auctionLine);
 
                 idToAuctionMap.put(auction.getAuctionID(), auction);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Auction parseAuction(String auctionLine) {
+        String[] auctionToArray = auctionLine.split("\\|");
+
+        int auctionID = Integer.parseInt(auctionToArray[0]);
+        String title = auctionToArray[1];
+        double price = Double.parseDouble(auctionToArray[2]);
+        int categoryID = Integer.parseInt(auctionToArray[3]);
+        String description = auctionToArray[4];
+        String login = auctionToArray[5];
+
+        return new Auction(auctionID, title, price, categoryID, description, login);
     }
 
     private void createAuctionsFile(String fileName) {
