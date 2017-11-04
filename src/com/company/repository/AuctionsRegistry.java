@@ -44,7 +44,6 @@ public class AuctionsRegistry {
 
     public List<Auction> getUserAuctions(User user) {
         List<Auction> listUserAuctions = new ArrayList<>();
-        readAuctionsRegistryToMemory();
         for (Auction auction : idToAuctionMap.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
                 listUserAuctions.add(auction);
@@ -56,7 +55,6 @@ public class AuctionsRegistry {
 
     public List<Auction> getAllAuctionsUnderCategory(int idCategory) {
         List<Auction> listAuctions = new ArrayList<>();
-        readAuctionsRegistryToMemory();
         for (Auction auction : idToAuctionMap.values()) {
             if (auction.getCategoryID() == idCategory) {
                 listAuctions.add(auction);
@@ -67,7 +65,6 @@ public class AuctionsRegistry {
     }
 
     public boolean removeAuction(int auctionID) {
-        readAuctionsRegistryToMemory();
         for (Auction auction : idToAuctionMap.values()) {
             if (auction.getAuctionID() == auctionID) {
                 idToAuctionMap.remove(auction);
