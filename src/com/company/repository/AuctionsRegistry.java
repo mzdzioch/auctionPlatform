@@ -79,9 +79,8 @@ public class AuctionsRegistry {
 
     private void readAuctionsRegistryToMemory() {
         try {
-            List<String> auctionsFromFile = new ArrayList<>();
             FileOperation fileOperation = new FileOperation();
-            auctionsFromFile = fileOperation.readFile(fileAuctionsName);
+            List<String> auctionsFromFile = fileOperation.readFile(fileAuctionsName);
             System.out.println(auctionsFromFile);
 
             int auctionID;
