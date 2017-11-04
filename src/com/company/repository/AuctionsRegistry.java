@@ -27,55 +27,6 @@ public class AuctionsRegistry {
         }
     }
 
-    private void readAuctionsRegistryToMemory() {
-        FileOperation fileOperation = new FileOperation();
-
-        int auctionID;
-        String title;
-        double price;
-        int categoryID;
-        String description;
-        String login;
-
-        ArrayList<String> auctionsFromFile = new ArrayList<>();
-        try {
-            System.out.println(fileOperation.readFile(fileAuctionsName));
-            auctionsFromFile = fileOperation.readFile(fileAuctionsName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        for (String s : auctionsFromFile) {
-            String[] auctionToArray = s.split("\\|");
-            auctionID = Integer.parseInt(auctionToArray[0]);
-            title = auctionToArray[1];
-            price = Double.parseDouble(auctionToArray[2]);
-            categoryID = Integer.parseInt(auctionToArray[3]);
-            description = auctionToArray[4];
-            login = auctionToArray[5];
-            Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
-            auctionsHashMap.put(auctionID, auction);
-        }
-    }
-
-    private void createAuctionsFile(String fileName) {
-        FileWriter fw = null;
-        System.out.println("Trying to create file " + fileName);
-
-        try {
-            fw = new FileWriter(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fw != null)
-                    fw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
     public void writeAuction(Auction auction) {
         FileOperation fileOperation = new FileOperation();
         String auctionToString = Integer.toString(auction.getAuctionID()) + "|"
@@ -136,5 +87,54 @@ public class AuctionsRegistry {
         }
         System.out.println("Incorrect auctionID");
         return false;
+    }
+
+    private void readAuctionsRegistryToMemory() {
+        FileOperation fileOperation = new FileOperation();
+
+        int auctionID;
+        String title;
+        double price;
+        int categoryID;
+        String description;
+        String login;
+
+        ArrayList<String> auctionsFromFile = new ArrayList<>();
+        try {
+            System.out.println(fileOperation.readFile(fileAuctionsName));
+            auctionsFromFile = fileOperation.readFile(fileAuctionsName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (String s : auctionsFromFile) {
+            String[] auctionToArray = s.split("\\|");
+            auctionID = Integer.parseInt(auctionToArray[0]);
+            title = auctionToArray[1];
+            price = Double.parseDouble(auctionToArray[2]);
+            categoryID = Integer.parseInt(auctionToArray[3]);
+            description = auctionToArray[4];
+            login = auctionToArray[5];
+            Auction auction = new Auction(auctionID, title, price, categoryID, description, login);
+            auctionsHashMap.put(auctionID, auction);
+        }
+    }
+
+    private void createAuctionsFile(String fileName) {
+        FileWriter fw = null;
+        System.out.println("Trying to create file " + fileName);
+
+        try {
+            fw = new FileWriter(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fw != null)
+                    fw.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
