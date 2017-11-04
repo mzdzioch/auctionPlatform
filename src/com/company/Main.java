@@ -52,9 +52,8 @@ public class Main {
        // System.out.println(auctionsRegistry.getAllAuctions().get(14).categoryID);
 
 
-        Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in).useDelimiter("\\n");
         UserRegistry userRegistry = new UserRegistry("users.txt");
-
 
         CategoryBuilder categoryBuilder = new CategoryBuilder();
         User user = null;
@@ -100,14 +99,11 @@ public class Main {
     }
 
     private static State printDeleteAuctionScreen(Scanner input, UserRegistry userRegistry, AuctionsRegistry auctionsRegistry) {
-        AuctionService auctionService = new AuctionService(auctionsRegistry);
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         auctionView.printAuctions(currentUser);
-
-
         System.out.println("Enter id number of auction you wish to delete.");
         int auctionIdToDelete = Integer.parseInt(input.next());
-        auctionService.removeAuction(auctionIdToDelete);
+        auctionsRegistry.removeAuction(auctionIdToDelete);
         System.out.println("Your auction " + auctionIdToDelete + " was deleted.");
         return State.LOGGED_IN;
     }
