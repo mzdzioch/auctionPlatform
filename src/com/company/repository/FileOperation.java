@@ -57,6 +57,27 @@ public class FileOperation {
         return null;
     }
 
+    public String readLineFromFile(String filename) {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(filename));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            return br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public boolean overwriteLineToFile(String filename, String lineToWrite) {
         BufferedWriter bw = null;
         FileWriter fw = null;
