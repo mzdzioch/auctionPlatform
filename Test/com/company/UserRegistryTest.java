@@ -1,4 +1,3 @@
-/*
 package com.company;
 
 import com.company.exceptions.LoginExistException;
@@ -83,4 +82,3 @@ public class UserRegistryTest {
 }
 
 
-*/
