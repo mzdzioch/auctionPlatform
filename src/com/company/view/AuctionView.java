@@ -7,6 +7,7 @@ import com.company.helpers.CategoryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AuctionView {
 
@@ -14,6 +15,7 @@ public class AuctionView {
     private CategoryBuilder categoryBuilder;
     private List<Integer> categoriesList;
     private List<Auction> listUserAuction, listCategoryAuctions;
+    private Map<Integer, Auction> listAllAuctions;
 
 
     public AuctionView(AuctionsRegistry auctionsRegistry) {
@@ -27,6 +29,27 @@ public class AuctionView {
             System.out.println(auction.toString());
         }
     }
+
+    public void printInactiveAuctions(){
+        listAllAuctions = auctionsRegistry.getAllAuctions();
+
+        for (Auction auction : listAllAuctions.values()) {
+            if(auction.isActive())
+                System.out.println(auction.toString());
+        }
+
+    }
+
+    public void printActiveAuctions(){
+        listAllAuctions = auctionsRegistry.getAllAuctions();
+
+        for (Auction auction : listAllAuctions.values()) {
+            if(!auction.isActive())
+                System.out.println(auction.toString());
+        }
+
+    }
+
 
     public void printAllAuctionsUnderCategory(int idCategory){
         categoryBuilder = new CategoryBuilder();
