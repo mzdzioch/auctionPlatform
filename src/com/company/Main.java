@@ -158,7 +158,7 @@ public class Main {
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         auctionView.printAuctions(currentUser);
         System.out.println("Enter id number of auction you wish to delete.");
-        int auctionIdToDelete = Integer.parseInt(input.next()); //TODO entry data validation
+        int auctionIdToDelete = Integer.parseInt(input.next()); //TODO  entry data validation
         auctionsRegistry.removeAuction(auctionIdToDelete);
         System.out.println("Your auction " + auctionIdToDelete + " was deleted.");
         return State.LOGGED_IN;
