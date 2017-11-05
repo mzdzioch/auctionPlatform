@@ -2,15 +2,20 @@ package com.company.model;
 
 import com.company.helpers.AuctionsCounter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Auction {
 
     private final int auctionID;
-    boolean active;
-    String title;
-    double price;
-    int categoryID;
-    String description;
-    String login;
+    private boolean active;
+    private String title;
+    private double price;
+    private int categoryID;
+    private String description;
+    private String login;
+    private List<Bid> listBids = new ArrayList<>();
+
 
     public Auction(int auctionID, boolean active, String title, double price, int categoryID, String description, String login) {
         this.auctionID = auctionID;
@@ -86,6 +91,14 @@ public class Auction {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public List<Bid> getListBids() {
+        return listBids;
+    }
+
+    public void addBidToList(Bid bid){
+        listBids.add(bid);
     }
 
     @Override
