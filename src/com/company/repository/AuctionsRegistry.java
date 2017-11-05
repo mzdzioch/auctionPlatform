@@ -105,12 +105,12 @@ public class AuctionsRegistry {
         String[] auctionToArray = auctionLine.split("\\|");
 
         int auctionID = Integer.parseInt(auctionToArray[0]);
-        String title = auctionToArray[1];
-        double price = Double.parseDouble(auctionToArray[2]);
-        int categoryID = Integer.parseInt(auctionToArray[3]);
-        String description = auctionToArray[4];
-        String login = auctionToArray[5];
-        boolean active = Boolean.parseBoolean(auctionToArray[6]);
+        boolean active = Boolean.parseBoolean(auctionToArray[1]);
+        String title = auctionToArray[2];
+        double price = Double.parseDouble(auctionToArray[3]);
+        int categoryID = Integer.parseInt(auctionToArray[4]);
+        String description = auctionToArray[5];
+        String login = auctionToArray[6];
 
         return new Auction(auctionID, active, title, price, categoryID, description, login);
     }
