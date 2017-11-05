@@ -90,7 +90,7 @@ public class AuctionsRegistry {
     private void readAuctionsRegistryToMemory() {
         try {
             List<String> auctionsFromFile = new FileOperation().readFile(fileAuctionsName);
-            System.out.println(auctionsFromFile);
+//            System.out.println(auctionsFromFile);
 
             for (String auctionLine : auctionsFromFile) {
                 Auction auction = parseAuction(auctionLine);
