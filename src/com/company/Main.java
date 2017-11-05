@@ -27,7 +27,15 @@ public class Main {
         DURING_ADDING_AUCTION,
         DURING_DELETING_AUCTION,
         DURING_DISPLAYING_FINISHED_AUCTIONS,
+        DURING_MAKING_A_BID,
         EXIT}
+
+    public enum BidState {
+        NO_SUCH_AUCTION,
+        PRICE_TOO_LOW,
+        BID_MADE,
+        BID_WON_AUCTION,
+    }
 
     private static User currentUser;
     private static int  categoryNumber = 10;
@@ -38,6 +46,7 @@ public class Main {
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
         State state = State.START;
+        BidState bidState;
         int categoryNumber = 10;
 
 
@@ -73,11 +82,66 @@ public class Main {
                     break;
                 case DURING_DISPLAYING_FINISHED_AUCTIONS:
                     state = printFinishedAuctionScreen(input, userRegistry, auctionsRegistry);
+                case DURING_MAKING_A_BID:
+                    state = printMakingBid(input, userRegistry, auctionsRegistry);
             }
         }
         System.out.println("Bye");
         input.close();
     }
+
+    private static State printMakingBid(Scanner input, UserRegistry userRegistry, AuctionsRegistry auctionsRegistry) {
+        displayAuctionsCategoryTree();
+        System.out.println("Select category to display");
+        AuctionService auctionService = new AuctionService(auctionsRegistry);
+        AuctionView auctionView = new AuctionView(auctionsRegistry);
+        ArrayList<Auction> auctionsList = new ArrayList<>();
+
+        int categoryNumber = Integer.parseInt(input.next());
+        if (auctionService.validateCategoryNumber(numberEntered)) {
+            //auctionList = auctionService.getListOfActiveAuctions(categoryNumber);
+            auctionView.printAllAuctionsUnderCategory(categoryNumber);
+            System.out.println("Select auction to make an offer");
+            int auctionNumber = Integer.parseInt(input.next());
+            if (auctionService.validateAuctionToMakeBid(categoryNumber, auctionNumber)) {
+                System.out.println("Enter your bid");
+                Double bidValue = Double.parseDouble(input.next());
+                if (auctionService.validateBid(bidValue, auctionNumber)) {
+                    if (auctionService.makeWinningBid(bidValue, auctionNumber)) {
+                        System.out.println("You won an auction" + auctionService.getSingleAuction(auctionNumber).getTitle() + " is yours.");
+                        System.out.println("Your credit card was charged, you have " + bidValue + " less.");
+                    } else {
+                        System.out.println("you made a bid, auction is still active.");
+                    }
+                }
+            }
+        }
+        return State.LOGGED_IN;
+    }
+
+
+
+ /*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
+        categoryTreeIdList.add(1);
+        categoryTreeIdList.add(11);
+        categoryTreeIdList.add(12);
+        categoryTreeIdList.add(13);
+        categoryTreeIdList.add(2);
+        categoryTreeIdList.add(21);
+        categoryTreeIdList.add(22);
+        categoryTreeIdList.add(23);
+        categoryTreeIdList.add(24);
+        categoryTreeIdList.add(3);
+        categoryTreeIdList.add(31);
+        categoryTreeIdList.add(32);
+        categoryTreeIdList.add(33);
+
+        if (categoryTreeIdList.contains(numberEntered)) {
+            displayCategoryAuctions(numberEntered, auctionsRegistry);
+        } else {
+            System.out.println("Sorry mate, no such category");
+        }*/
+
 
     private static State printFinishedAuctionScreen(Scanner input, UserRegistry userRegistry, AuctionsRegistry auctionsRegistry) {
         AuctionView auctionView = new AuctionView(auctionsRegistry);
@@ -120,6 +184,8 @@ public class Main {
         System.out.println("[5] delete auction");
         System.out.println("[6] make a bid");
         System.out.println("[7] add auction");
+        System.out.println("[8] display your finished auctions");
+        System.out.println("[9] display auctions");
         System.out.println("[category number] to display auctions in this category");
         System.out.println("[0] Exit ");
         int numberEntered = input.nextInt(); //TODO entry data validation
@@ -136,6 +202,10 @@ public class Main {
             case 7:
                 displayAuctionsCategoryTree();
                 return State.DURING_ADDING_AUCTION;
+            case 8:
+                return dispalyUsersClosedAuctions(currentUser, auctionsRegistry);
+            case 9:
+                return displayAuctions(currentUser, auctionsRegistry);
             default:
                 ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
                 categoryTreeIdList.add(1);
@@ -159,6 +229,19 @@ public class Main {
                 }
                 return State.LOGGED_IN;
         }
+    }
+
+    private static State displayAuctions(User currentUser, AuctionsRegistry auctionsRegistry) {
+        return State.DURING_MAKING_A_BID;
+    }
+
+    private static State dispalyUsersClosedAuctions(User currentUser, AuctionsRegistry auctionsRegistry) {
+        System.out.println("- - - - - - - - - - - ");
+        System.out.println("Closed auctions of " + currentUser);
+        System.out.println("- - - - - - - - - - - ");
+        AuctionView auctionView = new AuctionView(auctionsRegistry);
+        auctionView.printInactiveAuctions();
+        return State.LOGGED_IN;
     }
 
     private static void displayCategoryAuctions(int categoryNumber, AuctionsRegistry auctionsRegistry) {
