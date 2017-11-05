@@ -2,12 +2,14 @@ package com.company.repository;
 
 import com.company.helpers.FileOperation;
 import com.company.model.Auction;
+import com.company.model.Bid;
 import com.company.model.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AuctionsRegistry {
@@ -29,8 +31,8 @@ public class AuctionsRegistry {
         return idToAuctionMap;
     }
 
-    public boolean addAuction(boolean active, String title, double price, int categoryID, String description, String login) {
-        addAuction(new Auction(active, title, price, categoryID, description, login));
+    public boolean addAuction(boolean active, String title, double price, int categoryID, String description, String login, List<Bid> listBids) {
+        addAuction(new Auction(active, title, price, categoryID, description, login, listBids));
         return true;
     }
 
@@ -54,7 +56,7 @@ public class AuctionsRegistry {
     public ArrayList<Auction> getAllAuctionsUnderCategory(int categoryID) {
         ArrayList<Auction> categoryAuctions = new ArrayList<>();
         for (Auction auction : idToAuctionMap.values()) {
-            if (auction.getCategoryID() == categoryID) {
+            if ((auction.getCategoryID() == categoryID) && (auction.isActive())) {
                 categoryAuctions.add(auction);
             }
         }
@@ -115,8 +117,15 @@ public class AuctionsRegistry {
         int categoryID = Integer.parseInt(auctionToArray[4]);
         String description = auctionToArray[5];
         String login = auctionToArray[6];
-
-        return new Auction(auctionID, active, title, price, categoryID, description, login);
+        List<Bid> listBids = new ArrayList<>();
+        for (int i = 7; i < 10; i++) {
+            String bidInString =  auctionToArray[i];
+            String[] bidInStringToArray = bidInString.split(", ");
+            double bidPrice = Double.parseDouble(bidInStringToArray[1]);
+            Bid bid = new Bid(bidInStringToArray[0], bidPrice);
+            listBids.add(bid);
+        }
+        return new Auction(auctionID, active, title, price, categoryID, description, login, listBids);
     }
 
     private void createAuctionsFile(String fileName) {
@@ -132,6 +141,9 @@ public class AuctionsRegistry {
                 + auction.getCategoryID() + "|"
                 + auction.getDescription() + "|"
                 + auction.getLogin() + "|"
+                + auction.getListBids().get(1).getUser() + ", " + auction.getListBids().get(1).getBidPrice() + "|"
+                + auction.getListBids().get(2).getUser() + ", " + auction.getListBids().get(2).getBidPrice() + "|"
+                + auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice()
                 + "\n";
     }
 

@@ -72,15 +72,15 @@ public class AuctionService {
         return null;
     }
 
-    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-        return auctionsRegistry.addAuction(true, title, price, categoryID, description, login);
-    }
+//    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
+//        return auctionsRegistry.addAuction(true, title, price, categoryID, description, login);
+//    }
 
     public boolean removeAuction(int auctionId){
         return auctionsRegistry.removeAuction(auctionId);
     }
 
-    public boolean makeWinningBid(int auctionId, Double price, User user) {
+    public boolean makeWinningBid(int auctionId, Double price, String user) {
 
         bidList = getBidList(getSingleAuction(auctionId));
 
