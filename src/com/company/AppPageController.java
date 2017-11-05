@@ -26,6 +26,7 @@ public class AppPageController implements Initializable{
 
     TableView<Auction> table;
     TableColumn<Auction, Integer> idColumn = new TableColumn<>("ID");
+    TableColumn<Auction, String> activeColumn = new TableColumn<>("Active");
     TableColumn<Auction, String> titleColumn = new TableColumn<>("Title");
     TableColumn<Auction, String> descriptionColumn = new TableColumn<>("Description");
     TableColumn<Auction, Double> priceColumn = new TableColumn<>("Price");
@@ -43,6 +44,9 @@ public class AppPageController implements Initializable{
 
     @FXML
     TextField titleInput;
+
+    @FXML
+    TextField activeInput;
 
     @FXML
     TextField descriptionInput;
@@ -86,6 +90,7 @@ public class AppPageController implements Initializable{
         titleColumn.setMinWidth(99);
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Auction, Integer>("auctionID"));
+        activeColumn.setCellValueFactory(new PropertyValueFactory<Auction, String>("active"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<Auction, String>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Auction, String>("description"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<Auction, Double>("price"));
@@ -95,7 +100,7 @@ public class AppPageController implements Initializable{
         loggedUser.setText(userLogin.get());
 
         table.setItems(getAuctions());
-        table.getColumns().addAll(idColumn, titleColumn, descriptionColumn, priceColumn, categoryIdColumn, ownerColumn);
+        table.getColumns().addAll(idColumn, activeColumn, titleColumn, descriptionColumn, priceColumn, categoryIdColumn, ownerColumn);
 
         centralVBox.getChildren().add(table);
 
@@ -116,7 +121,7 @@ public class AppPageController implements Initializable{
 
 
     private void addButtonClicked() {
-        Auction auction = new Auction(titleInput.getText(),
+        Auction auction = new Auction(Boolean.parseBoolean(activeInput.getText()), titleInput.getText(),
                 Double.parseDouble(priceInput.getText()),
                 Integer.parseInt(categoryIdInput.getText()),
                 descriptionInput.getText(),
@@ -124,6 +129,7 @@ public class AppPageController implements Initializable{
                 );
 
         table.getItems().add(auction);
+        activeInput.clear();
         titleInput.clear();
         descriptionInput.clear();
         priceInput.clear();
@@ -144,8 +150,8 @@ public class AppPageController implements Initializable{
 
     public ObservableList<Auction> getAuctions() {
         ObservableList<Auction> auctions = FXCollections.observableArrayList();
-        auctions.add(new Auction(1, "Kalkulator", 2.0, 1, "Po prostu liczydło", "romek"));
-        auctions.add(new Auction(2, "Laptok", 2000.0, 1, "Zepsuty, ale działa", "Trump"));
+        auctions.add(new Auction(1, true,"Kalkulator", 2.0, 1, "Po prostu liczydło", "romek"));
+        auctions.add(new Auction(2, true,"Laptok", 2000.0, 1, "Zepsuty, ale działa", "Trump"));
         return auctions;
     }
 

@@ -41,7 +41,6 @@ public class Main {
         int categoryNumber = 10;
 
 
-        AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
 
 
         Scanner input = new Scanner(System.in).useDelimiter("\\n");
@@ -103,7 +102,8 @@ public class Main {
         System.out.println("Enter price");
         Double auctionPrice = Double.parseDouble(input.next());
         AuctionService auctionService = new AuctionService(auctionsRegistry);
-        auctionService.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
+        boolean active = true;
+        auctionService.addAuction(active, auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
         System.out.println("Your auction was added.");
         return State.LOGGED_IN;
     }
