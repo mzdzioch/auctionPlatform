@@ -98,7 +98,7 @@ public class Main {
         ArrayList<Auction> auctionsList = new ArrayList<>();
 
         int categoryNumber = Integer.parseInt(input.next());
-        if (auctionService.validateCategoryNumber(numberEntered)) {
+        if (auctionService.validateCategoryNumber(categoryNumber)) {
             //auctionList = auctionService.getListOfActiveAuctions(categoryNumber);
             auctionView.printAllAuctionsUnderCategory(categoryNumber);
             System.out.println("Select auction to make an offer");
