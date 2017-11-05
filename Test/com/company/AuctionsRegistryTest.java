@@ -17,8 +17,8 @@ public class AuctionsRegistryTest {
     @Before
     public void setUp() throws Exception {
         fileAuctionsName = "auctions.txt";
-        auction0 = new Auction( "Fiat", 5000, 10, "bla bla bla", "tomek");
-        auction1 = new Auction("Toyota", 14000, 10, "bla bla bla", "bartek");
+        auction0 = new Auction( true,"Fiat", 5000, 10, "bla bla bla", "tomek");
+        auction1 = new Auction(true,"Toyota", 14000, 10, "bla bla bla", "bartek");
         auctionsRegistry = new AuctionsRegistry(fileAuctionsName);
     }
 

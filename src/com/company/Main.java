@@ -41,8 +41,8 @@ public class Main {
         int categoryNumber = 10;
 
 
-        Auction auction0 = new Auction("Title", 20.00, 5, "Description", "romek");
-        Auction auction1 = new Auction("Title1", 20.00, 5, "Description1", "romek");
+        Auction auction0 = new Auction(true,"Title", 20.00, 5, "Description", "romek");
+        Auction auction1 = new Auction(true,"Title1", 20.00, 5, "Description1", "romek");
 
         System.out.println("auction 0 - id " + auction0.getAuctionID());
         System.out.println("auction 1 - id " + auction1.getAuctionID());
@@ -112,7 +112,8 @@ public class Main {
         System.out.println("Enter price");
         Double auctionPrice = Double.parseDouble(input.next());
         AuctionService auctionService = new AuctionService(auctionsRegistry);
-        auctionService.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
+        boolean active = true;
+        auctionService.addAuction(active, auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
         System.out.println("Your auction was added.");
         return State.LOGGED_IN;
     }

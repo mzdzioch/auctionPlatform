@@ -23,8 +23,8 @@ public class AuctionService {
         return auctionsRegistry.getAllAuctions();
     }
 
-    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-        return auctionsRegistry.addAuction(title,price, categoryID, description, login);
+    public boolean addAuction(boolean active, String title, double price, int categoryID, String description, String login) {
+        return auctionsRegistry.addAuction(active, title,price, categoryID, description, login);
     }
 
     public boolean removeAuction(int auctionId){

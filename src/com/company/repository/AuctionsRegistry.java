@@ -31,8 +31,8 @@ public class AuctionsRegistry {
         return idToAuctionMap;
     }
 
-    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-        addAuction(new Auction(title, price, categoryID, description, login));
+    public boolean addAuction(boolean active, String title, double price, int categoryID, String description, String login) {
+        addAuction(new Auction(active, title, price, categoryID, description, login));
         return true;
     }
 
@@ -100,8 +100,9 @@ public class AuctionsRegistry {
         int categoryID = Integer.parseInt(auctionToArray[3]);
         String description = auctionToArray[4];
         String login = auctionToArray[5];
+        boolean active = Boolean.parseBoolean(auctionToArray[6]);
 
-        return new Auction(auctionID, title, price, categoryID, description, login);
+        return new Auction(auctionID, active, title, price, categoryID, description, login);
     }
 
     private void createAuctionsFile(String fileName) {
@@ -116,6 +117,7 @@ public class AuctionsRegistry {
                 + auction.getCategoryID() + "|"
                 + auction.getDescription() + "|"
                 + auction.getLogin()
+                + auction.isActive() + "|"
                 + "\n";
     }
 }
