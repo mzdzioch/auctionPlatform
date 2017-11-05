@@ -31,15 +31,15 @@ public class AuctionsRegistry {
         return idToAuctionMap;
     }
 
-    public boolean addAuction(boolean active, String title, double price, int categoryID, String description, String login, List<Bid> listBids) {
-        addAuction(new Auction(active, title, price, categoryID, description, login, listBids));
-        return true;
-    }
-
-    public boolean addAuction(Auction auction) {
+    public boolean writeAuction(Auction auction) {
         new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
         idToAuctionMap.put(auction.getAuctionID(), auction);
         return true;
+    }
+
+    public boolean addAuction(boolean isActive, String title, double price, int categoryID, String description, String login) {
+        Auction newAuction = new Auction(isActive, title, price, categoryID, description, login);
+        return writeAuction(newAuction);
     }
 
     public ArrayList<Auction> getUserAuctions(User user) {
@@ -119,6 +119,7 @@ public class AuctionsRegistry {
         String login = auctionToArray[6];
         List<Bid> listBids = new ArrayList<>();
         for (int i = 7; i < 10; i++) {
+            System.out.println(i + auctionToArray[i]);
             String bidInString =  auctionToArray[i];
             String[] bidInStringToArray = bidInString.split(", ");
             double bidPrice = Double.parseDouble(bidInStringToArray[1]);
@@ -134,18 +135,36 @@ public class AuctionsRegistry {
     }
 
     private String auctionToString(Auction auction) {
-        return Integer.toString(auction.getAuctionID()) + "|"
+        String auctionToLine;
+        auctionToLine = Integer.toString(auction.getAuctionID()) + "|"
                 + auction.isActive() + "|"
                 + auction.getTitle() + "|"
                 + auction.getPrice() + "|"
                 + auction.getCategoryID() + "|"
                 + auction.getDescription() + "|"
-                + auction.getLogin() + "|"
-                + auction.getListBids().get(1).getUser() + ", " + auction.getListBids().get(1).getBidPrice() + "|"
-                + auction.getListBids().get(2).getUser() + ", " + auction.getListBids().get(2).getBidPrice() + "|"
-                + auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice()
-                + "\n";
+                + auction.getLogin() + "|";
+
+        if (!auction.getListBids().isEmpty()) {
+            if (!(auction.getListBids().get(1).getUser()==null)) {
+                auctionToLine += auction.getListBids().get(1).getUser() + ", " + auction.getListBids().get(1).getBidPrice() + "|";
+                if (!(auction.getListBids().get(2).getUser()==null)) {
+                    auctionToLine += auction.getListBids().get(2).getUser() + ", " + auction.getListBids().get(2).getBidPrice() + "|";
+                    if (!(auction.getListBids().get(3).getUser()==null)) {
+                        auctionToLine += auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice() + "|";
+                    } else {
+                        auctionToLine += "|,";
+                    }
+                } else {
+                    auctionToLine += ",|";
+                }
+            } else {
+                auctionToLine += ",|";
+            }
+
+        } else auctionToLine += ",|,|,|";
+
+         auctionToLine += "\n";
+
+        return auctionToLine;
     }
-
-
 }

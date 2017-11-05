@@ -72,6 +72,7 @@ public class AuctionService {
         return null;
     }
 
+
 //    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
 //        return auctionsRegistry.addAuction(true, title, price, categoryID, description, login);
 //    }
@@ -99,4 +100,11 @@ public class AuctionService {
             return null;
         return auction.getListBids();
     }
+
+
+    public void addAuction(String auctionTitle, Double auctionPrice, int categoryNumber, String auctionDescription, String login) {
+        Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
+        auctionsRegistry.writeAuction(newAuction);
+    }
+
 }
