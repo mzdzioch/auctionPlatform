@@ -11,7 +11,7 @@ import com.company.repository.AuctionsRegistry;
 import com.company.service.AuctionService;
 import com.company.helpers.CategoryBuilder;
 import com.company.view.CategoryView;
-import com.company.service.UserRegistry;
+import com.company.repository.UserRegistry;
 import com.company.view.AuctionView;
 
 import java.io.IOException;
@@ -41,16 +41,6 @@ public class Main {
         int categoryNumber = 10;
 
 
-        Auction auction0 = new Auction(true,"Title", 20.00, 5, "Description", "romek");
-        Auction auction1 = new Auction(true,"Title1", 20.00, 5, "Description1", "romek");
-
-        System.out.println("auction 0 - id " + auction0.getAuctionID());
-        System.out.println("auction 1 - id " + auction1.getAuctionID());
-
-        AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
-        auctionsRegistry.addAuction(auction0);
-        auctionsRegistry.addAuction(auction1);
-       // System.out.println(auctionsRegistry.getAllAuctions().get(14).categoryID);
 
 
         Scanner input = new Scanner(System.in).useDelimiter("\\n");
@@ -192,6 +182,7 @@ public class Main {
 
         usersAuctionList = (ArrayList<Auction>)auctionsRegistry.getUserAuctions(user);
         for (Auction auction : usersAuctionList) {
+            auction.toString();
             System.out.println(auction);
         }
 

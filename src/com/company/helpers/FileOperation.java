@@ -85,7 +85,6 @@ public class FileOperation {
         try {
             String line = br.readLine();
             while (line != null) {
-                System.out.println(line);
                 stringsList.add(line);
                 line = br.readLine();
             }
