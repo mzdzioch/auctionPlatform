@@ -12,6 +12,7 @@ import java.util.Map;
 public class AuctionService {
 
     private AuctionsRegistry auctionsRegistry;
+    private
     private Auction auction;
     List<Bid> bidList;
     private int bidCounter = 0;
@@ -27,6 +28,11 @@ public class AuctionService {
 
     public Map<Integer, Auction> getListOfAuctions(){
         return auctionsRegistry.getAllAuctions();
+    }
+
+    public boolean validateCategoryNumber(int idCategory){
+
+        return false;
     }
 
 

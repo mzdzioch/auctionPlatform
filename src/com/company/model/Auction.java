@@ -17,7 +17,7 @@ public class Auction {
     private List<Bid> listBids = new ArrayList<>();
 
 
-    public Auction(int auctionID, boolean active, String title, double price, int categoryID, String description, String login) {
+    public Auction(int auctionID, boolean active, String title, double price, int categoryID, String description, String login, List<Bid> listBids) {
         this.auctionID = auctionID;
         this.active = active;
         this.title = title;
@@ -25,9 +25,10 @@ public class Auction {
         this.categoryID = categoryID;
         this.description = description;
         this.login = login;
+        this.listBids = listBids;
     }
 
-    public Auction(boolean active, String title, double price, int categoryID, String description, String login) {
+    public Auction(boolean active, String title, double price, int categoryID, String description, String login, List<Bid> listBids) {
         AuctionsCounter auctionsCounter = new AuctionsCounter("acntr.txt");
         this.auctionID = auctionsCounter.readCurrentID() + 1;
         this.active = active;
@@ -36,6 +37,7 @@ public class Auction {
         this.categoryID = categoryID;
         this.description = description;
         this.login = login;
+        this.listBids = listBids;
 
         auctionsCounter.writeCurrentID(this.auctionID);
     }
