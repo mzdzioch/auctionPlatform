@@ -3,9 +3,12 @@ package com.company.service;
 import com.company.helpers.CategoryBuilder;
 import com.company.model.Auction;
 import com.company.model.Bid;
+import com.company.model.Category;
+import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +72,7 @@ public class AuctionService {
         return null;
     }
 
+
 //    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
 //        return auctionsRegistry.addAuction(true, title, price, categoryID, description, login);
 //    }
@@ -97,8 +101,10 @@ public class AuctionService {
         return auction.getListBids();
     }
 
+
     public void addAuction(String auctionTitle, Double auctionPrice, int categoryNumber, String auctionDescription, String login) {
         Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
         auctionsRegistry.writeAuction(newAuction);
     }
+
 }

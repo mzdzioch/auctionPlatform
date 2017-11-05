@@ -91,7 +91,7 @@ public class CategoryBuilder {
         return categoryMap.get(parentId);
     }
 
-    private boolean isParentExist(Integer parentId) {
+    public boolean isParentExist(Integer parentId) {
         categoryMap = copyCategoryToMap();
 
         if(categoryMap.get(parentId) == null)
