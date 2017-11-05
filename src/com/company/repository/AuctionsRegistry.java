@@ -152,22 +152,19 @@ public class AuctionsRegistry {
                     if (!(auction.getListBids().get(3).getUser()==null)) {
                         auctionToLine += auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice() + "|";
                     } else {
-                        auctionToLine += "|";
+                        auctionToLine += "|,";
                     }
                 } else {
-                    auctionToLine += "|";
+                    auctionToLine += ",|";
                 }
             } else {
-                auctionToLine += "|";
+                auctionToLine += ",|";
             }
 
-        } else auctionToLine += "| | |";
+        } else auctionToLine += ",|,|,|";
 
          auctionToLine += "\n";
 
         return auctionToLine;
     }
-
-
-
 }
