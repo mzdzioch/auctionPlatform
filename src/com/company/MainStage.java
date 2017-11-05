@@ -7,7 +7,7 @@ import com.company.model.Category;
 import com.company.model.Node;
 import com.company.model.User;
 import com.company.helpers.CategoryBuilder;
-import com.company.service.UserRegistry;
+import com.company.repository.UserRegistry;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;

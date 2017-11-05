@@ -2,7 +2,7 @@ package com.company;
 
 import com.company.exceptions.LoginExistException;
 import com.company.model.User;
-import com.company.service.UserRegistry;
+import com.company.repository.UserRegistry;
 import org.junit.Before;
 import org.junit.Test;
 

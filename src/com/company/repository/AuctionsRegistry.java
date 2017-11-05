@@ -38,7 +38,6 @@ public class AuctionsRegistry {
 
         ArrayList<String> auctionsFromFile = new ArrayList<>();
         try {
-            System.out.println(fileOperation.readFile(fileAuctionsName));
             auctionsFromFile = fileOperation.readFile(fileAuctionsName);
         } catch (IOException e) {
             e.printStackTrace();

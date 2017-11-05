@@ -1,4 +1,4 @@
-package com.company.helpers;
+package com.company.repository;
 
 import com.company.exceptions.LoginExistException;
 import com.company.model.User;
