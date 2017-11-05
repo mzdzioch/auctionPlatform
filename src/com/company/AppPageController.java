@@ -116,7 +116,7 @@ public class AppPageController implements Initializable{
 
 
     private void addButtonClicked() {
-        Auction auction = new Auction(titleInput.getText(),
+        Auction auction = new Auction(true, titleInput.getText(),
                 Double.parseDouble(priceInput.getText()),
                 Integer.parseInt(categoryIdInput.getText()),
                 descriptionInput.getText(),
@@ -144,8 +144,8 @@ public class AppPageController implements Initializable{
 
     public ObservableList<Auction> getAuctions() {
         ObservableList<Auction> auctions = FXCollections.observableArrayList();
-        auctions.add(new Auction(1, "Kalkulator", 2.0, 1, "Po prostu liczydło", "romek"));
-        auctions.add(new Auction(2, "Laptok", 2000.0, 1, "Zepsuty, ale działa", "Trump"));
+        //auctions.add(new Auction(1, "Kalkulator", 2.0, 1, "Po prostu liczydło", "romek"));
+        //auctions.add(new Auction(2, "Laptok", 2000.0, 1, "Zepsuty, ale działa", "Trump"));
         return auctions;
     }
 
