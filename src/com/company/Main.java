@@ -80,6 +80,13 @@ public class Main {
     }
 
     private static State printFinishedAuctionScreen(Scanner input, UserRegistry userRegistry, AuctionsRegistry auctionsRegistry) {
+        AuctionView auctionView = new AuctionView(auctionsRegistry);
+        ArrayList<Auction> auctionsList = new ArrayList<>();
+        auctionsList = auctionsRegistry.getUserFinishedAuctionList(currentUser);
+        System.out.println("Finished auction of " + currentUser);
+        for (Auction auction : auctionsList) {
+            System.out.println(auction.toString());
+        }
         return State.LOGGED_IN;
     }
 
@@ -87,7 +94,7 @@ public class Main {
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         auctionView.printAuctions(currentUser);
         System.out.println("Enter id number of auction you wish to delete.");
-        int auctionIdToDelete = Integer.parseInt(input.next());
+        int auctionIdToDelete = Integer.parseInt(input.next()); //TODO entry data validation
         auctionsRegistry.removeAuction(auctionIdToDelete);
         System.out.println("Your auction " + auctionIdToDelete + " was deleted.");
         return State.LOGGED_IN;
@@ -95,13 +102,13 @@ public class Main {
 
     private static State printAddAuctionScreen(Scanner input, UserRegistry userRegistry, AuctionsRegistry auctionsRegistry) {
         System.out.println("Select category ID for your new auction");
-        int categoryNumber = Integer.parseInt(input.next());
+        int categoryNumber = Integer.parseInt(input.next()); //TODO entry data validation
         System.out.println("Enter auction title");
-        String auctionTitle = input.next();
+        String auctionTitle = input.next(); //TODO entry data validation
         System.out.println("Enter description");
-        String auctionDescription = input.next();
+        String auctionDescription = input.next(); //TODO entry data validation
         System.out.println("Enter price");
-        Double auctionPrice = Double.parseDouble(input.next());
+        Double auctionPrice = Double.parseDouble(input.next()); //TODO entry data validation
         AuctionService auctionService = new AuctionService(auctionsRegistry);
         auctionService.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
         System.out.println("Your auction was added.");
@@ -115,7 +122,7 @@ public class Main {
         System.out.println("[7] add auction");
         System.out.println("[category number] to display auctions in this category");
         System.out.println("[0] Exit ");
-        int numberEntered = input.nextInt();
+        int numberEntered = input.nextInt(); //TODO entry data validation
         switch (numberEntered) {
             case 0: return State.EXIT;
             case 4:
@@ -198,9 +205,9 @@ public class Main {
 
     private static State printRegistrationScreen(Scanner input, UserRegistry userRegistry) {
         System.out.println("create you login: ");
-        String login = input.next();
+        String login = input.next(); //TODO entry data validation
         System.out.println("create your password: ");
-        String password = input.next();
+        String password = input.next(); //TODO entry data validation
 
         try {
             User user = new User(login, password);
@@ -225,9 +232,9 @@ public class Main {
 
     private static State printLoginScreen(Scanner input, UserRegistry userRegistry) {
         System.out.println("enter you login: ");
-        String login = input.next();
+        String login = input.next(); //TODO entry data validation
         System.out.println("enter your password: ");
-        String password = input.next();
+        String password = input.next(); //TODO entry data validation
         User user = null;
         try {
             user = new User(login, password);
@@ -238,9 +245,6 @@ public class Main {
             } else {
                 LoginExistException exception = new LoginExistException("login not found in database");
                 System.out.println(exception.getMessage());
-//                            System.out.println("type [2] if you want to create new account\n" +
-//                                    "type [0] if you want to exit\n");
-//                            firstLoginOption = input.nextInt();
                 return State.START;
             }
         } catch (CredentialsToShortException e) {
@@ -252,10 +256,6 @@ public class Main {
         }
         return State.START;
 
-/*        System.out.println("type [2] if you want to create new account\n" +
-                "type [0] if you want to exit\n");
-        firstLoginOption = input.nextInt();*/
-
     }
 
     private static State printStartScreen(Scanner input, UserRegistry userRegistry) {
@@ -263,7 +263,7 @@ public class Main {
         System.out.println("type [1] if you want to log in\n" +
                 "type [2] if you want to create new account\n" +
                 "type [0] anytime you want to exit\n");
-        int numberEntered = input.nextInt();
+        int numberEntered = input.nextInt(); //TODO entry data validation
         switch (numberEntered) {
             case 0: return State.EXIT;
             case 1: return State.DURING_LOGIN;

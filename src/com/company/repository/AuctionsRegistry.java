@@ -146,7 +146,7 @@ public class AuctionsRegistry {
         for (Auction auction : auctionsHashMap.values()) {
             if (auction.getAuctionID() == auctionID) {
                 auctionsHashMap.remove(auction);
-                //auction must be also removed from file here
+                //TODO auction must be also removed from file here
                 System.out.println("Auction " + auctionID + "removed");
             }
             return true;
@@ -155,4 +155,14 @@ public class AuctionsRegistry {
         return false;
     }
 
+    public ArrayList<Auction> getUserFinishedAuctionList(User user) {
+        List<Auction> listUserAuctions = new ArrayList<>();
+        readAuctionsRegistryToMemory();
+        for (Auction auction : auctionsHashMap.values()) {
+            if (auction.getLogin().equals(user.getLogin() && auction.isActive)) {
+                listUserAuctions.add(auction);
+            }
+        }
+        return listUserAuctions;
+    }
 }
