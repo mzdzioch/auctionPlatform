@@ -19,7 +19,7 @@ public class FileOperation {
         } else return false;
     }
 
-    private void createFile(String filename) {
+    public void createFile(String filename) {
         FileWriter fw = null;
 
         try {
