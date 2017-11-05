@@ -122,12 +122,12 @@ public class AuctionsRegistry {
 
     private String auctionToString(Auction auction) {
         return Integer.toString(auction.getAuctionID()) + "|"
+                + auction.isActive() + "|"
                 + auction.getTitle() + "|"
                 + auction.getPrice() + "|"
                 + auction.getCategoryID() + "|"
                 + auction.getDescription() + "|"
                 + auction.getLogin() + "|"
-                + auction.isActive() + "|"
                 + "\n";
     }
 
