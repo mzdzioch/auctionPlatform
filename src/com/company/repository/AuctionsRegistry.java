@@ -143,7 +143,7 @@ public class AuctionsRegistry {
                 + auction.getLogin() + "|"
                 + auction.getListBids().get(1).getUser() + ", " + auction.getListBids().get(1).getBidPrice() + "|"
                 + auction.getListBids().get(2).getUser() + ", " + auction.getListBids().get(2).getBidPrice() + "|"
-                + auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice() + "|"
+                + auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice()
                 + "\n";
     }
 
