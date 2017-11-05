@@ -12,7 +12,6 @@ import java.util.Map;
 public class AuctionService {
 
     private AuctionsRegistry auctionsRegistry;
-    private
     private Auction auction;
     List<Bid> bidList;
     private int bidCounter = 0;
@@ -53,12 +52,12 @@ public class AuctionService {
 
         if(bidList.isEmpty()) {
             bidCounter++;
-            return bidList.add(new Bid(user, price));
+            return bidList.add(new Bid(user.getLogin(), price));
 
         } else if(bidCounter <= MAX_NUMBER_OF_BIDS){
             bidCounter++;
             if(price > bidList.get((bidList.size() - 1)).getBidPrice()){
-                return bidList.add(new Bid(user, price));
+                return bidList.add(new Bid(user.getLogin(), price));
             }
 
         }
@@ -74,7 +73,10 @@ public class AuctionService {
     }
 
     public boolean checkIfPriceHigherThan(double priceToBid) {
-        if(priceToBid > getBestBidPrice())
+        if(priceToBid > getBestBidPrice()) {
+
+        }
+        return true;
     }
 
     private double getBestBidPrice(){

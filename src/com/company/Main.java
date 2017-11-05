@@ -93,7 +93,7 @@ public class Main {
             UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
         displayAuctionsCategoryTree();
-        System.out.println("Select category to display");
+/*        System.out.println("Select category to display");
         AuctionService auctionService = new AuctionService(auctionsRegistry);
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         ArrayList<Auction> auctionsList = new ArrayList<>();
@@ -101,7 +101,7 @@ public class Main {
         int categoryNumber = Integer.parseInt(input.next());
         if (auctionService.validateCategoryNumber(categoryNumber)) {
             // check if categoryNumber is valid number of category, like below :)
-             /*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
+             *//*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
 
         categoryTreeIdList.add(1);
         categoryTreeIdList.add(11);
@@ -121,17 +121,17 @@ public class Main {
             displayCategoryAuctions(numberEntered, auctionsRegistry);
         } else {
             System.out.println("Sorry mate, no such category");
-        }*/
+        }*//*
             auctionView.printAllAuctionsUnderCategory(categoryNumber);
             System.out.println("Select auction to make an offer");
-            int auctionNumber = Integer.parseInt(input.next());
-            if (auctionService.validateAuctionToMakeBid(categoryNumber, auctionNumber)) {
+            int auctionId = Integer.parseInt(input.next());
+            if (auctionService.validateAuctionToMakeBid(categoryNumber, auctionId)) {
                 //chceck if auction number entered is one of auctions IDs of category and subcategories displayed
                 System.out.println("Enter your bid");
                 Double bidValue = Double.parseDouble(input.next());
-                if (auctionService.validateBid(bidValue, auctionNumber)) {
+                if (auctionService.validateBid(bidValue, auctionId)) {
                     // check if bidValue is not too low
-                    if (auctionService.makeWinningBid(bidValue, auctionNumber)) {
+                    if (auctionService.makeWinningBid(bidValue, auctionId)) {
                         // try to make winnig bid,
                         // in case of yes (won)
                         // - add winning bid to auction
@@ -141,7 +141,7 @@ public class Main {
                         // - add  bid to auction
                         // return false
                         System.out.println("You won an auction" +
-                                auctionService.getSingleAuction(auctionNumber).getTitle() +
+                                auctionService.getSingleAuction(auctionId).getTitle() +
                                 // let me get single auction with ID == auctionNumber
                                 " is yours.");
                         System.out.println("Your credit card was charged, you have " + bidValue + " less.");
@@ -150,11 +150,18 @@ public class Main {
                     }
                 }
             }
-        }
+        }*/
         return State.LOGGED_IN;
     }
 
 
+    /**
+     * Prints screen with the list of finished auctions owned by the current user
+     * @param input             current input from scanner
+     * @param userRegistry      registry of users
+     * @param auctionsRegistry  registry of auctions
+     * @return                  state that user can see when logged in
+     */
     private static State printFinishedAuctionScreen(
             Scanner input,
             UserRegistry userRegistry,
