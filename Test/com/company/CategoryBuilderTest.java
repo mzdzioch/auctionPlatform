@@ -1,4 +1,3 @@
-/*
 package com.company;
 
 import com.company.model.Category;
@@ -40,4 +39,3 @@ public class CategoryBuilderTest {
         assertThat(testedList.get(1).getItem().getName()).isEqualTo("Motors");
     }
 }
-*/
