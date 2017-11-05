@@ -54,7 +54,7 @@ public class AuctionsRegistry {
     public ArrayList<Auction> getAllAuctionsUnderCategory(int categoryID) {
         ArrayList<Auction> categoryAuctions = new ArrayList<>();
         for (Auction auction : idToAuctionMap.values()) {
-            if (auction.getCategoryID() == categoryID) {
+            if ((auction.getCategoryID() == categoryID) && (auction.isActive())) {
                 categoryAuctions.add(auction);
             }
         }
