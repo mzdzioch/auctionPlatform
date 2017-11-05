@@ -102,6 +102,7 @@ public class Main {
         if (auctionService.validateCategoryNumber(categoryNumber)) {
             // check if categoryNumber is valid number of category, like below :)
              /*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
+
         categoryTreeIdList.add(1);
         categoryTreeIdList.add(11);
         categoryTreeIdList.add(12);
