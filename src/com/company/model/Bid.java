@@ -2,19 +2,19 @@ package com.company.model;
 
 public class Bid {
 
-    private User user;
+    private String user;
     private double bidPrice;
 
-    public Bid(User user, double bidPrice) {
+    public Bid (String user, double bidPrice) {
         this.user = user;
         this.bidPrice = bidPrice;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
