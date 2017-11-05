@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AuctionsRegistry {
@@ -41,8 +40,8 @@ public class AuctionsRegistry {
         return true;
     }
 
-    public List<Auction> getUserAuctions(User user) {
-        List<Auction> userAuctions = new ArrayList<>();
+    public ArrayList<Auction> getUserAuctions(User user) {
+        ArrayList<Auction> userAuctions = new ArrayList<>();
         for (Auction auction : idToAuctionMap.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
                 userAuctions.add(auction);
@@ -52,8 +51,8 @@ public class AuctionsRegistry {
         return userAuctions;
     }
 
-    public List<Auction> getAllAuctionsUnderCategory(int categoryID) {
-        List<Auction> categoryAuctions = new ArrayList<>();
+    public ArrayList<Auction> getAllAuctionsUnderCategory(int categoryID) {
+        ArrayList<Auction> categoryAuctions = new ArrayList<>();
         for (Auction auction : idToAuctionMap.values()) {
             if (auction.getCategoryID() == categoryID) {
                 categoryAuctions.add(auction);
@@ -75,27 +74,34 @@ public class AuctionsRegistry {
     }
 
     public boolean removeAuction(int auctionID) {
-        for (Auction auction : idToAuctionMap.values()) {
-            if (auction.getAuctionID() == auctionID) {
-                idToAuctionMap.remove(auction);
-                //TODO auction must be also removed from file here
-                System.out.println("Auction " + auctionID + "removed");
+        for (Integer key : idToAuctionMap.keySet()) {
+            if (key == auctionID) {
+                idToAuctionMap.remove(key);
+                writeAuctionsRegistryToFile();
+                return true;
             }
-            return true;
         }
-        System.out.println("Incorrect auctionID");
         return false;
     }
 
     private void readAuctionsRegistryToMemory() {
         try {
-            List<String> auctionsFromFile = new FileOperation().readFile(fileAuctionsName);
+            ArrayList<String> auctionsFromFile = new FileOperation().readFile(fileAuctionsName);
             for (String auctionLine : auctionsFromFile) {
                 Auction auction = parseAuction(auctionLine);
                 idToAuctionMap.put(auction.getAuctionID(), auction);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void writeAuctionsRegistryToFile() {
+
+        FileOperation fileOperation = new FileOperation();
+        fileOperation.createFile(fileAuctionsName);
+        for (Auction auction : idToAuctionMap.values()) {
+            fileOperation.addLineToFile(fileAuctionsName, auctionToString(auction));
         }
     }
 
