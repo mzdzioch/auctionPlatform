@@ -93,7 +93,7 @@ public class Main {
             UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
         displayAuctionsCategoryTree();
-/*        System.out.println("Select category to display");
+        System.out.println("Select category to display");
         AuctionService auctionService = new AuctionService(auctionsRegistry);
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         ArrayList<Auction> auctionsList = new ArrayList<>();
@@ -101,27 +101,27 @@ public class Main {
         int categoryNumber = Integer.parseInt(input.next());
         if (auctionService.validateCategoryNumber(categoryNumber)) {
             // check if categoryNumber is valid number of category, like below :)
-             *//*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
+             //*//*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
 
-        categoryTreeIdList.add(1);
-        categoryTreeIdList.add(11);
-        categoryTreeIdList.add(12);
-        categoryTreeIdList.add(13);
-        categoryTreeIdList.add(2);
-        categoryTreeIdList.add(21);
-        categoryTreeIdList.add(22);
-        categoryTreeIdList.add(23);
-        categoryTreeIdList.add(24);
-        categoryTreeIdList.add(3);
-        categoryTreeIdList.add(31);
-        categoryTreeIdList.add(32);
-        categoryTreeIdList.add(33);
+//        categoryTreeIdList.add(1);
+//        categoryTreeIdList.add(11);
+//        categoryTreeIdList.add(12);
+//        categoryTreeIdList.add(13);
+//        categoryTreeIdList.add(2);
+//        categoryTreeIdList.add(21);
+//        categoryTreeIdList.add(22);
+//        categoryTreeIdList.add(23);
+//        categoryTreeIdList.add(24);
+//        categoryTreeIdList.add(3);
+//        categoryTreeIdList.add(31);
+//        categoryTreeIdList.add(32);
+//        categoryTreeIdList.add(33);
 
-        if (categoryTreeIdList.contains(numberEntered)) {
-            displayCategoryAuctions(numberEntered, auctionsRegistry);
-        } else {
-            System.out.println("Sorry mate, no such category");
-        }*//*
+//        if (categoryTreeIdList.contains(numberEntered)) {
+//            displayCategoryAuctions(numberEntered, auctionsRegistry);
+//        } else {
+//            System.out.println("Sorry mate, no such category");
+//        }*//*
             auctionView.printAllAuctionsUnderCategory(categoryNumber);
             System.out.println("Select auction to make an offer");
             int auctionId = Integer.parseInt(input.next());
@@ -131,7 +131,7 @@ public class Main {
                 Double bidValue = Double.parseDouble(input.next());
                 if (auctionService.validateBid(bidValue, auctionId)) {
                     // check if bidValue is not too low
-                    if (auctionService.makeWinningBid(bidValue, auctionId)) {
+                    if (auctionService.makeWinningBid(auctionId, bidValue, currentUser.getLogin())) {
                         // try to make winnig bid,
                         // in case of yes (won)
                         // - add winning bid to auction
@@ -150,7 +150,7 @@ public class Main {
                     }
                 }
             }
-        }*/
+        }
         return State.LOGGED_IN;
     }
 
