@@ -1,5 +1,6 @@
 package com.company.repository;
 
+import com.company.helpers.CategoryBuilder;
 import com.company.helpers.FileOperation;
 import com.company.model.Auction;
 import com.company.model.Bid;
@@ -54,10 +55,17 @@ public class AuctionsRegistry {
     }
 
     public ArrayList<Auction> getAllAuctionsUnderCategory(int categoryID) {
+        CategoryBuilder categoryBuilder = new CategoryBuilder();
+        List<Integer> categoryList = categoryBuilder.getCategoryAndSubcategoriesListId(categoryID);
+
+
         ArrayList<Auction> categoryAuctions = new ArrayList<>();
-        for (Auction auction : idToAuctionMap.values()) {
-            if ((auction.getCategoryID() == categoryID) && (auction.isActive())) {
-                categoryAuctions.add(auction);
+
+        for (Integer categoryNum : categoryList) {
+            for (Auction auction : idToAuctionMap.values()) {
+                if ((auction.getCategoryID() == categoryNum) && (auction.isActive())) {
+                    categoryAuctions.add(auction);
+                }
             }
         }
 
