@@ -77,17 +77,12 @@ public class AuctionService {
         bidList = getBidList(getSingleAuction(auctionId));
         int numOfBids = bidList.size();
 
-        if(numOfBids < MAX_NUMBER_OF_BIDS) {
-
-            bidList.add(new Bid(user, price));
-            return false;
-
-        } else if(numOfBids == MAX_NUMBER_OF_BIDS) {
-
+        if(numOfBids == MAX_NUMBER_OF_BIDS) {
             getSingleAuction(auctionId).setActive(false);
             return bidList.add(new Bid(user, price));
-
         }
+
+        bidList.add(new Bid(user, price));
         return false;
     }
 
