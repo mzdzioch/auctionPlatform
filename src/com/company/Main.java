@@ -43,6 +43,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
@@ -93,7 +94,7 @@ public class Main {
             UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
         displayAuctionsCategoryTree();
-/*        System.out.println("Select category to display");
+        System.out.println("Select category to display");
         AuctionService auctionService = new AuctionService(auctionsRegistry);
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         ArrayList<Auction> auctionsList = new ArrayList<>();
@@ -101,7 +102,7 @@ public class Main {
         int categoryNumber = Integer.parseInt(input.next());
         if (auctionService.validateCategoryNumber(categoryNumber)) {
             // check if categoryNumber is valid number of category, like below :)
-             *//*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
+      /*      ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
 
         categoryTreeIdList.add(1);
         categoryTreeIdList.add(11);
@@ -117,11 +118,12 @@ public class Main {
         categoryTreeIdList.add(32);
         categoryTreeIdList.add(33);
 
-        if (categoryTreeIdList.contains(numberEntered)) {
-            displayCategoryAuctions(numberEntered, auctionsRegistry);
+        if (categoryTreeIdList.contains(categoryNumber)) {
+            displayCategoryAuctions(categoryNumber, auctionsRegistry);
         } else {
             System.out.println("Sorry mate, no such category");
-        }*//*
+        }*/
+
             auctionView.printAllAuctionsUnderCategory(categoryNumber);
             System.out.println("Select auction to make an offer");
             int auctionId = Integer.parseInt(input.next());
@@ -131,7 +133,7 @@ public class Main {
                 Double bidValue = Double.parseDouble(input.next());
                 if (auctionService.validateBid(bidValue, auctionId)) {
                     // check if bidValue is not too low
-                    if (auctionService.makeWinningBid(bidValue, auctionId)) {
+                    if (auctionService.makeWinningBid(auctionId, bidValue, currentUser.getLogin())) {
                         // try to make winnig bid,
                         // in case of yes (won)
                         // - add winning bid to auction
@@ -140,7 +142,7 @@ public class Main {
                         // in case of no
                         // - add  bid to auction
                         // return false
-                        System.out.println("You won an auction" +
+                        System.out.println("You won an auction, " +
                                 auctionService.getSingleAuction(auctionId).getTitle() +
                                 // let me get single auction with ID == auctionNumber
                                 " is yours.");
@@ -150,7 +152,7 @@ public class Main {
                     }
                 }
             }
-        }*/
+        }
         return State.LOGGED_IN;
     }
 
@@ -234,7 +236,7 @@ public class Main {
             case 5:
                 return State.DURING_DELETING_AUCTION;
             case 6:
-                MakeBid();
+                printMakingBid(input, userRegistry, auctionsRegistry);
                 return State.LOGGED_IN;
             case 7:
                 displayAuctionsCategoryTree();
