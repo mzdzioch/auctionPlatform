@@ -17,7 +17,7 @@ public class AuctionService {
     private AuctionsRegistry auctionsRegistry;
     private CategoryBuilder categoryBuilder;
     private List<Bid> bidList;
-    private int bidCounter = 0;
+
     private static final int MAX_NUMBER_OF_BIDS = 3;
 
     public AuctionService(AuctionsRegistry auctionsRegistry) {
@@ -72,39 +72,38 @@ public class AuctionService {
         return null;
     }
 
+    public boolean makeWinningBid(int auctionId, Double price, String user) {
 
-//    public boolean addAuction(String title, double price, int categoryID, String description, String login) {
-//        return auctionsRegistry.addAuction(true, title, price, categoryID, description, login);
-//    }
+        bidList = getBidList(getSingleAuction(auctionId));
+        int numOfBids = bidList.size();
+
+        if(numOfBids < MAX_NUMBER_OF_BIDS) {
+
+            bidList.add(new Bid(user, price));
+            return false;
+
+        } else if(numOfBids == MAX_NUMBER_OF_BIDS) {
+
+            getSingleAuction(auctionId).setActive(false);
+            return bidList.add(new Bid(user, price));
+
+        }
+        return false;
+    }
 
     public boolean removeAuction(int auctionId){
         return auctionsRegistry.removeAuction(auctionId);
     }
 
-    public boolean makeWinningBid(int auctionId, Double price, String user) {
-
-        bidList = getBidList(getSingleAuction(auctionId));
-
-        if(bidCounter < MAX_NUMBER_OF_BIDS) {
-            bidCounter++;
-            getSingleAuction(auctionId).setActive(false);
-            return bidList.add(new Bid(user, price));
-
-        }
-
-        return false;
+    public void addAuction(String auctionTitle, Double auctionPrice, int categoryNumber, String auctionDescription, String login) {
+        Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
+        auctionsRegistry.writeAuction(newAuction);
     }
 
     private List<Bid> getBidList(Auction auction) {
         if(auction == null)
             return null;
         return auction.getListBids();
-    }
-
-
-    public void addAuction(String auctionTitle, Double auctionPrice, int categoryNumber, String auctionDescription, String login) {
-        Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
-        auctionsRegistry.writeAuction(newAuction);
     }
 
 }

@@ -140,12 +140,15 @@ public class AuctionsRegistry {
         String description = auctionToArray[5];
         String login = auctionToArray[6];
         List<Bid> listBids = new ArrayList<>();
+
         for (int i = 7; i < 10; i++) {
-            System.out.println(i + auctionToArray[i]);
+
             String bidInString =  auctionToArray[i];
             String[] bidInStringToArray = bidInString.split(",");
-            System.out.println("Table length " + bidInStringToArray.length);
+
+            //System.out.println("Table length " + bidInStringToArray.length);
             if (bidInStringToArray.length>0 && !bidInStringToArray[1].equals("")) {
+
                 double bidPrice = Double.parseDouble(bidInStringToArray[1]);
                 Bid bid = new Bid(bidInStringToArray[0], bidPrice);
                 listBids.add(bid);
@@ -171,11 +174,11 @@ public class AuctionsRegistry {
 
         if (!auction.getListBids().isEmpty()) {
             if (!(auction.getListBids().get(1).getUser()==null)) {
-                auctionToLine += auction.getListBids().get(1).getUser() + ", " + auction.getListBids().get(1).getBidPrice() + "|";
+                auctionToLine += auction.getListBids().get(1).getUser() + "," + auction.getListBids().get(1).getBidPrice() + "|";
                 if (!(auction.getListBids().get(2).getUser()==null)) {
-                    auctionToLine += auction.getListBids().get(2).getUser() + ", " + auction.getListBids().get(2).getBidPrice() + "|";
+                    auctionToLine += auction.getListBids().get(2).getUser() + "," + auction.getListBids().get(2).getBidPrice() + "|";
                     if (!(auction.getListBids().get(3).getUser()==null)) {
-                        auctionToLine += auction.getListBids().get(3).getUser() + ", " + auction.getListBids().get(3).getBidPrice() + "|";
+                        auctionToLine += auction.getListBids().get(3).getUser() + "," + auction.getListBids().get(3).getBidPrice() + "|";
                     } else {
                         auctionToLine += "|,";
                     }

@@ -103,8 +103,14 @@ public class Auction {
         listBids.add(bid);
     }
 
+    private double getLastPrice(){
+        return getListBids().get(getListBids().size()-1).getBidPrice();
+    }
+
     @Override
     public String toString() {
-        return "id: " + auctionID + " | " + title + " | " + price + " | " + categoryID + " | " + description;
+        return "id: " + auctionID + " | " + title + " | "
+                + (getListBids().isEmpty() ? price : getLastPrice())
+                + " | " + categoryID + " | " + description;
     }
 }
