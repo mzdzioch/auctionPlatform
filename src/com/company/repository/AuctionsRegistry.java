@@ -109,6 +109,28 @@ public class AuctionsRegistry {
 
     private Auction parseAuction(String auctionLine) {
         String[] auctionToArray = auctionLine.split("\\|");
+        for (String s : auctionToArray) {
+            System.out.println(s);
+        }
+/*        String[] bidInStringToArrayHelper7 = auctionToArray[7].split(",");
+        System.out.println("First bid");
+        for (String s : bidInStringToArrayHelper7) {
+            System.out.println(s);
+        }
+
+
+        String[] bidInStringToArrayHelper8 = auctionToArray[8].split(",");
+        System.out.println("Second bid");
+        for (String s : bidInStringToArrayHelper8) {
+            System.out.println(s);
+        }
+
+        String[] bidInStringToArrayHelper9 = auctionToArray[9].split(",");
+        System.out.println("Third bid");
+        for (String s : bidInStringToArrayHelper9) {
+            System.out.println(s);
+        }*/
+
 
         int auctionID = Integer.parseInt(auctionToArray[0]);
         boolean active = Boolean.parseBoolean(auctionToArray[1]);
@@ -123,7 +145,10 @@ public class AuctionsRegistry {
 
             String bidInString =  auctionToArray[i];
             String[] bidInStringToArray = bidInString.split(",");
-            if(bidInStringToArray.length != 0) {
+
+            //System.out.println("Table length " + bidInStringToArray.length);
+            if (bidInStringToArray.length>0 && !bidInStringToArray[1].equals("")) {
+
                 double bidPrice = Double.parseDouble(bidInStringToArray[1]);
                 Bid bid = new Bid(bidInStringToArray[0], bidPrice);
                 listBids.add(bid);

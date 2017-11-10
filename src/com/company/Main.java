@@ -43,6 +43,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
@@ -101,27 +102,7 @@ public class Main {
         int categoryNumber = Integer.parseInt(input.next());
         if (auctionService.validateCategoryNumber(categoryNumber)) {
             // check if categoryNumber is valid number of category, like below :)
-             //*//*       ArrayList<Integer> categoryTreeIdList = new ArrayList<>();
 
-//        categoryTreeIdList.add(1);
-//        categoryTreeIdList.add(11);
-//        categoryTreeIdList.add(12);
-//        categoryTreeIdList.add(13);
-//        categoryTreeIdList.add(2);
-//        categoryTreeIdList.add(21);
-//        categoryTreeIdList.add(22);
-//        categoryTreeIdList.add(23);
-//        categoryTreeIdList.add(24);
-//        categoryTreeIdList.add(3);
-//        categoryTreeIdList.add(31);
-//        categoryTreeIdList.add(32);
-//        categoryTreeIdList.add(33);
-
-//        if (categoryTreeIdList.contains(numberEntered)) {
-//            displayCategoryAuctions(numberEntered, auctionsRegistry);
-//        } else {
-//            System.out.println("Sorry mate, no such category");
-//        }*//*
             auctionView.printAllAuctionsUnderCategory(categoryNumber);
             System.out.println("Select auction to make an offer");
             int auctionId = Integer.parseInt(input.next());
@@ -140,7 +121,7 @@ public class Main {
                         // in case of no
                         // - add  bid to auction
                         // return false
-                        System.out.println("You won an auction" +
+                        System.out.println("You won an auction, " +
                                 auctionService.getSingleAuction(auctionId).getTitle() +
                                 // let me get single auction with ID == auctionNumber
                                 " is yours.");
@@ -234,7 +215,7 @@ public class Main {
             case 5:
                 return State.DURING_DELETING_AUCTION;
             case 6:
-                MakeBid();
+                printMakingBid(input, userRegistry, auctionsRegistry);
                 return State.LOGGED_IN;
             case 7:
                 displayAuctionsCategoryTree();
