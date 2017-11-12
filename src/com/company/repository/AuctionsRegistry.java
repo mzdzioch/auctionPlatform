@@ -58,7 +58,6 @@ public class AuctionsRegistry {
         CategoryBuilder categoryBuilder = new CategoryBuilder();
         List<Integer> categoryList = categoryBuilder.getCategoryAndSubcategoriesListId(categoryID);
 
-
         ArrayList<Auction> categoryAuctions = new ArrayList<>();
 
         for (Integer categoryNum : categoryList) {
@@ -94,6 +93,16 @@ public class AuctionsRegistry {
         return false;
     }
 
+    public void updateAuction(Auction auction){
+
+        for (Integer integer : idToAuctionMap.keySet()) {
+            if(auction.getAuctionID() == integer)
+                idToAuctionMap.replace(integer, auction);
+        }
+
+        writeAuctionsRegistryToFile();
+    }
+
     private void readAuctionsRegistryToMemory() {
         try {
             ArrayList<String> auctionsFromFile = new FileOperation().readFile(fileAuctionsName);
@@ -117,9 +126,9 @@ public class AuctionsRegistry {
 
     private Auction parseAuction(String auctionLine) {
         String[] auctionToArray = auctionLine.split("\\|");
-        for (String s : auctionToArray) {
-            System.out.println(s);
-        }
+//        for (String s : auctionToArray) {
+//            System.out.println(s);
+//        }
 /*        String[] bidInStringToArrayHelper7 = auctionToArray[7].split(",");
         System.out.println("First bid");
         for (String s : bidInStringToArrayHelper7) {
@@ -181,20 +190,20 @@ public class AuctionsRegistry {
                 + auction.getLogin() + "|";
 
         if (!auction.getListBids().isEmpty()) {
-            if (!(auction.getListBids().get(1).getUser()==null)) {
-                auctionToLine += auction.getListBids().get(1).getUser() + "," + auction.getListBids().get(1).getBidPrice() + "|";
-                if (!(auction.getListBids().get(2).getUser()==null)) {
-                    auctionToLine += auction.getListBids().get(2).getUser() + "," + auction.getListBids().get(2).getBidPrice() + "|";
-                    if (!(auction.getListBids().get(3).getUser()==null)) {
-                        auctionToLine += auction.getListBids().get(3).getUser() + "," + auction.getListBids().get(3).getBidPrice() + "|";
+            if (auction.getListBids().size() > 0) {
+                auctionToLine += auction.getListBids().get(0).getUser() + "," + auction.getListBids().get(0).getBidPrice() + "|";
+                if (auction.getListBids().size() > 1) {
+                    auctionToLine += auction.getListBids().get(1).getUser() + "," + auction.getListBids().get(1).getBidPrice() + "|";
+                    if (auction.getListBids().size() > 2) {
+                        auctionToLine += auction.getListBids().get(2).getUser() + "," + auction.getListBids().get(2).getBidPrice() + "|";
                     } else {
-                        auctionToLine += "|,";
+                        auctionToLine += ",|";
                     }
                 } else {
-                    auctionToLine += ",|";
+                    auctionToLine += ",|,|";
                 }
             } else {
-                auctionToLine += ",|";
+                auctionToLine += ",|,|,|";
             }
 
         } else auctionToLine += ",|,|,|";

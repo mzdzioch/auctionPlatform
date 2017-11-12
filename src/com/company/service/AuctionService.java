@@ -79,10 +79,13 @@ public class AuctionService {
 
         if(numOfBids == MAX_NUMBER_OF_BIDS) {
             getSingleAuction(auctionId).setActive(false);
-            return bidList.add(new Bid(user, price));
+            bidList.add(new Bid(user, price));
+            auctionsRegistry.updateAuction(getSingleAuction(auctionId));
+            return true;
         }
 
         bidList.add(new Bid(user, price));
+        auctionsRegistry.updateAuction(getSingleAuction(auctionId));
         return false;
     }
 
