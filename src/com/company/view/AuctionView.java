@@ -58,7 +58,7 @@ public class AuctionView {
 
         categoriesList = categoryBuilder.getCategoryAndSubcategoriesListId(idCategory);
 
-        for (Integer subCategory : categoriesList) {
+        //for (Integer subCategory : categoriesList) {
 
             listCategoryAuctions = auctionsRegistry.getAllAuctionsUnderCategory(idCategory);
 
@@ -66,7 +66,7 @@ public class AuctionView {
                 System.out.println(listCategoryAuction.toString());
             }
 
-        }
+        //}
 
     }
 }
