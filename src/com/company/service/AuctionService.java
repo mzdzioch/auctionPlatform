@@ -18,7 +18,7 @@ public class AuctionService {
     private CategoryBuilder categoryBuilder;
     private List<Bid> bidList;
 
-    private static final int MAX_NUMBER_OF_BIDS = 3;
+    private static final int MAX_NUMBER_OF_BIDS = 2;
 
     public AuctionService(AuctionsRegistry auctionsRegistry) {
         this.auctionsRegistry = auctionsRegistry;
