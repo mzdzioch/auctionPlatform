@@ -5,6 +5,7 @@ import com.company.model.Bid;
 import com.company.repository.AuctionsRegistry;
 import org.junit.Before;
 import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,11 +85,51 @@ public class AuctionServiceTest {
     }
 
     @Test
-    public void validateBid() throws Exception {
+    public void shouldReturnTrueIfBidIsHigherThanActualPrice() throws Exception {
+
+        assertTrue(auctionService.validateBid(5001.0, 1));
+        assertTrue(auctionService.validateBid(4001.0, 2));
+        assertTrue(auctionService.validateBid(21.0, 3));
     }
 
     @Test
-    public void getSingleAuction() throws Exception {
+    public void shouldReturnTrueIfBidIsHigherThanLatestPrice() throws Exception {
+
+        auction1.getListBids().add(new Bid("michal", 5001));
+        auction2.getListBids().add(new Bid("michal", 4001));
+        auction3.getListBids().add(new Bid("michal", 21));
+        assertTrue(auctionService.validateBid(5002.0, 1));
+        assertTrue(auctionService.validateBid(4002.0, 2));
+        assertTrue(auctionService.validateBid(22.0, 3));
+    }
+
+    @Test
+    public void shouldReturnFalseIfBidIsLowerThanActualPrice() throws Exception {
+
+        assertFalse(auctionService.validateBid(4999.9, 1));
+        assertFalse(auctionService.validateBid(3999.9, 2));
+        assertFalse(auctionService.validateBid(19.0, 3));
+    }
+
+    @Test
+    public void shouldReturnFalseIfBidIsLowerThanLatestPrice() throws Exception {
+
+        auctionService.makeWinningBid(1, 5001.0, "michal");
+        auctionService.makeWinningBid(2, 4001.0, "michal");
+        auctionService.makeWinningBid(3, 21.0, "michal");
+
+        assertThat(auctionService.validateBid(5001.0, 1)).isFalse();
+        assertThat(auctionService.validateBid(4001.0, 2)).isFalse();
+        assertThat(auctionService.validateBid(21.0, 3)).isFalse();
+        //assertFalse(auctionService.validateBid(5001.0, 1));
+        //assertFalse(auctionService.validateBid(4001.0, 2));
+        //assertFalse(auctionService.validateBid(21.0, 3));
+    }
+
+    @Test
+    public void shouldReturnSingleAuction() throws Exception {
+
+        assertThat(auctionService.getSingleAuction(1)).isEqualToComparingOnlyGivenFields(auction1);
     }
 
     @Test
