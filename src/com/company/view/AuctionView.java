@@ -1,9 +1,8 @@
 package com.company.view;
 
-import com.company.model.Auction;
-import com.company.model.User;
-import com.company.repository.AuctionsRegistry;
 import com.company.helpers.CategoryBuilder;
+import com.company.model.Auction;
+import com.company.repository.AuctionsRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +21,12 @@ public class AuctionView {
         this.auctionsRegistry = auctionsRegistry;
     }
 
-    public void printAuctions(User user){
 
-        listUserAuction = auctionsRegistry.getUserAuctions(user);
-        for (Auction auction : listUserAuction) {
+
+    public void printListOfInactiveAuctions(ArrayList<Auction> auctions){
+        for (Auction auction : auctions) {
             System.out.println(auction.toString());
         }
-    }
-
-    public void printInactiveAuctions(){
-        listAllAuctions = auctionsRegistry.getAllAuctions();
-
-        for (Auction auction : listAllAuctions.values()) {
-            if(!auction.isActive())
-                System.out.println(auction.toString());
-        }
-
     }
 
     public void printActiveAuctions(){
@@ -68,5 +57,11 @@ public class AuctionView {
 
         //}
 
+    }
+
+    public void printAuctionsList(ArrayList<Auction> userFinishedAuctionList) {
+        for (Auction auction : userFinishedAuctionList) {
+            System.out.println(auction.toString());
+        }
     }
 }

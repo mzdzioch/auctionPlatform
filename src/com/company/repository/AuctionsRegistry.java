@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class AuctionsRegistry {
 
-    private final Map<Integer, Auction> idToAuctionMap = new HashMap<>();
+    private final Map<Integer, Auction> auctionsMapWithId = new HashMap<>();
     private final String fileAuctionsName;
     private List<Bid> bidList;
 
@@ -33,12 +33,12 @@ public class AuctionsRegistry {
     }
 
     public Map<Integer, Auction> getAllAuctions() {
-        return idToAuctionMap;
+        return auctionsMapWithId;
     }
 
     public boolean writeAuction(Auction auction) {
         new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
-        idToAuctionMap.put(auction.getAuctionID(), auction);
+        auctionsMapWithId.put(auction.getAuctionID(), auction);
         return true;
     }
 
@@ -49,7 +49,7 @@ public class AuctionsRegistry {
 
     public ArrayList<Auction> getUserAuctions(User user) {
         ArrayList<Auction> userAuctions = new ArrayList<>();
-        for (Auction auction : idToAuctionMap.values()) {
+        for (Auction auction : auctionsMapWithId.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
                 userAuctions.add(auction);
             }
@@ -65,7 +65,7 @@ public class AuctionsRegistry {
         ArrayList<Auction> categoryAuctions = new ArrayList<>();
 
         for (Integer categoryNum : categoryList) {
-            for (Auction auction : idToAuctionMap.values()) {
+            for (Auction auction : auctionsMapWithId.values()) {
                 if ((auction.getCategoryID() == categoryNum) && (auction.isActive())) {
                     categoryAuctions.add(auction);
                 }
@@ -78,7 +78,7 @@ public class AuctionsRegistry {
     public ArrayList<Auction> getUserFinishedAuctionList(User user) {
         ArrayList<Auction> listUserAuctions = new ArrayList<>();
         readAuctionsRegistryToMemory();
-        for (Auction auction : idToAuctionMap.values()) {
+        for (Auction auction : auctionsMapWithId.values()) {
             if ((auction.getLogin().equals(user.getLogin()) && (auction.isActive()))) {
                 listUserAuctions.add(auction);
             }
@@ -87,9 +87,9 @@ public class AuctionsRegistry {
     }
 
     public boolean removeAuction(int auctionID) {
-        for (Integer key : idToAuctionMap.keySet()) {
+        for (Integer key : auctionsMapWithId.keySet()) {
             if (key == auctionID) {
-                idToAuctionMap.remove(key);
+                auctionsMapWithId.remove(key);
                 writeAuctionsRegistryToFile();
                 return true;
             }
@@ -99,9 +99,9 @@ public class AuctionsRegistry {
 
     public void updateAuction(Auction auction){
 
-        for (Integer integer : idToAuctionMap.keySet()) {
+        for (Integer integer : auctionsMapWithId.keySet()) {
             if(auction.getAuctionID() == integer)
-                idToAuctionMap.replace(integer, auction);
+                auctionsMapWithId.replace(integer, auction);
         }
 
         writeAuctionsRegistryToFile();
@@ -149,7 +149,7 @@ public class AuctionsRegistry {
             ArrayList<String> auctionsFromFile = new FileOperation().readFile(fileAuctionsName);
             for (String auctionLine : auctionsFromFile) {
                 Auction auction = parseAuction(auctionLine);
-                idToAuctionMap.put(auction.getAuctionID(), auction);
+                auctionsMapWithId.put(auction.getAuctionID(), auction);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,7 +160,7 @@ public class AuctionsRegistry {
 
         FileOperation fileOperation = new FileOperation();
         fileOperation.createFile(fileAuctionsName);
-        for (Auction auction : idToAuctionMap.values()) {
+        for (Auction auction : auctionsMapWithId.values()) {
             fileOperation.addLineToFile(fileAuctionsName, auctionToString(auction));
         }
     }

@@ -43,6 +43,20 @@ public class Auction {
         auctionsCounter.writeCurrentID(this.auctionID);
     }
 
+    public Auction(String tomka, boolean active, String title, BigDecimal price, int categoryID, String description, String login) {
+        AuctionsCounter auctionsCounter = new AuctionsCounter(tomka);
+        this.auctionID = auctionsCounter.readCurrentID() + 1;
+        this.active = active;
+        this.title = title;
+        this.price = price;
+        this.categoryID = categoryID;
+        this.description = description;
+        this.login = login;
+        this.listBids = new ArrayList<>() ;
+
+        auctionsCounter.writeCurrentID(this.auctionID);
+    }
+
 
     public int getAuctionID() {
         return auctionID;

@@ -50,11 +50,11 @@ public class AuctionController {
     }
 
     public void printAuctions(User user){
-        auctionView.printAuctions(user);
+        auctionView.printAuctionsList(auctionsRegistry.getUserAuctions(user));
     }
 
-    public void printInactiveAuctions(){
-        auctionView.printInactiveAuctions();
+    public void printInactiveAuctions(User user){
+        auctionView.printAuctionsList(auctionsRegistry.getUserFinishedAuctionList(user));
     }
 
     public void printActiveAuctions() {
@@ -62,7 +62,7 @@ public class AuctionController {
     }
 
     public void printAllAuctionsUnderCategory(int idCategory){
-        auctionView.printAllAuctionsUnderCategory(idCategory);
+        auctionView.printAuctionsList(auctionsRegistry.getAllAuctionsUnderCategory(idCategory));
     }
 
 }

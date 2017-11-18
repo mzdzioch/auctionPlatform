@@ -11,7 +11,6 @@ import com.company.model.Node;
 import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 import com.company.repository.UserRegistry;
-import com.company.view.AuctionView;
 import com.company.view.CategoryView;
 
 import java.io.IOException;
@@ -97,7 +96,6 @@ public class Main {
         displayAuctionsCategoryTree();
         System.out.println("Select category to display");
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        AuctionView auctionView = new AuctionView(auctionsRegistry);
         ArrayList<Auction> auctionsList = new ArrayList<>();
 
         int categoryNumber = Integer.parseInt(input.next());
@@ -148,7 +146,6 @@ public class Main {
             Scanner input,
             UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
-        AuctionView auctionView = new AuctionView(auctionsRegistry);
         ArrayList<Auction> auctionsList = new ArrayList<>();
         auctionsList = auctionsRegistry.getUserFinishedAuctionList(currentUser);
         System.out.println("Finished auction of " + currentUser);
@@ -162,8 +159,8 @@ public class Main {
             Scanner input,
             UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
-        AuctionView auctionView = new AuctionView(auctionsRegistry);
-        auctionView.printAuctions(currentUser);
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
+        auctionController.printAuctions(currentUser);
         System.out.println("Enter id number of auction you wish to delete.");
         try {
             int auctionIdToDelete = Integer.parseInt(input.next()); // entry data validation
@@ -239,11 +236,11 @@ public class Main {
             Scanner input,
             User currentUser,
             AuctionsRegistry auctionsRegistry) {
-        AuctionView auctionView = new AuctionView(auctionsRegistry);
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
         displayAuctionsCategoryTree();
         System.out.println("Enter category number");
         int categoryNumber = Integer.parseInt(input.next());
-        auctionView.printAllAuctionsUnderCategory(categoryNumber);
+        auctionController.printAllAuctionsUnderCategory(categoryNumber);
         return State.LOGGED_IN;
     }
 
@@ -251,10 +248,10 @@ public class Main {
             User currentUser,
             AuctionsRegistry auctionsRegistry) {
         System.out.println("- - - - - - - - - - - ");
-        System.out.println("Closed auctions of " + currentUser);
+        System.out.println("Closed auctions of " + currentUser.getLogin());
         System.out.println("- - - - - - - - - - - ");
-        AuctionView auctionView = new AuctionView(auctionsRegistry);
-        auctionView.printInactiveAuctions();
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
+        auctionController.printInactiveAuctions(currentUser);
         return State.LOGGED_IN;
     }
 
@@ -287,13 +284,8 @@ public class Main {
         System.out.println("- - - - - - - - - - - ");
         System.out.println("Display all auctions of user");
         System.out.println("- - - - - - - - - - - ");
-
-        usersAuctionList = (ArrayList<Auction>)auctionsRegistry.getUserAuctions(user);
-        for (Auction auction : usersAuctionList) {
-            auction.toString();
-            System.out.println(auction);
-        }
-
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
+        auctionController.printAuctions(user);
     }
 
     private static void displayAuctionsCategoryTree() {
