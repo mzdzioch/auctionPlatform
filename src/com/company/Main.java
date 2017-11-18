@@ -316,18 +316,15 @@ public class Main {
             User user = new User(login, password);
             userRegistry.addUser(user);
             System.out.println("User has been created!");
+            return State.LOGGED_IN;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Close encounter of the third kind with I/O problem\n");
         } catch (LoginExistException e) {
-            e.printStackTrace();
+            System.out.println("Ups... " + login + " already exist in database or password is incorrect\n");;
         } catch (CredentialsToShortException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (LoginNullException e) {
-            e.printStackTrace();
-            //  } catch (LoginExistException e) {
-            e.printStackTrace();
-            //  } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Don't play with me and enter correct login and password Mate.\n");;
         }
         return State.START;
 
@@ -343,12 +340,16 @@ public class Main {
         User user = null;
         try {
             user = new User(login, password);
-            if (userRegistry.existUser(user) == true) {
+            if (userRegistry.existUser(user) == true && userRegistry.isLoginAndPasswordCorrect(user)) {
                 System.out.println("Welcome " + user.getLogin());
                 currentUser = user;
                 return State.LOGGED_IN;
             } else {
-                LoginExistException exception = new LoginExistException("login not found in database");
+                LoginExistException exception = new LoginExistException("This marvelous application couldn't find such login in current database or password " +
+                        "you've entered is " +
+                        "incorrect." +
+                        " Please " +
+                        "try again.\n");
                 System.out.println(exception.getMessage());
                 return State.START;
             }
