@@ -34,7 +34,7 @@ public class AuctionView {
         listAllAuctions = auctionsRegistry.getAllAuctions();
 
         for (Auction auction : listAllAuctions.values()) {
-            if(auction.isActive())
+            if(!auction.isActive())
                 System.out.println(auction.toString());
         }
 
@@ -44,7 +44,7 @@ public class AuctionView {
         listAllAuctions = auctionsRegistry.getAllAuctions();
 
         for (Auction auction : listAllAuctions.values()) {
-            if(!auction.isActive())
+            if(auction.isActive())
                 System.out.println(auction.toString());
         }
 

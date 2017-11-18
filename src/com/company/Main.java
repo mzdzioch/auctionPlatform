@@ -224,7 +224,7 @@ public class Main {
             case 8:
                 return dispalyUsersClosedAuctions(currentUser, auctionsRegistry);
             case 9:
-                return displayAuctions(currentUser, auctionsRegistry);
+                return displayAuctions(input, currentUser, auctionsRegistry);
             default:
                 if (auctionService.validateCategoryNumber(categoryNumber)) {
                     displayCategoryAuctions(numberEntered, auctionsRegistry);
@@ -236,9 +236,15 @@ public class Main {
     }
 
     private static State displayAuctions(
+            Scanner input,
             User currentUser,
             AuctionsRegistry auctionsRegistry) {
-        return State.DURING_MAKING_A_BID;
+        AuctionView auctionView = new AuctionView(auctionsRegistry);
+        displayAuctionsCategoryTree();
+        System.out.println("Enter category number");
+        int categoryNumber = Integer.parseInt(input.next());
+        auctionView.printAllAuctionsUnderCategory(categoryNumber);
+        return State.LOGGED_IN;
     }
 
     private static State dispalyUsersClosedAuctions(
@@ -267,11 +273,11 @@ public class Main {
 
     }
 
-    private static void MakeBid() {
+/*    private static void MakeBid() {
         System.out.println("- - - - - - - - - - - ");
         System.out.println("Make a bid");
         System.out.println("- - - - - - - - - - - ");
-    }
+    }*/
 
     private static void displayUsersAuctions(
             User user,
