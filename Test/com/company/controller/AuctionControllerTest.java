@@ -1,4 +1,4 @@
-package com.company.service;
+package com.company.controller;
 
 import com.company.model.Auction;
 import com.company.model.Bid;
@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
-public class AuctionServiceTest {
+public class AuctionControllerTest {
 
     String filename;
     Auction auction1;
@@ -23,7 +23,7 @@ public class AuctionServiceTest {
     Auction auction3;
     List<Bid> bid1, bid2, bid3;
     AuctionsRegistry auctionRegistry;
-    AuctionService auctionService;
+    AuctionController auctionController;
 
     @Before
     public void setUp() throws Exception{
@@ -35,7 +35,7 @@ public class AuctionServiceTest {
         auction2 = new Auction(2, true,"Toyota Yaris", new BigDecimal(4000), 22, "bla bla bla", "bartek", bid2);
         auction3 = new Auction(3, true, "Apple", new BigDecimal(20), 11, "Nowy laptop", "misiek", bid3);
         auctionRegistry = new AuctionsRegistry(filename);
-        auctionService = new AuctionService(auctionRegistry);
+        auctionController = new AuctionController(auctionRegistry);
     }
 
     @Test
@@ -47,50 +47,50 @@ public class AuctionServiceTest {
         auctionRegistry.writeAuction(auction1);
         auctionRegistry.writeAuction(auction2);
 
-        assertEquals(expectedMap, auctionService.getListOfAuctions());
+        assertEquals(expectedMap, auctionRegistry.getAllAuctions());
 
     }
 
     @Test
     public void shouldReturnTrueIfCategoryNumberIsCorrect() throws Exception {
 
-        assertTrue(auctionService.validateCategoryNumber(11));
-        assertTrue(auctionService.validateCategoryNumber(21));
-        assertTrue(auctionService.validateCategoryNumber(24));
-        assertTrue(auctionService.validateCategoryNumber(31));
-        assertTrue(auctionService.validateCategoryNumber(33));
+        assertTrue(auctionController.validateCategoryNumber(11));
+        assertTrue(auctionController.validateCategoryNumber(21));
+        assertTrue(auctionController.validateCategoryNumber(24));
+        assertTrue(auctionController.validateCategoryNumber(31));
+        assertTrue(auctionController.validateCategoryNumber(33));
     }
 
     @Test
     public void shouldReturnFalseIfCategoryNumberIsNotCorrect() throws Exception {
-        assertFalse(auctionService.validateCategoryNumber(14));
-        assertFalse(auctionService.validateCategoryNumber(25));
-        assertFalse(auctionService.validateCategoryNumber(34));
+        assertFalse(auctionController.validateCategoryNumber(14));
+        assertFalse(auctionController.validateCategoryNumber(25));
+        assertFalse(auctionController.validateCategoryNumber(34));
     }
 
     @Test
     public void shouldReturnTrueIfAuctionsBelongToCategory() throws Exception {
         auctionRegistry.writeAuction(auction3);
 
-        assertTrue(auctionService.validateAuctionToMakeBid(2, 1));
-        assertTrue(auctionService.validateAuctionToMakeBid(2, 2));
-        assertTrue(auctionService.validateAuctionToMakeBid(1, 3));
+        assertTrue(auctionController.validateAuctionToMakeBid(2, 1));
+        assertTrue(auctionController.validateAuctionToMakeBid(2, 2));
+        assertTrue(auctionController.validateAuctionToMakeBid(1, 3));
     }
 
     @Test
     public void shouldReturnFalseIfAuctionsNotBelongToCategory() throws Exception {
 
-        assertFalse(auctionService.validateAuctionToMakeBid(3, 1));
-        assertFalse(auctionService.validateAuctionToMakeBid(1, 2));
-        assertFalse(auctionService.validateAuctionToMakeBid(3, 3));
+        assertFalse(auctionController.validateAuctionToMakeBid(3, 1));
+        assertFalse(auctionController.validateAuctionToMakeBid(1, 2));
+        assertFalse(auctionController.validateAuctionToMakeBid(3, 3));
     }
 
     @Test
     public void shouldReturnTrueIfBidIsHigherThanActualPrice() throws Exception {
 
-        assertTrue(auctionService.validateBid(new BigDecimal(5001.0), 1));
-        assertTrue(auctionService.validateBid(new BigDecimal(4001.0), 2));
-        assertTrue(auctionService.validateBid(new BigDecimal(21.0), 3));
+        assertTrue(auctionController.validateBid(new BigDecimal(5001.0), 1));
+        assertTrue(auctionController.validateBid(new BigDecimal(4001.0), 2));
+        assertTrue(auctionController.validateBid(new BigDecimal(21.0), 3));
     }
 
     @Test
@@ -100,38 +100,38 @@ public class AuctionServiceTest {
         auction2.getListBids().add(new Bid("michal", new BigDecimal(4001)));
         auction3.getListBids().add(new Bid("michal", new BigDecimal(21)));
 
-        assertTrue(auctionService.validateBid(new BigDecimal(5002.0), 1));
-        assertTrue(auctionService.validateBid(new BigDecimal(4002.0), 2));
-        assertTrue(auctionService.validateBid(new BigDecimal(22.0), 3));
+        assertTrue(auctionController.validateBid(new BigDecimal(5002.0), 1));
+        assertTrue(auctionController.validateBid(new BigDecimal(4002.0), 2));
+        assertTrue(auctionController.validateBid(new BigDecimal(22.0), 3));
     }
 
     @Test
     public void shouldReturnFalseIfBidIsLowerThanActualPrice() throws Exception {
 
-        assertFalse(auctionService.validateBid(new BigDecimal(4999.9), 1));
-        assertFalse(auctionService.validateBid(new BigDecimal(3999.9), 2));
-        assertFalse(auctionService.validateBid(new BigDecimal(19.0), 3));
+        assertFalse(auctionController.validateBid(new BigDecimal(4999.9), 1));
+        assertFalse(auctionController.validateBid(new BigDecimal(3999.9), 2));
+        assertFalse(auctionController.validateBid(new BigDecimal(19.0), 3));
     }
 
     @Test
     public void shouldReturnFalseIfBidIsLowerThanLatestPrice() throws Exception {
 
-        auctionService.makeWinningBid(1, new BigDecimal(5001.0), "michal");
-        auctionService.makeWinningBid(2, new BigDecimal(4001.0), "michal");
-        auctionService.makeWinningBid(3, new BigDecimal(21.0), "michal");
+        auctionController.makeWinningBid(1, new BigDecimal(5001.0), "michal");
+        auctionController.makeWinningBid(2, new BigDecimal(4001.0), "michal");
+        auctionController.makeWinningBid(3, new BigDecimal(21.0), "michal");
 
-        assertThat(auctionService.validateBid(new BigDecimal(5001.0), 1)).isFalse();
-        assertThat(auctionService.validateBid(new BigDecimal(4001.0), 2)).isFalse();
-        assertThat(auctionService.validateBid(new BigDecimal(21.0), 3)).isFalse();
-        //assertFalse(auctionService.validateBid(5001.0, 1));
-        //assertFalse(auctionService.validateBid(4001.0, 2));
-        //assertFalse(auctionService.validateBid(21.0, 3));
+        assertThat(auctionController.validateBid(new BigDecimal(5001.0), 1)).isFalse();
+        assertThat(auctionController.validateBid(new BigDecimal(4001.0), 2)).isFalse();
+        assertThat(auctionController.validateBid(new BigDecimal(21.0), 3)).isFalse();
+        //assertFalse(auctionController.validateBid(5001.0, 1));
+        //assertFalse(auctionController.validateBid(4001.0, 2));
+        //assertFalse(auctionController.validateBid(21.0, 3));
     }
 
     @Test
     public void shouldReturnSingleAuction() throws Exception {
 
-        assertThat(auctionService.getSingleAuction(1)).isEqualToComparingOnlyGivenFields(auction1);
+        assertThat(auctionController.getSingleAuction(1)).isEqualToComparingOnlyGivenFields(auction1);
     }
 
     @Test

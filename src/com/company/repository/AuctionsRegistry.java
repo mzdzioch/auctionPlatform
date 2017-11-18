@@ -18,6 +18,9 @@ public class AuctionsRegistry {
 
     private final Map<Integer, Auction> idToAuctionMap = new HashMap<>();
     private final String fileAuctionsName;
+    private List<Bid> bidList;
+
+    private static final int MAX_NUMBER_OF_BIDS = 2;
 
     public AuctionsRegistry(String fileAuctionsName) {
         this.fileAuctionsName = fileAuctionsName;
@@ -102,6 +105,43 @@ public class AuctionsRegistry {
         }
 
         writeAuctionsRegistryToFile();
+    }
+
+    public boolean validateAuctionToMakeBid(int categoryNumber, int auctionNumber) {
+
+        for (Auction auction : getAllAuctionsUnderCategory(categoryNumber)) {
+            if(auction.getAuctionID() == auctionNumber)
+                return true;
+        }
+
+        return false;
+    }
+
+    public Auction getSingleAuction(int auctionId) {
+
+        for (Auction auction : getAllAuctions().values()) {
+            if(auction.getAuctionID() == auctionId) {
+                return auction;
+            }
+        }
+        return null;
+    }
+
+    public boolean makeWinningBid(int auctionId, BigDecimal price, String user) {
+
+        bidList = (getSingleAuction(auctionId)).getListBids();
+        int numOfBids = bidList.size();
+
+        if(numOfBids == MAX_NUMBER_OF_BIDS) {
+            getSingleAuction(auctionId).setActive(false);
+            bidList.add(new Bid(user, price));
+            updateAuction(getSingleAuction(auctionId));
+            return true;
+        }
+
+        bidList.add(new Bid(user, price));
+        updateAuction(getSingleAuction(auctionId));
+        return false;
     }
 
     private void readAuctionsRegistryToMemory() {

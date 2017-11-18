@@ -108,6 +108,19 @@ public class Auction {
         return getListBids().get(getListBids().size()-1).getBidPrice();
     }
 
+    public boolean validateBid(BigDecimal bidValue) {
+
+        if(!getListBids().isEmpty()) {
+            if(bidValue.compareTo(getListBids().get(getListBids().size() - 1).getBidPrice()) == 1)
+                return true;
+            return false;
+        } else if(bidValue.compareTo(getPrice()) == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public String toString() {
         return "id: " + auctionID + " | " + title + " | "

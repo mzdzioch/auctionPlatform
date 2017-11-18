@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.controller.AuctionController;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginExistException;
 import com.company.exceptions.LoginNullException;
@@ -10,7 +11,6 @@ import com.company.model.Node;
 import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 import com.company.repository.UserRegistry;
-import com.company.service.AuctionService;
 import com.company.view.AuctionView;
 import com.company.view.CategoryView;
 
@@ -53,7 +53,7 @@ public class Main {
         int categoryNumber = 10;
 
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
-        AuctionService auctionService = new AuctionService(auctionsRegistry);
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
         Scanner input = new Scanner(System.in).useDelimiter("\\n");
         UserRegistry userRegistry = new UserRegistry("users.txt");
         CategoryBuilder categoryBuilder = new CategoryBuilder();
@@ -72,7 +72,7 @@ public class Main {
                     state = printRegistrationScreen(input, userRegistry);
                     break;
                 case LOGGED_IN:
-                    state = printLoggedInScreen(input, userRegistry, currentUser, auctionsRegistry, auctionService);
+                    state = printLoggedInScreen(input, userRegistry, currentUser, auctionsRegistry, auctionController);
                     break;
                 case DURING_ADDING_AUCTION:
                     state = printAddAuctionScreen(input, userRegistry, auctionsRegistry);
@@ -96,24 +96,24 @@ public class Main {
             AuctionsRegistry auctionsRegistry) {
         displayAuctionsCategoryTree();
         System.out.println("Select category to display");
-        AuctionService auctionService = new AuctionService(auctionsRegistry);
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
         AuctionView auctionView = new AuctionView(auctionsRegistry);
         ArrayList<Auction> auctionsList = new ArrayList<>();
 
         int categoryNumber = Integer.parseInt(input.next());
-        if (auctionService.validateCategoryNumber(categoryNumber)) {
+        if (auctionController.validateCategoryNumber(categoryNumber)) {
             // check if categoryNumber is valid number of category, like below :)
 
-            auctionView.printAllAuctionsUnderCategory(categoryNumber);
+            auctionController.printAllAuctionsUnderCategory(categoryNumber);
             System.out.println("Select auction to make an offer");
             int auctionId = Integer.parseInt(input.next());
-            if (auctionService.validateAuctionToMakeBid(categoryNumber, auctionId)) {
+            if (auctionController.validateAuctionToMakeBid(categoryNumber, auctionId)) {
                 //chceck if auction number entered is one of auctions IDs of category and subcategories displayed
                 System.out.println("Enter your bid");
                 BigDecimal bidValue = new BigDecimal(input.next());
-                if (auctionService.validateBid(bidValue, auctionId)) {
+                if (auctionController.validateBid(bidValue, auctionId)) {
                     // check if bidValue is not too low
-                    if (auctionService.makeWinningBid(auctionId, bidValue, currentUser.getLogin())) {
+                    if (auctionController.makeWinningBid(auctionId, bidValue, currentUser.getLogin())) {
                         // try to make winnig bid,
                         // in case of yes (won)
                         // - add winning bid to auction
@@ -123,7 +123,7 @@ public class Main {
                         // - add  bid to auction
                         // return false
                         System.out.println("You won an auction, " +
-                                auctionService.getSingleAuction(auctionId).getTitle() +
+                                auctionController.getSingleAuction(auctionId).getTitle() +
                                 // let me get single auction with ID == auctionNumber
                                 " is yours.");
                         System.out.println("Your credit card was charged, you have " + bidValue + " less.");
@@ -187,8 +187,8 @@ public class Main {
         String auctionDescription = input.next(); //TODO entry data validation
         System.out.println("Enter price");
         BigDecimal auctionPrice = new BigDecimal(input.next()); //TODO entry data validation
-        AuctionService auctionService = new AuctionService(auctionsRegistry);
-        auctionService.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
+        AuctionController auctionController = new AuctionController(auctionsRegistry);
+        auctionController.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
         System.out.println("Your auction was added.");
         return State.LOGGED_IN;
     }
@@ -198,7 +198,7 @@ public class Main {
             UserRegistry userRegistry,
             User user,
             AuctionsRegistry auctionsRegistry,
-            AuctionService auctionService) {
+            AuctionController auctionController) {
         System.out.println("[4] display your auctions");
         System.out.println("[5] delete auction");
         System.out.println("[6] make a bid");
@@ -226,7 +226,7 @@ public class Main {
             case 9:
                 return displayAuctions(input, currentUser, auctionsRegistry);
             default:
-                if (auctionService.validateCategoryNumber(categoryNumber)) {
+                if (auctionController.validateCategoryNumber(categoryNumber)) {
                     displayCategoryAuctions(numberEntered, auctionsRegistry);
                 } else {
                     System.out.println("Sorry mate, no such category");
