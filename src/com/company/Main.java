@@ -15,6 +15,7 @@ import com.company.view.AuctionView;
 import com.company.view.CategoryView;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -109,7 +110,7 @@ public class Main {
             if (auctionService.validateAuctionToMakeBid(categoryNumber, auctionId)) {
                 //chceck if auction number entered is one of auctions IDs of category and subcategories displayed
                 System.out.println("Enter your bid");
-                Double bidValue = Double.parseDouble(input.next());
+                BigDecimal bidValue = new BigDecimal(input.next());
                 if (auctionService.validateBid(bidValue, auctionId)) {
                     // check if bidValue is not too low
                     if (auctionService.makeWinningBid(auctionId, bidValue, currentUser.getLogin())) {
@@ -185,7 +186,7 @@ public class Main {
         System.out.println("Enter description");
         String auctionDescription = input.next(); //TODO entry data validation
         System.out.println("Enter price");
-        Double auctionPrice = Double.parseDouble(input.next()); //TODO entry data validation
+        BigDecimal auctionPrice = new BigDecimal(input.next()); //TODO entry data validation
         AuctionService auctionService = new AuctionService(auctionsRegistry);
         auctionService.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
         System.out.println("Your auction was added.");

@@ -2,6 +2,7 @@ package com.company.model;
 
 import com.company.helpers.AuctionsCounter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +11,14 @@ public class Auction {
     private final int auctionID;
     private boolean active;
     private String title;
-    private double price;
+    private BigDecimal price;
     private int categoryID;
     private String description;
     private String login;
     private List<Bid> listBids = new ArrayList<>();
 
 
-    public Auction(int auctionID, boolean active, String title, double price, int categoryID, String description, String login, List<Bid> listBids) {
+    public Auction(int auctionID, boolean active, String title, BigDecimal price, int categoryID, String description, String login, List<Bid> listBids) {
         this.auctionID = auctionID;
         this.active = active;
         this.title = title;
@@ -28,7 +29,7 @@ public class Auction {
         this.listBids = listBids;
     }
 
-    public Auction(boolean active, String title, double price, int categoryID, String description, String login) {
+    public Auction(boolean active, String title, BigDecimal price, int categoryID, String description, String login) {
         AuctionsCounter auctionsCounter = new AuctionsCounter("acntr.txt");
         this.auctionID = auctionsCounter.readCurrentID() + 1;
         this.active = active;
@@ -63,11 +64,11 @@ public class Auction {
         this.title = title;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -103,7 +104,7 @@ public class Auction {
         listBids.add(bid);
     }
 
-    private double getLastPrice(){
+    private BigDecimal getLastPrice(){
         return getListBids().get(getListBids().size()-1).getBidPrice();
     }
 

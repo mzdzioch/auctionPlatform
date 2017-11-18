@@ -1,11 +1,13 @@
 package com.company.model;
 
+import java.math.BigDecimal;
+
 public class Bid {
 
     private String user;
-    private double bidPrice;
+    private BigDecimal bidPrice;
 
-    public Bid (String user, double bidPrice) {
+    public Bid (String user, BigDecimal bidPrice) {
         this.user = user;
         this.bidPrice = bidPrice;
     }
@@ -18,11 +20,11 @@ public class Bid {
         this.user = user;
     }
 
-    public double getBidPrice() {
+    public BigDecimal getBidPrice() {
         return bidPrice;
     }
 
-    public void setBidPrice(double bidPrice) {
+    public void setBidPrice(BigDecimal bidPrice) {
         this.bidPrice = bidPrice;
     }
 }

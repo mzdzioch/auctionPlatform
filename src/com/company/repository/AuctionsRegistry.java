@@ -8,6 +8,7 @@ import com.company.model.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class AuctionsRegistry {
         return true;
     }
 
-    public boolean addAuction(boolean isActive, String title, double price, int categoryID, String description, String login) {
+    public boolean addAuction(boolean isActive, String title, BigDecimal price, int categoryID, String description, String login) {
         Auction newAuction = new Auction(isActive, title, price, categoryID, description, login);
         return writeAuction(newAuction);
     }
@@ -152,7 +153,7 @@ public class AuctionsRegistry {
         int auctionID = Integer.parseInt(auctionToArray[0]);
         boolean active = Boolean.parseBoolean(auctionToArray[1]);
         String title = auctionToArray[2];
-        double price = Double.parseDouble(auctionToArray[3]);
+        BigDecimal price = new BigDecimal(auctionToArray[3]);
         int categoryID = Integer.parseInt(auctionToArray[4]);
         String description = auctionToArray[5];
         String login = auctionToArray[6];
@@ -166,7 +167,7 @@ public class AuctionsRegistry {
             //System.out.println("Table length " + bidInStringToArray.length);
             if (bidInStringToArray.length>0 && !bidInStringToArray[1].equals("")) {
 
-                double bidPrice = Double.parseDouble(bidInStringToArray[1]);
+                BigDecimal bidPrice = new BigDecimal(bidInStringToArray[1]);
                 Bid bid = new Bid(bidInStringToArray[0], bidPrice);
                 listBids.add(bid);
             }

@@ -5,13 +5,14 @@ import com.company.model.Bid;
 import com.company.repository.AuctionsRegistry;
 import org.junit.Before;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 public class AuctionServiceTest {
@@ -30,9 +31,9 @@ public class AuctionServiceTest {
         bid1 = new ArrayList<>();
         bid2 = new ArrayList<>();
         bid3 = new ArrayList<>();
-        auction1 = new Auction(1, true, "Fiat Doblo", 5000, 22, "bla bla bla", "tomek", bid1);
-        auction2 = new Auction(2, true,"Toyota Yaris", 4000, 22, "bla bla bla", "bartek", bid2);
-        auction3 = new Auction(3, true, "Apple", 20, 11, "Nowy laptop", "misiek", bid3);
+        auction1 = new Auction(1, true, "Fiat Doblo", new BigDecimal(5000), 22, "bla bla bla", "tomek", bid1);
+        auction2 = new Auction(2, true,"Toyota Yaris", new BigDecimal(4000), 22, "bla bla bla", "bartek", bid2);
+        auction3 = new Auction(3, true, "Apple", new BigDecimal(20), 11, "Nowy laptop", "misiek", bid3);
         auctionRegistry = new AuctionsRegistry(filename);
         auctionService = new AuctionService(auctionRegistry);
     }
@@ -87,40 +88,41 @@ public class AuctionServiceTest {
     @Test
     public void shouldReturnTrueIfBidIsHigherThanActualPrice() throws Exception {
 
-        assertTrue(auctionService.validateBid(5001.0, 1));
-        assertTrue(auctionService.validateBid(4001.0, 2));
-        assertTrue(auctionService.validateBid(21.0, 3));
+        assertTrue(auctionService.validateBid(new BigDecimal(5001.0), 1));
+        assertTrue(auctionService.validateBid(new BigDecimal(4001.0), 2));
+        assertTrue(auctionService.validateBid(new BigDecimal(21.0), 3));
     }
 
     @Test
     public void shouldReturnTrueIfBidIsHigherThanLatestPrice() throws Exception {
 
-        auction1.getListBids().add(new Bid("michal", 5001));
-        auction2.getListBids().add(new Bid("michal", 4001));
-        auction3.getListBids().add(new Bid("michal", 21));
-        assertTrue(auctionService.validateBid(5002.0, 1));
-        assertTrue(auctionService.validateBid(4002.0, 2));
-        assertTrue(auctionService.validateBid(22.0, 3));
+        auction1.getListBids().add(new Bid("michal", new BigDecimal(5001)));
+        auction2.getListBids().add(new Bid("michal", new BigDecimal(4001)));
+        auction3.getListBids().add(new Bid("michal", new BigDecimal(21)));
+
+        assertTrue(auctionService.validateBid(new BigDecimal(5002.0), 1));
+        assertTrue(auctionService.validateBid(new BigDecimal(4002.0), 2));
+        assertTrue(auctionService.validateBid(new BigDecimal(22.0), 3));
     }
 
     @Test
     public void shouldReturnFalseIfBidIsLowerThanActualPrice() throws Exception {
 
-        assertFalse(auctionService.validateBid(4999.9, 1));
-        assertFalse(auctionService.validateBid(3999.9, 2));
-        assertFalse(auctionService.validateBid(19.0, 3));
+        assertFalse(auctionService.validateBid(new BigDecimal(4999.9), 1));
+        assertFalse(auctionService.validateBid(new BigDecimal(3999.9), 2));
+        assertFalse(auctionService.validateBid(new BigDecimal(19.0), 3));
     }
 
     @Test
     public void shouldReturnFalseIfBidIsLowerThanLatestPrice() throws Exception {
 
-        auctionService.makeWinningBid(1, 5001.0, "michal");
-        auctionService.makeWinningBid(2, 4001.0, "michal");
-        auctionService.makeWinningBid(3, 21.0, "michal");
+        auctionService.makeWinningBid(1, new BigDecimal(5001.0), "michal");
+        auctionService.makeWinningBid(2, new BigDecimal(4001.0), "michal");
+        auctionService.makeWinningBid(3, new BigDecimal(21.0), "michal");
 
-        assertThat(auctionService.validateBid(5001.0, 1)).isFalse();
-        assertThat(auctionService.validateBid(4001.0, 2)).isFalse();
-        assertThat(auctionService.validateBid(21.0, 3)).isFalse();
+        assertThat(auctionService.validateBid(new BigDecimal(5001.0), 1)).isFalse();
+        assertThat(auctionService.validateBid(new BigDecimal(4001.0), 2)).isFalse();
+        assertThat(auctionService.validateBid(new BigDecimal(21.0), 3)).isFalse();
         //assertFalse(auctionService.validateBid(5001.0, 1));
         //assertFalse(auctionService.validateBid(4001.0, 2));
         //assertFalse(auctionService.validateBid(21.0, 3));

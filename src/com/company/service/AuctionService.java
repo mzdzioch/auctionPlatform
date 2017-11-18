@@ -3,12 +3,10 @@ package com.company.service;
 import com.company.helpers.CategoryBuilder;
 import com.company.model.Auction;
 import com.company.model.Bid;
-import com.company.model.Category;
-import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,15 +45,15 @@ public class AuctionService {
         return false;
     }
 
-    public boolean validateBid(Double bidValue, int auctionNumber) {
+    public boolean validateBid(BigDecimal bidValue, int auctionNumber) {
 
         bidList = getBidList(getSingleAuction(auctionNumber));
 
         if(!bidList.isEmpty()) {
-            if(bidValue > bidList.get(bidList.size() - 1).getBidPrice())
+            if(bidValue.compareTo(bidList.get(bidList.size() - 1).getBidPrice()) == 1)
                 return true;
             return false;
-        } else if(bidValue > getSingleAuction(auctionNumber).getPrice() ) {
+        } else if(bidValue.compareTo(getSingleAuction(auctionNumber).getPrice()) == 1) {
             return true;
         }
 
@@ -72,7 +70,7 @@ public class AuctionService {
         return null;
     }
 
-    public boolean makeWinningBid(int auctionId, Double price, String user) {
+    public boolean makeWinningBid(int auctionId, BigDecimal price, String user) {
 
         bidList = getBidList(getSingleAuction(auctionId));
         int numOfBids = bidList.size();
@@ -93,7 +91,7 @@ public class AuctionService {
         return auctionsRegistry.removeAuction(auctionId);
     }
 
-    public void addAuction(String auctionTitle, Double auctionPrice, int categoryNumber, String auctionDescription, String login) {
+    public void addAuction(String auctionTitle, BigDecimal auctionPrice, int categoryNumber, String auctionDescription, String login) {
         Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
         auctionsRegistry.writeAuction(newAuction);
     }
