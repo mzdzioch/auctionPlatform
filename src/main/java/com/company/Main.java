@@ -1,15 +1,12 @@
 package com.company;
 
 import com.company.controller.AuctionController;
-import com.company.controller.Database;
+import com.company.controller.DatabaseConnector;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginExistException;
 import com.company.exceptions.LoginNullException;
 import com.company.helpers.CategoryBuilder;
-import com.company.model.Auction;
-import com.company.model.Category;
-import com.company.model.Node;
-import com.company.model.User;
+import com.company.model.*;
 import com.company.repository.AuctionsRegistry;
 import com.company.repository.UserRegistry;
 import com.company.view.CategoryView;
@@ -41,24 +38,20 @@ public class Main {
         BID_WON_AUCTION,
     }
 
+
     private static User currentUser;
+    private static int currentUserId;
     private static int  categoryNumber = 10;
+
 
 
     public static void main(String[] args) {
 
-        Connection connection;
         ResultSet resultSet;
         ArrayList<String> resultArrayList= new ArrayList<>();
 
-        Database database = new Database();
-        connection = database.makeDatabaseConnection();
-        database.executeInsertStatement(connection,"INSERT INTO users (login, password) VALUES('jacek', '54321');");
-        resultArrayList = database.executeSelectStatementFromUsersTable(connection, "SELECT * FROM users;");
-        for (String s : resultArrayList) {
-            System.out.println(s);
-        }
-
+        DatabaseConnector database = new DatabaseConnector();
+        Connection connection = database.makeDatabaseConnection();
 
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
@@ -81,10 +74,10 @@ public class Main {
                     state = printStartScreen(input, userRegistry);
                     break;
                 case DURING_LOGIN:
-                    state = printLoginScreen(input, userRegistry);
+                    state = printLoginScreen(connection, input, userRegistry);
                     break;
                 case DURING_REGISTRATION:
-                    state = printRegistrationScreen(input, userRegistry);
+                    state = printRegistrationScreen(input, userRegistry, connection);
                     break;
                 case LOGGED_IN:
                     state = printLoggedInScreen(input, userRegistry, currentUser, auctionsRegistry, auctionController);
@@ -206,6 +199,10 @@ public class Main {
         return State.LOGGED_IN;
     }
 
+
+
+
+
     private static State printLoggedInScreen(
             Scanner input,
             UserRegistry userRegistry,
@@ -314,7 +311,7 @@ public class Main {
 
     private static State printRegistrationScreen(
             Scanner input,
-            UserRegistry userRegistry) {
+            UserRegistry userRegistry, Connection connection) {
         System.out.println("create you login: ");
         String login = input.next(); //TODO entry data validation
         System.out.println("create your password: ");
@@ -323,6 +320,12 @@ public class Main {
         try {
             User user = new User(login, password);
             userRegistry.addUser(user);
+            UserDB userDB = new UserDB(connection, login, password);
+            DatabaseConnector databaseConnector = new DatabaseConnector(connection);
+            currentUserId = databaseConnector.getUserIdByLogin(connection, login);
+            System.out.println("I have current user ID: " + currentUserId);
+            currentUser = user;
+
             System.out.println("User has been created!");
             return State.LOGGED_IN;
         } catch (IOException e) {
@@ -338,7 +341,7 @@ public class Main {
 
     }
 
-    private static State printLoginScreen(
+    private static State printLoginScreen(Connection connection,
             Scanner input,
             UserRegistry userRegistry) {
         System.out.println("enter you login: ");
@@ -346,6 +349,12 @@ public class Main {
         System.out.println("enter your password: ");
         String password = input.next(); //TODO entry data validation
         User user = null;
+        DatabaseConnector databaseConnector = new DatabaseConnector(connection);
+        if (databaseConnector.checkUserPassword(connection, login, password)) {
+            System.out.println("User login and password are same as in database");
+        } else {
+            System.out.println("Couldn't find such login and pass in database");
+        }
         try {
             user = new User(login, password);
             if (userRegistry.existUser(user) == true && userRegistry.isLoginAndPasswordCorrect(user)) {

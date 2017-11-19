@@ -3,16 +3,16 @@ package com.company.controller;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Database {
+public class DatabaseConnector {
 
     Connection connection;
     Statement statement;
 
-    public Database(Connection connection) {
+    public DatabaseConnector(Connection connection) {
         this.connection = connection;
     }
 
-    public Database() {
+    public DatabaseConnector() {
     }
 
     public boolean executeInsertStatement(Connection connection, String sql) {
@@ -72,7 +72,7 @@ public class Database {
         }
     }
 
-    public ArrayList<String> executeSelectStatementFromUsersTable(Connection connection, String sql) {
+    public ArrayList<String> executeSelectAllUsers(Connection connection, String sql) {
         Statement statement;
         String result="";
         try {
@@ -113,5 +113,56 @@ public class Database {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public Integer getUserIdByLogin(Connection connection, String login) {
+
+        String sql = "SELECT id FROM users WHERE login = '" + login + "';";
+        System.out.println("Generated SQL for extracting user's id by login: " + sql);
+
+        int id;
+
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                id = resultSet.getInt("id");
+                System.out.println("Id of requested user: " + id);
+
+                resultSet.close();
+                statement.close();
+                return id;
+            } else return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean checkUserPassword(Connection connection, String login, String password) {
+
+        String sql = "SELECT * FROM users WHERE login = '" + login + "';";
+        System.out.println("Generated SQL for extracting user by login: " + sql);
+
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                if (password.equals(resultSet.getString("password"))) {
+                    System.out.println("Password of requested user is same as in database, permission granted");
+                    resultSet.close();
+                    statement.close();
+                    return true;
+                } else return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

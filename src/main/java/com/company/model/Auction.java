@@ -15,7 +15,19 @@ public class Auction {
     private int categoryID;
     private String description;
     private String login;
+    private int userId;
     private List<Bid> listBids = new ArrayList<>();
+
+    // constructor to use when extracting Auction from database
+    public Auction(int auctionID, boolean active, String title, BigDecimal price, int categoryID, String description, int userId) {
+        this.auctionID = auctionID;
+        this.active = active;
+        this.title = title;
+        this.price = price;
+        this.categoryID = categoryID;
+        this.description = description;
+        this.userId = userId;
+    }
 
 
     public Auction(int auctionID, boolean active, String title, BigDecimal price, int categoryID, String description, String login, List<Bid> listBids) {

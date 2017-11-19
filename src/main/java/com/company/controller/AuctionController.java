@@ -2,6 +2,7 @@ package com.company.controller;
 
 import com.company.helpers.CategoryBuilder;
 import com.company.model.Auction;
+import com.company.model.AuctionDB;
 import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 import com.company.view.AuctionView;
@@ -47,7 +48,18 @@ public class AuctionController {
     public void addAuction(String auctionTitle, BigDecimal auctionPrice, int categoryNumber, String auctionDescription, String login) {
         Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
         auctionsRegistry.writeAuction(newAuction);
+
+
+
+        String title = auctionTitle;
+        BigDecimal price = auctionPrice;
+        int categoryID = categoryNumber;
+        String description = auctionDescription;
+        int userID = 5;
+        AuctionDB auctionDB = new AuctionDB(title, price, categoryID, description, userID);
+
     }
+
 
     public void printAuctions(User user){
         auctionView.printAuctionsList(auctionsRegistry.getUserAuctions(user));
