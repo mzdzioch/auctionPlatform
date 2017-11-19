@@ -17,6 +17,7 @@ import com.company.view.CategoryView;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -47,11 +48,17 @@ public class Main {
     public static void main(String[] args) {
 
         Connection connection;
+        ResultSet resultSet;
+        ArrayList<String> resultArrayList= new ArrayList<>();
 
         Database database = new Database();
         connection = database.makeDatabaseConnection();
-        database.executeInsertStatement(connection,"INSERT INTO users (login, password) VALUES('tomek', '12345')");
-        database.executeSelectStatement(connection, "");
+        database.executeInsertStatement(connection,"INSERT INTO users (login, password) VALUES('jacek', '54321');");
+        resultArrayList = database.executeSelectStatementFromUsersTable(connection, "SELECT * FROM users;");
+        for (String s : resultArrayList) {
+            System.out.println(s);
+        }
+
 
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
