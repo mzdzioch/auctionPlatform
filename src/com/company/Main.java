@@ -44,6 +44,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
