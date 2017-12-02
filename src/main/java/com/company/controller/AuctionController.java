@@ -3,7 +3,6 @@ package com.company.controller;
 import com.company.helpers.CategoryBuilder;
 import com.company.model.Auction;
 import com.company.model.AuctionDB;
-import com.company.model.User;
 import com.company.repository.AuctionsRegistry;
 import com.company.view.AuctionView;
 
@@ -45,28 +44,18 @@ public class AuctionController {
         return auctionsRegistry.removeAuction(auctionId);
     }
 
-    public void addAuction(String auctionTitle, BigDecimal auctionPrice, int categoryNumber, String auctionDescription, String login) {
-        Auction newAuction = new Auction(true, auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, login);
-        auctionsRegistry.writeAuction(newAuction);
-
-
-
-        String title = auctionTitle;
-        BigDecimal price = auctionPrice;
-        int categoryID = categoryNumber;
-        String description = auctionDescription;
-        int userID = 5;
-        AuctionDB auctionDB = new AuctionDB(title, price, categoryID, description, userID);
-
+    public void addAuction(String auctionTitle, BigDecimal auctionPrice, int categoryNumber, String auctionDescription, int userId) {
+        AuctionDB newAuctionDB = new AuctionDB(auctionTitle,  auctionPrice, categoryNumber,  auctionDescription, userId);
+        //auctionsRegistry.writeAuction(newAuction);
     }
 
 
-    public void printAuctions(User user){
-        auctionView.printAuctionsList(auctionsRegistry.getUserAuctions(user));
+    public void printAuctions(int userId){
+        auctionView.printAuctionsList(auctionsRegistry.getAuctionsListByUserId(userId));
     }
 
-    public void printInactiveAuctions(User user){
-        auctionView.printAuctionsList(auctionsRegistry.getUserFinishedAuctionList(user));
+    public void printInactiveAuctions(int userId){
+        auctionView.printAuctionsList(auctionsRegistry.getUserFinishedAuctionList(userId));
     }
 
     public void printActiveAuctions() {

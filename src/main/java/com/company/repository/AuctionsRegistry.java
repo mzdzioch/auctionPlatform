@@ -1,14 +1,15 @@
 package com.company.repository;
 
+import com.company.controller.Database;
 import com.company.helpers.CategoryBuilder;
 import com.company.helpers.FileOperation;
 import com.company.model.Auction;
 import com.company.model.Bid;
-import com.company.model.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,18 +37,62 @@ public class AuctionsRegistry {
         return auctionsMapWithId;
     }
 
-    public boolean writeAuction(Auction auction) {
-        new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
-        auctionsMapWithId.put(auction.getAuctionID(), auction);
-        return true;
-    }
+/*    public boolean writeAuction(Auction auction) {
+        AuctionDB auctionDB = new AuctionDB(auction);
 
-    public boolean addAuction(boolean isActive, String title, BigDecimal price, int categoryID, String description, String login) {
+*//*        new FileOperation().addLineToFile(fileAuctionsName, auctionToString(auction));
+        auctionsMapWithId.put(auction.getAuctionID(), auction);*//*
+        return true;
+    }*/
+
+ /*   public boolean addAuction(boolean isActive, String title, BigDecimal price, int categoryID, String description, String login) {
         Auction newAuction = new Auction(isActive, title, price, categoryID, description, login);
         return writeAuction(newAuction);
-    }
+    }*/
 
-    public ArrayList<Auction> getUserAuctions(User user) {
+    public ArrayList<Auction> getAuctionsListByUserId(int userId) {
+
+        ArrayList<Auction> resultsAuctionList = new ArrayList<>();
+
+        Connection connection = Database.getConnection();
+
+        int id;
+        boolean isActive;
+        String title;
+        BigDecimal price;
+        int categoryId;
+        String description;
+
+        PreparedStatement statement;
+        String sql = "SELECT * FROM auctions WHERE user_id = ?;";
+        System.out.println("Get auction by ID SQL: " + sql);
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                id = resultSet.getInt("id");
+                isActive = resultSet.getBoolean("is_active");
+                title = resultSet.getString("title");
+                price = resultSet.getBigDecimal("price");
+                categoryId = resultSet.getInt("category_id");
+                description = resultSet.getString("description");
+
+                Auction auction = new Auction(id, isActive, title, price, categoryId, description, userId);
+                resultsAuctionList.add(auction);
+            }
+            resultSet.close();
+            statement.close();
+
+            return resultsAuctionList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+/*    public ArrayList<Auction> getUserAuctions(User user) {
         ArrayList<Auction> userAuctions = new ArrayList<>();
         for (Auction auction : auctionsMapWithId.values()) {
             if (auction.getLogin().equals(user.getLogin())) {
@@ -56,7 +101,7 @@ public class AuctionsRegistry {
         }
 
         return userAuctions;
-    }
+    }*/
 
     public ArrayList<Auction> getAllAuctionsUnderCategory(int categoryID) {
         CategoryBuilder categoryBuilder = new CategoryBuilder();
@@ -75,8 +120,51 @@ public class AuctionsRegistry {
         return categoryAuctions;
     }
 
-    public ArrayList<Auction> getUserFinishedAuctionList(User user) {
-        ArrayList<Auction> listUserAuctions = new ArrayList<>();
+    public ArrayList<Auction> getUserFinishedAuctionList(int userId) {
+         ArrayList<Auction> resultsAuctionList = new ArrayList<>();
+
+        Connection connection = Database.getConnection();
+
+            int id;
+            boolean isActive;
+            String title;
+            BigDecimal price;
+            int categoryId;
+            String description;
+
+            PreparedStatement statement;
+            String sql = "SELECT * FROM auctions WHERE user_id = ? and is_active = ?;";
+            System.out.println("Get auction by ID SQL: " + sql);
+            try {
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, userId);
+                statement.setBoolean(2, true);
+
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    id = resultSet.getInt("id");
+                    isActive = resultSet.getBoolean("is_active");
+                    title = resultSet.getString("title");
+                    price = resultSet.getBigDecimal("price");
+                    categoryId = resultSet.getInt("category_id");
+                    description = resultSet.getString("description");
+
+                    Auction auction = new Auction(id, isActive, title, price, categoryId, description, userId);
+                    resultsAuctionList.add(auction);
+                }
+                resultSet.close();
+                statement.close();
+
+                return resultsAuctionList;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+
+/*        ArrayList<Auction> listUserAuctions = new ArrayList<>();
         readAuctionsRegistryToMemory();
         for (Auction auction : auctionsMapWithId.values()) {
             if ((auction.getLogin().equals(user.getLogin()) && (auction.isActive()))) {
@@ -85,17 +173,22 @@ public class AuctionsRegistry {
         }
         return listUserAuctions;
     }
-
+*/
     public boolean removeAuction(int auctionID) {
-        for (Integer key : auctionsMapWithId.keySet()) {
-            if (key == auctionID) {
-                auctionsMapWithId.remove(key);
-                writeAuctionsRegistryToFile();
-                return true;
-            }
+        Connection connection = Database.getConnection();
+        try {
+            PreparedStatement statement=null;
+            String sql = "DELETE FROM auctions WHERE id = ?;";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, auctionID);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
+
 
     public void updateAuction(Auction auction){
 

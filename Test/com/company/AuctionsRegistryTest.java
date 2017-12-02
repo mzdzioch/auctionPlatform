@@ -34,8 +34,8 @@ public class AuctionsRegistryTest {
         int currentId = auctionsCounter.readCurrentID();
 
         //AuctionsRegistry auctionsRegistry = new AuctionsRegistry(fileAuctionsName);
-        auctionsRegistry.writeAuction(auction0);
-        auctionsRegistry.writeAuction(auction1);
+        //auctionsRegistry.writeAuction(auction0);
+        //auctionsRegistry.writeAuction(auction1);
         assertTrue(auctionsRegistry.getAllAuctions().get(currentId-2).getCategoryID() == 10);
         assertTrue(auctionsRegistry.getAllAuctions().get(currentId-1).getCategoryID() == 10);
     }

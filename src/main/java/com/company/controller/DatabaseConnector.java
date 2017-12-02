@@ -75,7 +75,7 @@ public class DatabaseConnector {
     }
 
 
-    public Integer getUserIdByLogin(Connection connection, String login) {
+    public Integer getUserIdByLogin(String login) {
 
         String sql = "SELECT id FROM users WHERE login = '" + login + "';";
         System.out.println("Generated SQL for extracting user's id by login: " + sql);

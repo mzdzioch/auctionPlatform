@@ -44,8 +44,8 @@ public class AuctionControllerTest {
         expectedMap.put(1, auction1);
         expectedMap.put(2, auction2);
 
-        auctionRegistry.writeAuction(auction1);
-        auctionRegistry.writeAuction(auction2);
+//        auctionRegistry.writeAuction(auction1);
+//        auctionRegistry.writeAuction(auction2);
 
         assertEquals(expectedMap, auctionRegistry.getAllAuctions());
 
@@ -70,7 +70,7 @@ public class AuctionControllerTest {
 
     @Test
     public void shouldReturnTrueIfAuctionsBelongToCategory() throws Exception {
-        auctionRegistry.writeAuction(auction3);
+        //auctionRegistry.writeAuction(auction3);
 
         assertTrue(auctionController.validateAuctionToMakeBid(2, 1));
         assertTrue(auctionController.validateAuctionToMakeBid(2, 2));

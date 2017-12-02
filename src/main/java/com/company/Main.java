@@ -6,7 +6,6 @@ import com.company.controller.DatabaseConnector;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginExistException;
 import com.company.exceptions.LoginNullException;
-import com.company.helpers.CategoryBuilder;
 import com.company.model.*;
 import com.company.repository.AuctionsRegistry;
 import com.company.repository.UserRegistry;
@@ -14,7 +13,6 @@ import com.company.view.CategoryView;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -31,24 +29,25 @@ public class Main {
         DURING_MAKING_A_BID,
         EXIT}
 
-    public enum BidState {
+/*    public enum BidState {
         NO_SUCH_AUCTION,
         PRICE_TOO_LOW,
         BID_MADE,
         BID_WON_AUCTION,
-    }
+    }*/
 
 
-    private static User currentUser;
     private static int currentUserId;
-    private static int  categoryNumber = 10;
+    private static String currentUserLogin;
+
+    private static int  categoryNumber;
 
 
 
     public static void main(String[] args) {
 
-        ResultSet resultSet;
-        ArrayList<String> resultArrayList= new ArrayList<>();
+        //ResultSet resultSet;
+        //ArrayList<String> resultArrayList= new ArrayList<>();
 
         Connection connection = Database.getConnection();
 
@@ -56,15 +55,15 @@ public class Main {
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
         State state = State.START;
-        BidState bidState;
-        int categoryNumber = 10;
+        //BidState bidState;
+        //int categoryNumber = 10;
 
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
         AuctionController auctionController = new AuctionController(auctionsRegistry);
         Scanner input = new Scanner(System.in).useDelimiter("\\n");
         UserRegistry userRegistry = new UserRegistry("users.txt");
-        CategoryBuilder categoryBuilder = new CategoryBuilder();
-        User user = null;
+        //CategoryBuilder categoryBuilder = new CategoryBuilder();
+        //User user = null;
 
 
         while(state != State.EXIT) {
@@ -73,24 +72,24 @@ public class Main {
                     state = printStartScreen(input, userRegistry);
                     break;
                 case DURING_LOGIN:
-                    state = printLoginScreen(connection, input, userRegistry);
+                    state = printLoginScreen(input);
                     break;
                 case DURING_REGISTRATION:
-                    state = printRegistrationScreen(input, userRegistry, connection);
+                    state = printRegistrationScreen(input);
                     break;
                 case LOGGED_IN:
-                    state = printLoggedInScreen(input, userRegistry, currentUser, auctionsRegistry, auctionController);
+                    state = printLoggedInScreen(input, userRegistry, auctionsRegistry, auctionController);
                     break;
                 case DURING_ADDING_AUCTION:
-                    state = printAddAuctionScreen(input, userRegistry, auctionsRegistry);
+                    state = printAddAuctionScreen(input, auctionsRegistry);
                     break;
                 case DURING_DELETING_AUCTION:
-                    state = printDeleteAuctionScreen(input, userRegistry, auctionsRegistry);
+                    state = printDeleteAuctionScreen(input, auctionsRegistry);
                     break;
                 case DURING_DISPLAYING_FINISHED_AUCTIONS:
-                    state = printFinishedAuctionScreen(input, userRegistry, auctionsRegistry);
+                    state = printFinishedAuctionScreen(auctionsRegistry);
                 case DURING_MAKING_A_BID:
-                    state = printMakingBid(input, userRegistry, auctionsRegistry);
+                    state = printMakingBid(input, auctionsRegistry);
             }
         }
         System.out.println("Bye");
@@ -99,12 +98,12 @@ public class Main {
 
     private static State printMakingBid(
             Scanner input,
-            UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
+
         displayAuctionsCategoryTree();
         System.out.println("Select category to display");
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        ArrayList<Auction> auctionsList = new ArrayList<>();
+        //ArrayList<Auction> auctionsList = new ArrayList<>();
 
         int categoryNumber = Integer.parseInt(input.next());
         if (auctionController.validateCategoryNumber(categoryNumber)) {
@@ -119,7 +118,7 @@ public class Main {
                 BigDecimal bidValue = new BigDecimal(input.next());
                 if (auctionController.validateBid(bidValue, auctionId)) {
                     // check if bidValue is not too low
-                    if (auctionController.makeWinningBid(auctionId, bidValue, currentUser.getLogin())) {
+                    if (auctionController.makeWinningBid(auctionId, bidValue, currentUserLogin)) {
                         // try to make winnig bid,
                         // in case of yes (won)
                         // - add winning bid to auction
@@ -145,18 +144,16 @@ public class Main {
 
     /**
      * Prints screen with the list of finished auctions owned by the current user
-     * @param input             current input from scanner
-     * @param userRegistry      registry of users
      * @param auctionsRegistry  registry of auctions
      * @return                  state that user can see when logged in
      */
     private static State printFinishedAuctionScreen(
-            Scanner input,
-            UserRegistry userRegistry,
+            //Scanner input,
+            //UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
-        ArrayList<Auction> auctionsList = new ArrayList<>();
-        auctionsList = auctionsRegistry.getUserFinishedAuctionList(currentUser);
-        System.out.println("Finished auction of " + currentUser);
+        //ArrayList<Auction> auctionsList = new ArrayList<>();
+        ArrayList<Auction> auctionsList = auctionsRegistry.getUserFinishedAuctionList(currentUserId);
+        System.out.println("Finished auction of " + currentUserId);
         for (Auction auction : auctionsList) {
             System.out.println(auction.toString());
         }
@@ -165,10 +162,10 @@ public class Main {
 
     private static State printDeleteAuctionScreen(
             Scanner input,
-            UserRegistry userRegistry,
+            //UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        auctionController.printAuctions(currentUser);
+        auctionController.printAuctions(currentUserId);
         System.out.println("Enter id number of auction you wish to delete.");
         try {
             int auctionIdToDelete = Integer.parseInt(input.next()); // entry data validation
@@ -182,7 +179,6 @@ public class Main {
 
     private static State printAddAuctionScreen(
             Scanner input,
-            UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
         System.out.println("Select category ID for your new auction");
         int categoryNumber = Integer.parseInt(input.next()); //TODO entry data validation
@@ -193,19 +189,15 @@ public class Main {
         System.out.println("Enter price");
         BigDecimal auctionPrice = new BigDecimal(input.next()); //TODO entry data validation
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        auctionController.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUser.getLogin());
+        auctionController.addAuction(auctionTitle, auctionPrice, categoryNumber, auctionDescription, currentUserId);
         System.out.println("Your auction was added.");
         return State.LOGGED_IN;
     }
 
 
-
-
-
     private static State printLoggedInScreen(
             Scanner input,
             UserRegistry userRegistry,
-            User user,
             AuctionsRegistry auctionsRegistry,
             AuctionController auctionController) {
         System.out.println("[4] display your auctions");
@@ -220,20 +212,20 @@ public class Main {
         switch (numberEntered) {
             case 0: return State.EXIT;
             case 4:
-                displayUsersAuctions(currentUser, auctionsRegistry);
+                displayUsersAuctions(currentUserId, auctionsRegistry);
                 return State.LOGGED_IN;
             case 5:
                 return State.DURING_DELETING_AUCTION;
             case 6:
-                printMakingBid(input, userRegistry, auctionsRegistry);
+                printMakingBid(input, auctionsRegistry);
                 return State.LOGGED_IN;
             case 7:
                 displayAuctionsCategoryTree();
                 return State.DURING_ADDING_AUCTION;
             case 8:
-                return dispalyUsersClosedAuctions(currentUser, auctionsRegistry);
+                return dispalyUsersClosedAuctions(currentUserId, auctionsRegistry);
             case 9:
-                return displayAuctions(input, currentUser, auctionsRegistry);
+                return displayAuctions(input, auctionsRegistry);
             default:
                 if (auctionController.validateCategoryNumber(categoryNumber)) {
                     displayCategoryAuctions(numberEntered, auctionsRegistry);
@@ -246,7 +238,6 @@ public class Main {
 
     private static State displayAuctions(
             Scanner input,
-            User currentUser,
             AuctionsRegistry auctionsRegistry) {
         AuctionController auctionController = new AuctionController(auctionsRegistry);
         displayAuctionsCategoryTree();
@@ -257,13 +248,13 @@ public class Main {
     }
 
     private static State dispalyUsersClosedAuctions(
-            User currentUser,
+            int currentUserId,
             AuctionsRegistry auctionsRegistry) {
         System.out.println("- - - - - - - - - - - ");
-        System.out.println("Closed auctions of " + currentUser.getLogin());
+        System.out.println("Closed auctions of user with id " + currentUserId);
         System.out.println("- - - - - - - - - - - ");
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        auctionController.printInactiveAuctions(currentUser);
+        auctionController.printInactiveAuctions(currentUserId);
         return State.LOGGED_IN;
     }
 
@@ -273,8 +264,7 @@ public class Main {
         System.out.println("- - - - - - - - - - - ");
         System.out.println("Display auctions in category number " + categoryNumber);
         System.out.println("- - - - - - - - - - - ");
-        ArrayList<Auction> categoryAuctionList = new ArrayList<>();
-        categoryAuctionList = (ArrayList<Auction>)auctionsRegistry.getAllAuctionsUnderCategory(categoryNumber);
+        ArrayList<Auction> categoryAuctionList = auctionsRegistry.getAllAuctionsUnderCategory(categoryNumber);
         for (Auction auction : categoryAuctionList) {
             System.out.println(auction);
         }
@@ -282,22 +272,16 @@ public class Main {
 
     }
 
-/*    private static void MakeBid() {
-        System.out.println("- - - - - - - - - - - ");
-        System.out.println("Make a bid");
-        System.out.println("- - - - - - - - - - - ");
-    }*/
-
     private static void displayUsersAuctions(
-            User user,
+            int userId,
             AuctionsRegistry auctionsRegistry) {
-        ArrayList<Auction> usersAuctionList = new ArrayList<>();
 
         System.out.println("- - - - - - - - - - - ");
         System.out.println("Display all auctions of user");
         System.out.println("- - - - - - - - - - - ");
+
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        auctionController.printAuctions(user);
+        auctionController.printAuctions(userId);
     }
 
     private static void displayAuctionsCategoryTree() {
@@ -309,8 +293,7 @@ public class Main {
     }
 
     private static State printRegistrationScreen(
-            Scanner input,
-            UserRegistry userRegistry, Connection connection) {
+            Scanner input) {
         System.out.println("create you login: ");
         String login = input.next(); //TODO entry data validation
         System.out.println("create your password: ");
@@ -320,11 +303,12 @@ public class Main {
             User user = new User(login, password);
             //userRegistry.addUser(user);
             if (user.loginAvailable(login)) {
-                UserDB userDB = new UserDB(connection, login, password);
+                UserDB userDB = new UserDB(login, password);
+                Connection connection = Database.getConnection();
                 DatabaseConnector databaseConnector = new DatabaseConnector(connection);
-                currentUserId = databaseConnector.getUserIdByLogin(connection, login);
+                currentUserId = databaseConnector.getUserIdByLogin(login);
+                currentUserLogin = login;
                 System.out.println("I have current user ID: " + currentUserId);
-                currentUser = user;
                 System.out.println("User has been created!");
                 return State.LOGGED_IN;
             }
@@ -339,9 +323,9 @@ public class Main {
 
     }
 
-    private static State printLoginScreen(Connection connection,
-            Scanner input,
-            UserRegistry userRegistry) {
+    private static State printLoginScreen(Scanner input) {
+        Connection connection = Database.getConnection();
+
         System.out.println("enter you login: ");
         String login = input.next(); //TODO entry data validation
         System.out.println("enter your password: ");

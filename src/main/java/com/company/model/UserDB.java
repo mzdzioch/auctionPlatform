@@ -1,27 +1,26 @@
 package com.company.model;
 
-import com.company.controller.DatabaseConnector;
+import com.company.controller.Database;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginNullException;
 
 import java.sql.*;
 
 public class UserDB {
-    int userID;
+    //int userID;
     private String login;
     private String password;
-    Connection connection;
 
-    public UserDB(Connection connection, String login, String password) throws CredentialsToShortException, LoginNullException {
+    public UserDB(String login, String password) throws CredentialsToShortException, LoginNullException {
         validateLoginAndPassword(login, password);
         this.login = login;
         this.password = password;
+
+        Connection connection = Database.getConnection();
         PreparedStatement statement = null;
-        //String sql = "INSERT INTO users (login, password) VALUES(?, ?);";
         String sql = "INSERT INTO users (login, password, salt) VALUES(?, crypt(?, ?), ?)";
 
         ResultSet rs=null;
-        DatabaseConnector databaseConnector = new DatabaseConnector();
         String salt="";
 
         try {
@@ -49,11 +48,6 @@ public class UserDB {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 
 
     private void validateLoginAndPassword(String login, String password) throws LoginNullException, CredentialsToShortException {
