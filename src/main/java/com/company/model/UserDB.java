@@ -7,6 +7,7 @@ import com.company.exceptions.LoginNullException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDB {
     int userID;
@@ -34,6 +35,10 @@ public class UserDB {
 
         DatabaseConnector databaseConnector = new DatabaseConnector();
         try {
+            Statement salt;
+            salt = connection.createStatement();
+            salt.executeUpdate("gen_salt('bf')");
+            salt.close();
             statement = connection.prepareStatement(sql);
             statement.setString(1, login);
             statement.setString(2,password);
