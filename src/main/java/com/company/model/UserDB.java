@@ -7,7 +7,6 @@ import com.company.exceptions.LoginNullException;
 import java.sql.*;
 
 public class UserDB {
-    //int userID;
     private String login;
     private String password;
 
@@ -20,7 +19,7 @@ public class UserDB {
         PreparedStatement statement = null;
         String sql = "INSERT INTO users (login, password, salt) VALUES(?, crypt(?, ?), ?)";
 
-        ResultSet rs=null;
+        ResultSet rs;
         String salt="";
 
         try {

@@ -41,6 +41,8 @@ public class AuctionView {
 
 
     public void printAllAuctionsUnderCategory(int idCategory){
+        //TODO doesn't work properly
+        // -> example make auctions in all branches under category 3 and then scann this category...
         categoryBuilder = new CategoryBuilder();
         categoriesList = new ArrayList<>();
         listCategoryAuctions = new ArrayList<>();

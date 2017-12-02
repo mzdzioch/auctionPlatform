@@ -101,8 +101,8 @@ public class DatabaseConnector {
         }
     }
 
-    public boolean checkUserPassword(Connection connection, String login, String password) {
-
+    public boolean checkUserPassword(String login, String password) {
+        Connection connection = Database.getConnection();
         PreparedStatement preparedStatement;
 
         String sql = "SELECT * FROM users WHERE login = ? and password = crypt(? , salt);";

@@ -260,28 +260,6 @@ public class AuctionsRegistry {
 
     private Auction parseAuction(String auctionLine) {
         String[] auctionToArray = auctionLine.split("\\|");
-//        for (String s : auctionToArray) {
-//            System.out.println(s);
-//        }
-/*        String[] bidInStringToArrayHelper7 = auctionToArray[7].split(",");
-        System.out.println("First bid");
-        for (String s : bidInStringToArrayHelper7) {
-            System.out.println(s);
-        }
-
-
-        String[] bidInStringToArrayHelper8 = auctionToArray[8].split(",");
-        System.out.println("Second bid");
-        for (String s : bidInStringToArrayHelper8) {
-            System.out.println(s);
-        }
-
-        String[] bidInStringToArrayHelper9 = auctionToArray[9].split(",");
-        System.out.println("Third bid");
-        for (String s : bidInStringToArrayHelper9) {
-            System.out.println(s);
-        }*/
-
 
         int auctionID = Integer.parseInt(auctionToArray[0]);
         boolean active = Boolean.parseBoolean(auctionToArray[1]);

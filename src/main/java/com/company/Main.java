@@ -29,25 +29,14 @@ public class Main {
         DURING_MAKING_A_BID,
         EXIT}
 
-/*    public enum BidState {
-        NO_SUCH_AUCTION,
-        PRICE_TOO_LOW,
-        BID_MADE,
-        BID_WON_AUCTION,
-    }*/
-
 
     private static int currentUserId;
     private static String currentUserLogin;
-
     private static int  categoryNumber;
 
 
 
     public static void main(String[] args) {
-
-        //ResultSet resultSet;
-        //ArrayList<String> resultArrayList= new ArrayList<>();
 
         Connection connection = Database.getConnection();
 
@@ -55,21 +44,18 @@ public class Main {
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
         rootCategory.addChild(electronicsCategory);
         State state = State.START;
-        //BidState bidState;
-        //int categoryNumber = 10;
 
         AuctionsRegistry auctionsRegistry = new AuctionsRegistry("testowo.txt");
         AuctionController auctionController = new AuctionController(auctionsRegistry);
         Scanner input = new Scanner(System.in).useDelimiter("\\n");
         UserRegistry userRegistry = new UserRegistry("users.txt");
         //CategoryBuilder categoryBuilder = new CategoryBuilder();
-        //User user = null;
 
 
         while(state != State.EXIT) {
             switch(state) {
                 case START:
-                    state = printStartScreen(input, userRegistry);
+                    state = printStartScreen(input);
                     break;
                 case DURING_LOGIN:
                     state = printLoginScreen(input);
@@ -78,7 +64,7 @@ public class Main {
                     state = printRegistrationScreen(input);
                     break;
                 case LOGGED_IN:
-                    state = printLoggedInScreen(input, userRegistry, auctionsRegistry, auctionController);
+                    state = printLoggedInScreen(input, auctionsRegistry, auctionController);
                     break;
                 case DURING_ADDING_AUCTION:
                     state = printAddAuctionScreen(input, auctionsRegistry);
@@ -103,7 +89,6 @@ public class Main {
         displayAuctionsCategoryTree();
         System.out.println("Select category to display");
         AuctionController auctionController = new AuctionController(auctionsRegistry);
-        //ArrayList<Auction> auctionsList = new ArrayList<>();
 
         int categoryNumber = Integer.parseInt(input.next());
         if (auctionController.validateCategoryNumber(categoryNumber)) {
@@ -148,10 +133,7 @@ public class Main {
      * @return                  state that user can see when logged in
      */
     private static State printFinishedAuctionScreen(
-            //Scanner input,
-            //UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
-        //ArrayList<Auction> auctionsList = new ArrayList<>();
         ArrayList<Auction> auctionsList = auctionsRegistry.getUserFinishedAuctionList(currentUserId);
         System.out.println("Finished auction of " + currentUserId);
         for (Auction auction : auctionsList) {
@@ -162,8 +144,8 @@ public class Main {
 
     private static State printDeleteAuctionScreen(
             Scanner input,
-            //UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry) {
+
         AuctionController auctionController = new AuctionController(auctionsRegistry);
         auctionController.printAuctions(currentUserId);
         System.out.println("Enter id number of auction you wish to delete.");
@@ -197,7 +179,6 @@ public class Main {
 
     private static State printLoggedInScreen(
             Scanner input,
-            UserRegistry userRegistry,
             AuctionsRegistry auctionsRegistry,
             AuctionController auctionController) {
         System.out.println("[4] display your auctions");
@@ -334,7 +315,7 @@ public class Main {
             User user = new User(login, password);
             DatabaseConnector databaseConnector = new DatabaseConnector(connection);
 
-            if (databaseConnector.checkUserPassword(connection, login, password)) {
+            if (databaseConnector.checkUserPassword(login, password)) {
                 System.out.println("User login and password are same as in database");
                 return State.LOGGED_IN;
             } else {
@@ -349,8 +330,7 @@ public class Main {
     }
 
     private static State printStartScreen(
-            Scanner input,
-            UserRegistry userRegistry) {
+            Scanner input) {
         System.out.println("Welcome to Allegro auction portal!");
         System.out.println("type [1] if you want to log in\n" +
                 "type [2] if you want to create new account\n" +

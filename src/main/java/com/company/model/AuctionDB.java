@@ -92,50 +92,6 @@ public class AuctionDB {
         }
     }
 
-
-    /*public ArrayList<String> executeSelectStatementFromUsersTable(Connection connection, String sql) {
-        Statement statement;
-        String result="";
-        try {
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
-            ArrayList<String> resultToArrayList= new ArrayList<>();
-            try {
-                while (resultSet.next()) {
-                    //int id = resultSet.getInt("id");
-                    String id = resultSet.getString("id");
-
-                    String login = resultSet.getString("login");
-                    String password = resultSet.getString("password");
-                    System.out.println("id " + id);
-                    System.out.println("login " + login);
-                    System.out.println("password " + password);
-                    String resultLine = id + "|"+login+"|"+password;
-                    System.out.println("resultLine= " + resultLine);
-                    resultToArrayList.add(resultLine);
-
-                    //System.out.println(resultSet.toString());
-                }
-                resultSet.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            resultSet.close();
-            statement.close();
-            System.out.println("SQL is working " + sql);
-            return resultToArrayList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
-
 /*    public int getAuctionID() {
         return auctionID;
     }
