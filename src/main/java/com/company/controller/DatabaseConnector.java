@@ -144,14 +144,24 @@ public class DatabaseConnector {
 
     public boolean checkUserPassword(Connection connection, String login, String password) {
 
-        String sql = "SELECT * FROM users WHERE login = '" + login + "';";
-        System.out.println("Generated SQL for extracting user by login: " + sql);
 
-        Statement statement;
+        PreparedStatement preparedStatement = null;
+        //Statement statement= null;
+
+        //String sql = "SELECT * FROM users WHERE login = ?;";
+        String sql = "SELECT * FROM users WHERE login = ? and password = crypt(? , salt);";
+
+
         try {
-            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            //statement = connection.createStatement();
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
 
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            System.out.println("Execute querry login + password");
+
             if (resultSet.next()) {
                 if (password.equals(resultSet.getString("password"))) {
                     System.out.println("Password of requested user is same as in database, permission granted");

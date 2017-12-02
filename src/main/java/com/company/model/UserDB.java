@@ -4,10 +4,7 @@ import com.company.controller.DatabaseConnector;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginNullException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserDB {
     int userID;
@@ -21,28 +18,30 @@ public class UserDB {
         this.password = password;
         PreparedStatement statement = null;
         //String sql = "INSERT INTO users (login, password) VALUES(?, ?);";
-        String sql = "INSERT INTO users (login, password, salt) VALUES(?, crypt(?), ?)";
+        String sql = "INSERT INTO users (login, password, salt) VALUES(?, crypt(?, ?), ?)";
 
-
-
-        /*
-        # select gen_salt('bf');
-        gen_salt
-
-        insert into users(login, password, salt) values('cośtam', crypt('hasło', 'salt'), 'salt');
-        select * from users where login = 'cośtam' and password = crypt('hasło_podane_przy_logowaniu', salt)
-        */
-
+        ResultSet rs=null;
         DatabaseConnector databaseConnector = new DatabaseConnector();
+        String salt="";
+
         try {
-            Statement salt;
-            salt = connection.createStatement();
-            salt.executeUpdate("gen_salt('bf')");
-            salt.close();
+            Statement generateSalt;
+            generateSalt = connection.createStatement();
+            rs = generateSalt.executeQuery("select gen_salt('bf')");
+
+            if (rs.next()) {
+                salt = rs.getString("gen_salt");
+                System.out.println("my salt is" + salt);
+                System.out.println("INSERT INTO users (login, password, salt) VALUES(" + login +", crypt(" + password +" , " + salt  + ")," + salt + ")");
+
+            }
+            generateSalt.close();
+
             statement = connection.prepareStatement(sql);
             statement.setString(1, login);
             statement.setString(2,password);
-            statement.setString(3, "gen_salt('bf')");
+            statement.setString(3, salt);
+            statement.setString(4, salt);
             statement.executeUpdate();
             statement.close();
 
