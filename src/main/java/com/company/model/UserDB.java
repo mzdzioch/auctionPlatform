@@ -5,6 +5,8 @@ import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginNullException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class UserDB {
     int userID;
@@ -16,15 +18,32 @@ public class UserDB {
         validateLoginAndPassword(login, password);
         this.login = login;
         this.password = password;
+        PreparedStatement statement = null;
+        //String sql = "INSERT INTO users (login, password) VALUES(?, ?);";
+        String sql = "INSERT INTO users (login, password, salt) VALUES(?, crypt(?), ?)";
+
+
+
+        /*
+        # select gen_salt('bf');
+        gen_salt
+
+        insert into users(login, password, salt) values('cośtam', crypt('hasło', 'salt'), 'salt');
+        select * from users where login = 'cośtam' and password = crypt('hasło_podane_przy_logowaniu', salt)
+        */
 
         DatabaseConnector databaseConnector = new DatabaseConnector();
-        //Connection connection = databaseConnector.makeDatabaseConnection();
-        String sql = "INSERT INTO users (login, password) " +
-                "VALUES('" + login + "', '" + password + "');";
-        System.out.println("Generated SQL for adding user: " + sql);
-        databaseConnector.executeInsertStatement(connection, sql);
-        //databaseConnector.closeConnection(connection);
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, login);
+            statement.setString(2,password);
+            statement.setString(3, "gen_salt('bf')");
+            statement.executeUpdate();
+            statement.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
