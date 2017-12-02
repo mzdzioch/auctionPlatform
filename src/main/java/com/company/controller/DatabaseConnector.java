@@ -30,47 +30,6 @@ public class DatabaseConnector {
         }
     }
 
-    public Connection makeDatabaseConnection() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Where is your PostgreSQL JDBC Driver? "
-                    + "Include in your library path!");
-            e.printStackTrace();
-            //return;
-        }
-
-        System.out.println("PostgreSQL JDBC Driver Registered!");
-
-        Connection connection = null;
-
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://127.0.0.1:5432/orgella", "postgres",
-                    "123");
-
-        } catch (SQLException e) {
-
-            System.out.println("Connection Failed! Check output console");
-            e.printStackTrace();
-            //return;
-        }
-
-        if (connection != null) {
-            System.out.println("You made it, take control your database now!");
-        } else {
-            System.out.println("Failed to make connection!");
-        }
-        return connection;
-    }
-
-    public void closeConnection(Connection connection) {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public ArrayList<String> executeSelectAllUsers(Connection connection, String sql) {
         Statement statement;
@@ -144,31 +103,21 @@ public class DatabaseConnector {
 
     public boolean checkUserPassword(Connection connection, String login, String password) {
 
+        PreparedStatement preparedStatement;
 
-        PreparedStatement preparedStatement = null;
-        //Statement statement= null;
-
-        //String sql = "SELECT * FROM users WHERE login = ?;";
         String sql = "SELECT * FROM users WHERE login = ? and password = crypt(? , salt);";
-
 
         try {
             preparedStatement = connection.prepareStatement(sql);
-            //statement = connection.createStatement();
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            System.out.println("Execute querry login + password");
-
             if (resultSet.next()) {
-                if (password.equals(resultSet.getString("password"))) {
-                    System.out.println("Password of requested user is same as in database, permission granted");
-                    resultSet.close();
-                    statement.close();
-                    return true;
-                } else return false;
+                return true;
+            } else {
+                System.out.println("Login or pass does not match.");
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();

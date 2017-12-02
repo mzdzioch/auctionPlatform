@@ -1,6 +1,5 @@
 package com.company.repository;
 
-import com.company.exceptions.LoginExistException;
 import com.company.model.User;
 
 import java.io.*;
@@ -19,19 +18,19 @@ public class UserRegistry {
     }
 
 
-    public void addUser(User user) throws IOException, LoginExistException {
+ /*   public void addUser(User user) throws LoginExistException {
 
         if (existUser(user))
             throw new LoginExistException("Login exists.");
         else
             addToFile(user);
-    }
+    }*/
 
-    public boolean existUser(User user) throws IOException {
+/*    public boolean existUser(User user) {
 
         return checkIfUserExist(user);
 
-    }
+    }*/
 
     private void addToFile(User user) {
 
@@ -105,16 +104,6 @@ public class UserRegistry {
         return null;
     }
 
-    public boolean checkIfUserExist(User user) throws IOException {
-
-        String[] userToArray = findUser(user);
-        if (userToArray != null) {
-            if (userToArray[0].equals(user.getLogin())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public boolean isLoginAndPasswordCorrect(User user) throws IOException {
 

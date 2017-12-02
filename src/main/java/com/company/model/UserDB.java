@@ -43,8 +43,8 @@ public class UserDB {
             statement.setString(3, salt);
             statement.setString(4, salt);
             statement.executeUpdate();
-            statement.close();
 
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

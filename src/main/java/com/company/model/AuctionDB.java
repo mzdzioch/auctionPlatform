@@ -1,16 +1,15 @@
 package com.company.model;
 
-import com.company.controller.DatabaseConnector;
+import com.company.controller.Database;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class AuctionDB {
 
-
     public AuctionDB(
             String title,
             BigDecimal price,
@@ -18,35 +17,29 @@ public class AuctionDB {
             String description,
             int user_id) {
 
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        Connection connection = databaseConnector.makeDatabaseConnection();
+        Connection connection = Database.getConnection();
+
+        PreparedStatement statement;
         String sql = "INSERT INTO auctions (is_active, title, price, category_id, description, user_id) " +
-                "VALUES('true', '" + title + "', '" + price + "', '" + categoryId + "', '" + description + "', '" + user_id + "');";
-        System.out.println("Generated SQL for adding auction: " + sql);
-        databaseConnector.executeInsertStatement(connection, sql);
-        databaseConnector.closeConnection(connection);
+                "VALUES('true', ?, ?, ?, ?, ?);";
+
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, title);
+            statement.setBigDecimal(2,price);
+            statement.setInt(3, categoryId);
+            statement.setString(4, description);
+            statement.setInt(5, user_id);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    // should replace other AuctionDB constructors just after cleaning "files driven" code
-    public AuctionDB(
-            Connection connection,
-            String title,
-            BigDecimal price,
-            int categoryId,
-            String description,
-            int user_id) {
+    public Auction getAuctionById(int auctionId) {
 
-        DatabaseConnector databaseConnector = new DatabaseConnector(connection);
-        String sql = "INSERT INTO auctions (is_active, title, price, category_id, description, user_id) " +
-                "VALUES('true', '" + title + "', '" + price + "', '" + categoryId + "', '" + description + "', '" + user_id + "');";
-        System.out.println("Generated SQL for adding auction: " + sql);
-        databaseConnector.executeInsertStatement(connection, sql);
-        databaseConnector.closeConnection(connection);
-    }
-
-    public Auction getAuctionById(Connection connection, int auctionId) {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        //Connection connection = databaseConnector.makeDatabaseConnection();
+        Connection connection = Database.getConnection();
 
         int id;
         boolean isActive;
@@ -56,14 +49,14 @@ public class AuctionDB {
         String description;
         int userId;
 
-        Statement statement;
-        String sql = "SELECT * FROM auctions WHERE id = '"+ auctionId +"';";
+        PreparedStatement statement;
+        String sql = "SELECT * FROM auctions WHERE id = ?;";
         System.out.println("Get auction by ID SQL: " + sql);
         try {
-            statement = connection.createStatement();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, auctionId);
 
-            ResultSet resultSet = statement.executeQuery(sql);
-            String result = "";
+            ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     id = resultSet.getInt("id");
                     isActive = resultSet.getBoolean("is_active");

@@ -1,7 +1,14 @@
 package com.company.model;
 
+import com.company.controller.Database;
 import com.company.exceptions.CredentialsToShortException;
+import com.company.exceptions.LoginExistException;
 import com.company.exceptions.LoginNullException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class User {
 
@@ -50,6 +57,23 @@ public class User {
         this.password = password;
     }
 
+    public boolean loginAvailable(String login) throws LoginExistException {
+        PreparedStatement statement;
+        String sql = "SELECT * FROM users WHERE login =?;";
+        Connection connection = Database.getConnection();
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, login);
+            ResultSet rs;
+            rs = statement.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }
 
 

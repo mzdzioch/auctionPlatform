@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.controller.AuctionController;
+import com.company.controller.Database;
 import com.company.controller.DatabaseConnector;
 import com.company.exceptions.CredentialsToShortException;
 import com.company.exceptions.LoginExistException;
@@ -11,7 +12,6 @@ import com.company.repository.AuctionsRegistry;
 import com.company.repository.UserRegistry;
 import com.company.view.CategoryView;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -50,8 +50,7 @@ public class Main {
         ResultSet resultSet;
         ArrayList<String> resultArrayList= new ArrayList<>();
 
-        DatabaseConnector database = new DatabaseConnector();
-        Connection connection = database.makeDatabaseConnection();
+        Connection connection = Database.getConnection();
 
         Node<Category> rootCategory = new Node<Category>(null, new Category());
         Node<Category> electronicsCategory = new Node<Category>(rootCategory, new Category(1, "Elektronika"));
@@ -319,17 +318,16 @@ public class Main {
 
         try {
             User user = new User(login, password);
-            userRegistry.addUser(user);
-            UserDB userDB = new UserDB(connection, login, password);
-            DatabaseConnector databaseConnector = new DatabaseConnector(connection);
-            currentUserId = databaseConnector.getUserIdByLogin(connection, login);
-            System.out.println("I have current user ID: " + currentUserId);
-            currentUser = user;
-
-            System.out.println("User has been created!");
-            return State.LOGGED_IN;
-        } catch (IOException e) {
-            System.out.println("Close encounter of the third kind with I/O problem\n");
+            //userRegistry.addUser(user);
+            if (user.loginAvailable(login)) {
+                UserDB userDB = new UserDB(connection, login, password);
+                DatabaseConnector databaseConnector = new DatabaseConnector(connection);
+                currentUserId = databaseConnector.getUserIdByLogin(connection, login);
+                System.out.println("I have current user ID: " + currentUserId);
+                currentUser = user;
+                System.out.println("User has been created!");
+                return State.LOGGED_IN;
+            }
         } catch (LoginExistException e) {
             System.out.println("Ups... " + login + " already exist in database or password is incorrect\n");;
         } catch (CredentialsToShortException e) {
@@ -348,37 +346,22 @@ public class Main {
         String login = input.next(); //TODO entry data validation
         System.out.println("enter your password: ");
         String password = input.next(); //TODO entry data validation
-        User user = null;
-        DatabaseConnector databaseConnector = new DatabaseConnector(connection);
-        if (databaseConnector.checkUserPassword(connection, login, password)) {
-            System.out.println("User login and password are same as in database");
-        } else {
-            System.out.println("Couldn't find such login and pass in database");
-        }
         try {
-            user = new User(login, password);
-            if (userRegistry.existUser(user) == true && userRegistry.isLoginAndPasswordCorrect(user)) {
-                System.out.println("Welcome " + user.getLogin());
-                currentUser = user;
+            User user = new User(login, password);
+            DatabaseConnector databaseConnector = new DatabaseConnector(connection);
+
+            if (databaseConnector.checkUserPassword(connection, login, password)) {
+                System.out.println("User login and password are same as in database");
                 return State.LOGGED_IN;
             } else {
-                LoginExistException exception = new LoginExistException("This marvelous application couldn't find such login in current database or password " +
-                        "you've entered is " +
-                        "incorrect." +
-                        " Please " +
-                        "try again.\n");
-                System.out.println(exception.getMessage());
-                return State.START;
+                System.out.println("Couldn't find such login and pass in database");
             }
         } catch (CredentialsToShortException e) {
             e.printStackTrace();
         } catch (LoginNullException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return State.START;
-
     }
 
     private static State printStartScreen(
